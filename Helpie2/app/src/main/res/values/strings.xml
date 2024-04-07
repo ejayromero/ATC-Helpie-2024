@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Helpie</string>
+    <string name="HELPIE">HELPIE</string>
+    <string name="aide">AIDE</string>
+    <string name="appeller_le_proche_aidant">Appeller le proche aidant</string>
+    <string name="appelle_icon">Appelle icon</string>
+    <string name="retour">retour</string>
+    <string name="numero_du_proche_aidant">Numero du proche aidant</string>
+    <string name="billet_cff_qrcode">billet cff QRCODE</string>
+    <string name="commencer_un_trajet">Commencer un trajet</string>
+    <string name="appel">Appel</string>
+</resources>
