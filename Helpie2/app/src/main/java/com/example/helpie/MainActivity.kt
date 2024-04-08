@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -55,8 +57,10 @@ var editMode = mutableStateOf(false)
 //Help interface and number to call
 var help = mutableStateOf(false)
 var phoneNumber = mutableStateOf(TextFieldValue())  //"+33658814083"
+var OutlineNumber = mutableStateOf(TextFieldValue("0800 007 102"))  //"+33658814083"
+var UsePhone = mutableStateOf(false)  //"+33658814083"
 
-//do we have a ticket
+//ticket management
 var ticketInterface = mutableStateOf(false)
 var ticket = mutableStateOf( false)
 
@@ -219,10 +223,17 @@ fun HELP(
             modifier = Modifier.fillMaxSize()
         ) {
             if (editMode.value) {
-                Text(
-                    text = stringResource(R.string.numero_du_proche_aidant),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                Row() {
+                    Checkbox(
+                        checked = UsePhone.value,
+                        onCheckedChange = {UsePhone.value = true}
+                    )
+                    Text(
+                        text = stringResource(R.string.numero_du_proche_aidant),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontSize = 25.sp
+                    )
+                }
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
                 TextField(
                     // on below line we are specifying value
@@ -232,6 +243,46 @@ fun HELP(
                     // on below line we are adding on value
                     // change for text field.
                     onValueChange = { phoneNumber.value = it },
+
+                    // on below line we are adding place holder as text
+                    placeholder = { Text(text = "Enter your phone number") },
+
+                    // on below line we are adding modifier to it
+                    // and adding padding to it and filling max width
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+
+                    // on below line we are adding text style
+                    // specifying color and font size to it.
+                    textStyle = TextStyle(color = Color.Black, fontSize = 15.sp),
+
+                    // on below line we are adding single line to it.
+                    singleLine = true,
+                )
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer)))
+
+                Row() {
+                    Checkbox(
+                        checked = !UsePhone.value,
+                        onCheckedChange = {UsePhone.value = false}
+                    )
+                    Text(
+                        text = "Ligne accessibilité CFF",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontSize = 25.sp
+                    )
+
+                }
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
+                TextField(
+                    // on below line we are specifying value
+                    // for our  text field.
+                    value = OutlineNumber.value,
+
+                    // on below line we are adding on value
+                    // change for text field.
+                    onValueChange = { OutlineNumber.value = it },
 
                     // on below line we are adding place holder as text
                     placeholder = { Text(text = "Enter your phone number") },
@@ -272,24 +323,44 @@ fun HELP(
                     // phone and passing phone number.
                     // Use format with "tel:" and phoneNumber created is
                     // stored in u.
-                    val u = Uri.parse("tel:" + phoneNumber.value.text)
+                    if (UsePhone.value) {
+                        val u = Uri.parse("tel:" + phoneNumber.value.text)
+                        // Create the intent and set the data for the
+                        // intent as the phone number.
+                        val i = Intent(Intent.ACTION_DIAL, u)
+                        try {
 
+                            // Launch the Phone app's dialer with a phone
+                            // number to dial a call.
+                            ctx.startActivity(i)
+                        } catch (s: SecurityException) {
 
-                    // Create the intent and set the data for the
-                    // intent as the phone number.
-                    val i = Intent(Intent.ACTION_DIAL, u)
-                    try {
+                            // show() method display the toast with
+                            // exception message.
+                            Toast.makeText(ctx, "An error occurred", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    } else {
+                        val u = Uri.parse("tel:" + OutlineNumber.value.text)
+                        // Create the intent and set the data for the
+                        // intent as the phone number.
+                        val i = Intent(Intent.ACTION_DIAL, u)
+                        try {
 
-                        // Launch the Phone app's dialer with a phone
-                        // number to dial a call.
-                        ctx.startActivity(i)
-                    } catch (s: SecurityException) {
+                            // Launch the Phone app's dialer with a phone
+                            // number to dial a call.
+                            ctx.startActivity(i)
+                        } catch (s: SecurityException) {
 
-                        // show() method display the toast with
-                        // exception message.
-                        Toast.makeText(ctx, "An error occurred", Toast.LENGTH_LONG)
-                            .show()
+                            // show() method display the toast with
+                            // exception message.
+                            Toast.makeText(ctx, "An error occurred", Toast.LENGTH_LONG)
+                                .show()
+                        }
                     }
+
+
+
                 }) {
                     // on below line creating a text for our button.
                     Text(
