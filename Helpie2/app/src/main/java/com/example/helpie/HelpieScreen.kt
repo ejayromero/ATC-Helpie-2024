@@ -1,8 +1,10 @@
 package com.example.helpie
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +25,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -31,25 +34,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.helpie.ui.StartScreen
-import com.example.helpie.ui.theme.AppTheme
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.helpie.ui.DestinationScreen
 import com.example.helpie.ui.HelpScreen
-import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.HelpieViewModel
+import com.example.helpie.ui.StartScreen
+import com.example.helpie.ui.TicketScreen
+import com.example.helpie.ui.theme.AppTheme
 
 
 enum class HelpieScreen {
-    Start,
     Help,
-    Ticket
+    Ticket,
+    Start,
+    Destination
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,46 +99,14 @@ fun HelpieApp(
                             //Spacer(modifier = Modifier.height(25.dp))
                             Switch(
                                 checked = uiState.editMode,
-                                onCheckedChange = {viewModel.switchEdit()},
+                                onCheckedChange = { viewModel.switchEdit() },
                             )
                         }
                     },
                     scrollBehavior = scrollBehavior, //enable scrolling
                 )
-
-                if (uiState.ticket and (currentScreen != HelpieScreen.Ticket.name)) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(8.dp)
-                            .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
-                    )
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(80.dp)
-                            .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
-                    ) {
-                        Button(
-                            onClick = {navController.navigate(HelpieScreen.Ticket.name) },
-                            shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
-                        )
-                        {
-                            Text(
-                                text = "BILLET",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-                }
             }
-        }
-        ,
+        },
         bottomBar = {
             BottomAppBar(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -143,10 +115,10 @@ fun HelpieApp(
             }
             Box(
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
-                ) {
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
+            ) {
                 Button(
                     onClick = {
                         navController.navigate(HelpieScreen.Help.name)
@@ -164,7 +136,7 @@ fun HelpieApp(
                         fontWeight = FontWeight.Bold
                     )
                 }
-                    }
+            }
         }
     ) { innerPadding ->
         Surface(
@@ -174,19 +146,57 @@ fun HelpieApp(
                 .background(MaterialTheme.colorScheme.tertiaryContainer),
             color = MaterialTheme.colorScheme.background
         ) {
+            if (uiState.ticket and (currentScreen != HelpieScreen.Ticket.name)) {
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(80.dp)
+                            .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
+                    ) {
+                        Button(
+                            onClick = { navController.navigate(HelpieScreen.Ticket.name) },
+                            shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+                        )
+                        {
+                            Text(
+                                text = "BILLET",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
+            }
             NavHost(
                 navController = navController,
                 startDestination = HelpieScreen.Start.name,
                 modifier = Modifier.padding(innerPadding)
-            ){
-                composable(route = HelpieScreen.Start.name) {
-                    StartScreen(
-                        onTicket = {viewModel.setTicket(it)},
+            ) {
+                composable(route = HelpieScreen.Help.name) {
+                    HelpScreen(
+                        editMode = uiState.editMode,
+                        usePhone = uiState.usePhone,
+                        phoneNumber = uiState.phoneNumber,
+                        outlineNumber = uiState.outlineNumber,
+                        phone = { viewModel.setUsePhone(it) },
+                        setPhone = { viewModel.setPhone(it) },
+                        onReturnPressed = {
+                            if (navController.previousBackStackEntry != null) {
+                                navController.navigateUp()
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxSize()
                     )
                 }
-
                 composable(route = HelpieScreen.Ticket.name) {
                     TicketScreen(
                         onReturnPressed = {
@@ -199,18 +209,24 @@ fun HelpieApp(
                     )
                 }
 
-                composable(route = HelpieScreen.Help.name) {
-                    HelpScreen(
-                        editMode = uiState.editMode,
-                        usePhone = uiState.usePhone,
-                        phoneNumber = uiState.phoneNumber,
-                        outlineNumber = uiState.outlineNumber,
-                        phone = {viewModel.setUsePhone(it)},
-                        setPhone = {viewModel.setPhone(it)},
+                composable(route = HelpieScreen.Start.name) {
+                    StartScreen(
+                        onTicket = {
+                            viewModel.setTicket(it)
+                            navController.navigate(HelpieScreen.Destination.name)
+                        },
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+
+                composable(route = HelpieScreen.Destination.name) {
+                    DestinationScreen(
                         onReturnPressed = {
-                            if (navController.previousBackStackEntry != null) {
-                                navController.navigateUp()
-                            }
+                            navController.navigate(HelpieScreen.Start.name)
+                        },
+                        onNextPressed = {
+
                         },
                         modifier = Modifier
                             .fillMaxSize()

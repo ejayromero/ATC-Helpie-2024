@@ -54,10 +54,17 @@ fun TicketScreen(
                 text = "Billet CFF",
                 style = MaterialTheme.typography.bodyLarge
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
+
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier.fillMaxSize()
+        ) {
             Button(
                 onClick = {
-                          onReturnPressed()
+                    onReturnPressed()
                 },
                 shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)

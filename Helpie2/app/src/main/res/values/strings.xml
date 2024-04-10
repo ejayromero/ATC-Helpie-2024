@@ -15,4 +15,6 @@
     <string name="commencer_un_trajet">Commencer un trajet</string>
     <string name="appel">Appel</string>
     <string name="ligne_accessibilit_cff">Ligne accessibilité CFF</string>
+    <string name="choisir_la_destination">Choisir la destination</string>
+    <string name="suivant">suivant</string>
 </resources>

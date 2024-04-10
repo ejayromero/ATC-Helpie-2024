@@ -25,8 +25,8 @@ import com.example.helpie.ui.theme.AppTheme
 
 @Composable
 fun StartScreen(
-    onTicket: (Boolean) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTicket: (Boolean) -> Unit = {}
 ) {
     Box(
         modifier = modifier

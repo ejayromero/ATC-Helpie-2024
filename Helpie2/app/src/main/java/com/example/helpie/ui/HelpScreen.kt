@@ -43,7 +43,7 @@ import com.example.helpie.ui.theme.AppTheme
 fun HelpScreen(
     editMode: Boolean,
     usePhone: Boolean,
-    phoneNumber : String,
+    phoneNumber: String,
     outlineNumber: String,
     modifier: Modifier = Modifier,
     phone: (Boolean) -> Unit = {},
@@ -64,7 +64,7 @@ fun HelpScreen(
                 Row {
                     Checkbox(
                         checked = usePhone,
-                        onCheckedChange = { phone(true)}
+                        onCheckedChange = { phone(true) }
                     )
                     Text(
                         text = stringResource(R.string.numero_du_proche_aidant),
@@ -103,7 +103,7 @@ fun HelpScreen(
                 Row {
                     Checkbox(
                         checked = !usePhone,
-                        onCheckedChange = { phone(false)}
+                        onCheckedChange = { phone(false) }
                     )
                     Text(
                         text = stringResource(R.string.ligne_accessibilit_cff),
@@ -122,8 +122,7 @@ fun HelpScreen(
                             .fillMaxWidth()
                     )
                 }
-            }
-            else {
+            } else {
                 Image(
                     painter = painterResource(R.drawable.phone),
                     contentDescription = stringResource(R.string.appelle_icon),
@@ -182,7 +181,6 @@ fun HelpScreen(
                     }
 
 
-
                 }) {
                     // on below line creating a text for our button.
                     Text(
@@ -195,7 +193,14 @@ fun HelpScreen(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
+
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier.fillMaxSize()
+        ) {
             Button(
                 onClick = {
                     onReturnPressed()
@@ -222,7 +227,7 @@ fun HelpScreen(
 fun HelpPreview() {
     AppTheme {
         HelpScreen(
-            editMode = true,
+            editMode = false,
             usePhone = true,
             phoneNumber = "",
             outlineNumber = ""
