@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -48,11 +50,11 @@ import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.theme.AppTheme
 
 
-enum class HelpieScreen {
-    Help,
-    Ticket,
-    Start,
-    Destination
+enum class HelpieScreen(val next:String) {
+    Help(next = ""),
+    Ticket(next = ""),
+    Destination(next = ""),
+    Start(next = Destination.name),
 }
 
 
@@ -188,22 +190,12 @@ fun HelpieApp(
                         outlineNumber = uiState.outlineNumber,
                         phone = { viewModel.setUsePhone(it) },
                         setPhone = { viewModel.setPhone(it) },
-                        onReturnPressed = {
-                            if (navController.previousBackStackEntry != null) {
-                                navController.navigateUp()
-                            }
-                        },
                         modifier = Modifier
                             .fillMaxSize()
                     )
                 }
                 composable(route = HelpieScreen.Ticket.name) {
                     TicketScreen(
-                        onReturnPressed = {
-                            if (navController.previousBackStackEntry != null) {
-                                navController.navigateUp()
-                            }
-                        },
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -222,21 +214,69 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
-                        onReturnPressed = {
-                            navController.navigate(HelpieScreen.Start.name)
-                        },
-                        onNextPressed = {
-
-                        },
                         modifier = Modifier
                             .fillMaxSize()
                     )
                 }
             }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                        Row( horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            if((currentScreen != HelpieScreen.Start.name) and (navController.previousBackStackEntry != null)){
+                            Button(
+                                onClick = {
+                                    navController.navigateUp()
+                                },
+                                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+                            )
+                            {
+                                Text(
+                                    text = "Retour",
+                                    modifier = Modifier
+                                        .padding(16.dp),
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }}
+                            else {
+                                Spacer(modifier = Modifier.width(127.dp))
+                            }
+                            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.button_corner_radius)))
+
+                            val nextScreen: String = HelpieScreen.entries.find { it.name == currentScreen }?.next ?: ""
+
+                            if(nextScreen != "") {
+                                Button(
+                                    onClick = { navController.navigate(nextScreen)},
+                                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+                                )
+                                {
+                                    Text(
+                                        text = "suivant",
+                                        modifier = Modifier
+                                            .padding(16.dp),
+                                        textAlign = TextAlign.Center,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }else {
+                                Spacer(modifier = Modifier.width(127.dp))
+                            } // un peu systeme D
+
+                }
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
         }
     }
 }
-
 @Preview
 @Composable
 fun HelpiePreview() {
