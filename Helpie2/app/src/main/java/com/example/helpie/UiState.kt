@@ -11,5 +11,4 @@ data class UiState(
 
 //ticket management
     val ticket : Boolean = false
-
 )
