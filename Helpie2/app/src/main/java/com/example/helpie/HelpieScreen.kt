@@ -29,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,7 +55,7 @@ enum class HelpieScreen(val next:String) {
     Help(next = ""),
     Ticket(next = ""),
     Destination(next = ""),
-    Start(next = Destination.name),
+    Start(next = ""),
 }
 
 
@@ -121,6 +122,7 @@ fun HelpieApp(
                     .height(80.dp)
                     .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
             ) {
+            if (currentScreen != HelpieScreen.Help.name) {
                 Button(
                     onClick = {
                         navController.navigate(HelpieScreen.Help.name)
@@ -137,7 +139,7 @@ fun HelpieApp(
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )
-                }
+                }}
             }
         }
     ) { innerPadding ->
@@ -214,6 +216,7 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
+                        context = LocalContext.current,
                         modifier = Modifier
                             .fillMaxSize()
                     )

@@ -1,11 +1,15 @@
 package com.example.helpie.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.helpie.UiState
+import com.example.helpie.network.fetchData
+import com.example.helpie.network.responseData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class HelpieViewModel : ViewModel() {
     // UI state
@@ -33,6 +37,15 @@ class HelpieViewModel : ViewModel() {
     fun switchEdit() {
         _uiState.update { currentState ->
             currentState.copy(editMode = !currentState.editMode)
+        }
+    }
+
+    private fun request() {
+        viewModelScope.launch {
+            val responseData = fetchData()
+            _uiState.update { currentState ->
+                currentState.copy(request = responseData)
+            }
         }
     }
 }

@@ -81,4 +81,9 @@ dependencies {
 
 // Kotlin serialization
     implementation(libs.kotlinx.serialization.json)
+
+    //xml
+    implementation(libs.simple.xml)
+    implementation(libs.converter.simplexml)
+    implementation(libs.okhttp.v493)
 }

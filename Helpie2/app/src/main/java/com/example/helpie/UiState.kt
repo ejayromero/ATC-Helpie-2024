@@ -10,5 +10,7 @@ data class UiState(
     val usePhone : Boolean = false,  //"+33658814083"
 
 //ticket management
-    val ticket : Boolean = false
+    val ticket : Boolean = false,
+
+    val request : String = ""
 )
