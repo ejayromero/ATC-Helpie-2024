@@ -1,5 +1,8 @@
 package com.example.helpie.ui
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.UiState
@@ -46,5 +49,9 @@ class HelpieViewModel : ViewModel() {
                 currentState.copy(request = responseData)
             }
         }
+    }
+    fun openLink(context: Context, url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context.startActivity(intent)
     }
 }

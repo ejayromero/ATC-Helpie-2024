@@ -47,6 +47,7 @@ import com.example.helpie.ui.DestinationScreen
 import com.example.helpie.ui.HelpScreen
 import com.example.helpie.ui.HelpieViewModel
 import com.example.helpie.ui.StartScreen
+import com.example.helpie.ui.TakeTicketScreen
 import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.theme.AppTheme
 
@@ -54,7 +55,8 @@ import com.example.helpie.ui.theme.AppTheme
 enum class HelpieScreen(val next:String) {
     Help(next = ""),
     Ticket(next = ""),
-    Destination(next = ""),
+    TakeTicket(next = ""),
+    Destination(next = HelpieScreen.TakeTicket.name),
     Start(next = ""),
 }
 
@@ -65,6 +67,8 @@ fun HelpieApp(
     viewModel: HelpieViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
+
+    val ctx = LocalContext.current
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -198,6 +202,9 @@ fun HelpieApp(
                 }
                 composable(route = HelpieScreen.Ticket.name) {
                     TicketScreen(
+                        showTicket = {
+                            viewModel.openLink(ctx,uiState.urlTicket)
+                        },
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -216,7 +223,17 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
-                        context = LocalContext.current,
+                        context = ctx,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+
+                composable(route = HelpieScreen.TakeTicket.name) {
+                    TakeTicketScreen(
+                        takeTicket = {
+                            viewModel.openLink(ctx,uiState.takeTicket)
+                        },
                         modifier = Modifier
                             .fillMaxSize()
                     )

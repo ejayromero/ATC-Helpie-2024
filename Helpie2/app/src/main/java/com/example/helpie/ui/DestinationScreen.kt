@@ -38,20 +38,26 @@ fun DestinationScreen(
     Box(
         modifier = modifier
     ) {
-        Column(
+        Column (
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxSize()
-        ) {
+            ) {
             Text(
                 text = stringResource(R.string.choisir_la_destination),
                 modifier = Modifier
                     .padding(20.dp),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                fontSize = 30.sp
+                fontSize = 50.sp
             )
+        }
 
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
             Button(
                 onClick = {
                     val intent = Intent(context, ForegroundService::class.java)

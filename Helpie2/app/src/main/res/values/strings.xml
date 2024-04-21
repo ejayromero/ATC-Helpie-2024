@@ -15,7 +15,7 @@
     <string name="commencer_un_trajet">Commencer un trajet</string>
     <string name="appel">Appel</string>
     <string name="ligne_accessibilit_cff">Ligne accessibilité CFF</string>
-    <string name="choisir_la_destination">Choisir la destination</string>
+    <string name="choisir_la_destination">Destination</string>
     <string name="suivant">suivant</string>
     <string name="helpie_ticket">"Ce billet a été pris avec HELPIE, une application pour aider les personnes en situation de handicap à voyager "</string>
     <string name="back_to_app">Back to App</string>
