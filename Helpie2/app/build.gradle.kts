@@ -86,4 +86,7 @@ dependencies {
     implementation(libs.simple.xml)
     implementation(libs.converter.simplexml)
     implementation(libs.okhttp.v493)
+
+    //ojp implementation
+    implementation(libs.ojp.android)
 }
