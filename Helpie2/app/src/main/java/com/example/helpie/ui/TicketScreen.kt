@@ -1,6 +1,5 @@
 package com.example.helpie.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,14 +39,14 @@ fun TicketScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Image(
+            /*Image(
                 painter = painterResource(R.drawable.billetcff),
                 contentDescription = stringResource(R.string.billet_cff_qrcode),
                 modifier = Modifier
                     .width(dimensionResource(R.dimen.CFF))
                     .height(dimensionResource(R.dimen.CFF))
                     .padding(dimensionResource(R.dimen.button_interior_padding))
-            )
+            )*/
             Button(
                 onClick = {
                     showTicket()

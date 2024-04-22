@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startForegroundService
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -67,7 +68,6 @@ fun HelpieApp(
     viewModel: HelpieViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
-
     val ctx = LocalContext.current
 
     val uiState by viewModel.uiState.collectAsState()
@@ -223,7 +223,6 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
-                        context = ctx,
                         modifier = Modifier
                             .fillMaxSize()
                     )

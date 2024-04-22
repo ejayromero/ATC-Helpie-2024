@@ -2,6 +2,7 @@ package com.example.helpie.foregroundServices
 
 import android.app.PendingIntent
 import android.app.Service
+import android.app.TaskStackBuilder
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
@@ -33,7 +34,11 @@ class ForegroundService: Service(){
             .setContentText("Voyage en cours")
             .setColor(0xFF0000FF.toInt())
             .setColorized(true)
-            .addAction(android.R.drawable.ic_media_previous, "Back to App", pendingIntent) // Add button
+            .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent) // Add button
+            .setPriority(NotificationCompat.PRIORITY_MIN) // Set low priority to keep it always visible
+            .setOngoing(true) // Make the notification ongoing
+            .setAutoCancel(false) // Ensure the notification is not automatically cancelled
+            .setTimeoutAfter(Long.MAX_VALUE)
             .build()
 
         startForeground(1, notification)
