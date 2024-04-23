@@ -11,7 +11,7 @@ data class UiState(
 
 //ticket management
     val ticket : Boolean = false,
-    val urlTicket : String = "app.sbbmobile.ch/ticketlist",
+    val urlTicket : String = "https://app.sbbmobile.ch/ticketlist",
     val takeTicket : String = "https://app.sbbmobile.ch/easyride",
 
     val request : String = ""
