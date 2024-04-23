@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.core.app.ActivityCompat
 import com.example.helpie.ui.theme.AppTheme
 import android.Manifest
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
@@ -21,15 +23,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         requestPermissionsIfNecessary()
-
-
-        /*
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-            0
-        )*/
         setContent {
             AppTheme {
                 HelpieApp()
@@ -91,15 +84,29 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startForegroundService() {
-        val startIntent = Intent(this, ForegroundService::class.java)
-        startIntent.action = ForegroundService.Actions.START.toString()
-        startService(startIntent)
+        if (!isServiceRunning(ForegroundService::class.java)) {
+            val startIntent = Intent(this, ForegroundService::class.java)
+            startIntent.action = ForegroundService.Actions.START.toString()
+            startService(startIntent)
+        }
     }
 
     private fun stopForegroundService() {
-        val stopIntent = Intent(this, ForegroundService::class.java)
-        stopIntent.action = ForegroundService.Actions.STOP.toString()
-        startService(stopIntent)
+        if (isServiceRunning(ForegroundService::class.java)) {
+            val stopIntent = Intent(this, ForegroundService::class.java)
+            stopIntent.action = ForegroundService.Actions.STOP.toString()
+            startService(stopIntent)
+        }
+    }
+
+    private fun isServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 
 }
