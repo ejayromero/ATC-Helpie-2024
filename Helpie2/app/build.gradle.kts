@@ -88,5 +88,5 @@ dependencies {
     implementation(libs.okhttp.v493)
 
     //ojp implementation
-    implementation(libs.ojp.android)
+    //implementation(libs.ojp.android)
 }
