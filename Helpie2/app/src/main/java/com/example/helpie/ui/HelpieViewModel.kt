@@ -3,11 +3,10 @@ package com.example.helpie.ui
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.content.ContextCompat
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.UiState
-import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.network.fetchData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -44,9 +43,11 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    private fun request() {
+    fun request() {
         viewModelScope.launch {
+            Log.d("viewmodel", "fetching")
             val responseData = fetchData()
+            Log.d("viewmodel", "fetched")
             _uiState.update { currentState ->
                 currentState.copy(request = responseData)
             }
@@ -56,20 +57,4 @@ class HelpieViewModel : ViewModel() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
     }
-
-    // not needed anymore, started at start/close in main activity !
-
-    /*
-    fun startForegroundService(context: Context) {
-        val intent = Intent(context, ForegroundService::class.java)
-        intent.action = ForegroundService.Actions.START.toString()
-        ContextCompat.startForegroundService(context, intent)
-    }
-
-    fun stopForegroundService(context: Context) {
-        val intent = Intent(context, ForegroundService::class.java)
-        intent.action = ForegroundService.Actions.STOP.toString()
-        ContextCompat.startForegroundService(context, intent)
-    }*/
-
 }

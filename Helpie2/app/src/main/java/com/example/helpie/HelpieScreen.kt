@@ -1,5 +1,6 @@
 package com.example.helpie
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -128,6 +129,7 @@ fun HelpieApp(
             if (currentScreen != HelpieScreen.Help.name) {
                 Button(
                     onClick = {
+                        viewModel.request()
                         navController.navigate(HelpieScreen.Help.name)
                     },
                     shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
@@ -165,7 +167,8 @@ fun HelpieApp(
                             .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
                     ) {
                         Button(
-                            onClick = { navController.navigate(HelpieScreen.Ticket.name) },
+                            onClick = { Log.d("test", uiState.request)
+                                navController.navigate(HelpieScreen.Ticket.name) },
                             shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
                         )

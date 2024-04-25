@@ -9,7 +9,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 const val url = "https://api.opentransportdata.swiss/ojp2020"
 const val token = "eyJvcmciOiI2NDA2NTFhNTIyZmEwNTAwMDEyOWJiZTEiLCJpZCI6IjAyZmIwZmM2OWQxMDRkNjY4NWNiZjQ0NWI1MjQyZjgxIiwiaCI6Im11cm11cjEyOCJ9"
-var responseData = "Default Value"
 
 
 suspend fun fetchData(): String {
@@ -59,6 +58,7 @@ suspend fun fetchData(): String {
         .header("Authorization", token)
         .post(requestBody)
         .build()
+
 
     return withContext(Dispatchers.IO) {
         val response = client.newCall(request).execute()
