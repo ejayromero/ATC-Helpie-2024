@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    id("kotlin-kapt")
 }
 
 android {
@@ -89,4 +90,11 @@ dependencies {
 
     //ojp implementation
    // implementation(libs.ojp.android)
+
+    //tickaroo for xml
+    implementation(libs.annotation)
+    implementation(libs.core)
+    kapt(libs.processor)
+    implementation(libs.converter.htmlescape)
+    implementation(libs.timber)
 }
