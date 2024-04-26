@@ -1,9 +1,9 @@
-package ch.opentransportdata.ojp.data.repository
+package com.example.helpie.tripPlanificator.data.repository
 
 import ch.opentransportdata.ojp.data.dto.response.PlaceResultDto
-import ch.opentransportdata.ojp.data.remote.RemoteOjpDataSource
-import ch.opentransportdata.ojp.domain.model.Response
-import ch.opentransportdata.ojp.domain.repository.OjpRepository
+import com.example.helpie.tripPlanificator.domain.model.Response
+import com.example.helpie.tripPlanificator.data.remote.RemoteOjpDataSource
+import com.example.helpie.tripPlanificator.domain.repository.OjpRepository
 import timber.log.Timber
 
 /**
@@ -13,31 +13,15 @@ class OjpRepositoryImpl(
     private val remoteDataSource: RemoteOjpDataSource,
 ) : OjpRepository {
 
-    override suspend fun placeResultsFromSearchTerm(term: String, onlyStation: Boolean): Response<List<PlaceResultDto>> {
+    override suspend fun tripResult(): Response<List<PlaceResultDto>> {
         return try {
-            val response = remoteDataSource.searchLocationBySearchTerm(term, onlyStation).ojpResponse
+            val response = remoteDataSource.tripRequest().ojpResponse
             val result = response?.serviceDelivery?.locationInformation?.placeResults ?: emptyList()
             Response.Success(result)
         } catch (e: Exception) {
-            //TODO: Implement errors
             Timber.e(e, "Error creating request or receiving response")
             Response.Error(IllegalStateException("Request did not work", e))
         }
     }
 
-    override suspend fun placeResultsFromCoordinates(
-        longitude: Double,
-        latitude: Double,
-        onlyStation: Boolean
-    ): Response<List<PlaceResultDto>> {
-        return try {
-            val response = remoteDataSource.searchLocationByCoordinates(longitude, latitude, onlyStation).ojpResponse
-            val result = response?.serviceDelivery?.locationInformation?.placeResults ?: emptyList()
-            Response.Success(result)
-        } catch (e: Exception) {
-            //TODO: Implement errors
-            Timber.e(e, "Error creating request or receiving response")
-            Response.Error(IllegalStateException("Request did not work", e))
-        }
-    }
 }

@@ -1,6 +1,5 @@
-package ch.opentransportdata.ojp.data.dto.request
+package com.example.helpie.tripPlanificator.data.dto.request
 
-import ch.opentransportdata.ojp.data.dto.request.lir.LocationInformationRequestDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.TripRequestDto
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.PropertyElement

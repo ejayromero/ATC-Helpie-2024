@@ -14,6 +14,8 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.helpie.foregroundServices.ForegroundService
+import com.example.helpie.tripPlanificator.OjpSdk
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     companion object {
@@ -23,6 +25,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         requestPermissionsIfNecessary()
+
+        OjpSdk(
+            url = "https://api.opentransportdata.swiss/ojp2020",
+            requesterReference = "Helpie",
+            httpHeaders = hashMapOf(
+                "Authorization" to "Bearer myAccessToken"
+            )
+        )
+
         setContent {
             AppTheme {
                 HelpieApp()
@@ -74,13 +85,13 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         startForegroundService()
-        Log.d("MainActivity", "Foreground service started")
+        Timber.tag("MainActivity").d("Foreground service started")
     }
 
     override fun onResume() {
         super.onResume()
         stopForegroundService()
-        Log.d("MainActivity", "Foreground service stopped")
+        Timber.tag("MainActivity").d("Foreground service stopped")
     }
 
     private fun startForegroundService() {

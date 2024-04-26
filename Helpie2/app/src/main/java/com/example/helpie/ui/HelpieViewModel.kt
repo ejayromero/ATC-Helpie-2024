@@ -3,21 +3,29 @@ package com.example.helpie.ui
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.UiState
-import com.example.helpie.tripPlanificator.fetchData
+import com.example.helpie.tripPlanificator.OjpSdk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class HelpieViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    private val planificator = OjpSdk(
+        url = "https://api.opentransportdata.swiss/ojp2020",
+        requesterReference = "Helpie",
+        httpHeaders = hashMapOf(
+            "Authorization" to "Bearer myAccessToken"
+        )
+    )
 
     fun setTicket(isTicket: Boolean) {
         _uiState.update { currentState ->
@@ -43,18 +51,16 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    fun request() {
-        viewModelScope.launch {
-            Log.d("viewmodel", "fetching")
-            val responseData = fetchData()
-            Log.d("viewmodel", "fetched")
-            _uiState.update { currentState ->
-                currentState.copy(request = responseData)
-            }
-        }
-    }
     fun openLink(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
+    }
+
+    fun request() {
+        viewModelScope.launch {
+            Timber.tag("helpie").d("ojpSdk")
+            planificator.TripRequest()
+            Timber.tag("helpie").d("requested")
+        }
     }
 }

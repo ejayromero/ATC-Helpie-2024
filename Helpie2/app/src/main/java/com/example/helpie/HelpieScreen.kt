@@ -1,6 +1,5 @@
 package com.example.helpie
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -62,12 +61,14 @@ enum class HelpieScreen(val next:String) {
 }
 
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelpieApp(
     viewModel: HelpieViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
+
     val ctx = LocalContext.current
 
     val uiState by viewModel.uiState.collectAsState()
@@ -167,7 +168,7 @@ fun HelpieApp(
                             .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
                     ) {
                         Button(
-                            onClick = { Log.d("test", uiState.request)
+                            onClick = {
                                 navController.navigate(HelpieScreen.Ticket.name) },
                             shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)

@@ -91,10 +91,19 @@ dependencies {
     //ojp implementation
    // implementation(libs.ojp.android)
 
-    //tickaroo for xml
+    //planificator
     implementation(libs.annotation)
     implementation(libs.core)
     kapt(libs.processor)
     implementation(libs.converter.htmlescape)
     implementation(libs.timber)
+    implementation(libs.joda.time)
+    implementation(libs.koin.core)
+
+    implementation(libs.okhttp.v4120)
+    implementation(libs.logging.interceptor)
+
+    implementation(libs.retrofit.converter.v0813)
+
+
 }
