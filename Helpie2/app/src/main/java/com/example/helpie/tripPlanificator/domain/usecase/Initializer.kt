@@ -6,16 +6,19 @@ package com.example.helpie.tripPlanificator.domain.usecase
  */
 class Initializer {
 
-    lateinit var url: String
+    lateinit var baseUrl: String
+    lateinit var endpoint: String
     lateinit var requesterReference: String
     lateinit var httpHeaders: HashMap<String, String>
 
     fun init(
-        url: String,
+        baseUrl: String,
+        endpoint: String,
         requesterReference: String,
         httpHeaders: HashMap<String, String>,
     ) {
-        this.url = url
+        this.baseUrl = baseUrl
+        this.endpoint = endpoint
         this.requesterReference = requesterReference + "_" + ANDROID_SDK
         this.httpHeaders = httpHeaders
     }

@@ -1,39 +1,30 @@
 package com.example.helpie
 
-import android.os.Build
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.core.app.ActivityCompat
-import com.example.helpie.ui.theme.AppTheme
 import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
 import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.helpie.foregroundServices.ForegroundService
-import com.example.helpie.tripPlanificator.OjpSdk
-import timber.log.Timber
+import com.example.helpie.ui.theme.AppTheme
+
 
 class MainActivity : ComponentActivity() {
     companion object {
         private const val PERMISSION_REQUEST_CODE = 101
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Log.d("main activity","try")
         requestPermissionsIfNecessary()
-
-        OjpSdk(
-            url = "https://api.opentransportdata.swiss/ojp2020",
-            requesterReference = "Helpie",
-            httpHeaders = hashMapOf(
-                "Authorization" to "Bearer myAccessToken"
-            )
-        )
-
         setContent {
             AppTheme {
                 HelpieApp()
@@ -85,13 +76,13 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         startForegroundService()
-        Timber.tag("MainActivity").d("Foreground service started")
+        Log.d("MainActivity","Foreground service started")
     }
 
     override fun onResume() {
         super.onResume()
         stopForegroundService()
-        Timber.tag("MainActivity").d("Foreground service stopped")
+        Log.d("MainActivity","Foreground service stopped")
     }
 
     private fun startForegroundService() {
@@ -119,5 +110,7 @@ class MainActivity : ComponentActivity() {
         }
         return false
     }
+
+
 
 }

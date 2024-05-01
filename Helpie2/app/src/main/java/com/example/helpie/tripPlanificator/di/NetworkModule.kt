@@ -40,7 +40,7 @@ fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor, tokenInterce
 
 fun provideRetrofit(ojpHttpClient: OkHttpClient, tikXml: TikXml, initializer: Initializer): Retrofit {
     return Retrofit.Builder()
-        .baseUrl(initializer.url)
+        .baseUrl(initializer.baseUrl)
         .client(ojpHttpClient)
         .addConverterFactory(TikXmlConverterFactory.create(tikXml))
         .build()

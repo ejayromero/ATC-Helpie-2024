@@ -36,6 +36,7 @@ squareupOkhttpVersion = "4.12.0"
 tickarooRetrofitConverter = "0.8.15"
 tickarooRetrofitConverterVersion = "0.8.13"
 timber = "5.0.1"
+timberVersion = "5.0.0"
 
 [libraries]
 androidx-activity-compose-v180 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -51,6 +52,7 @@ converter-htmlescape = { module = "com.tickaroo.tikxml:converter-htmlescape", ve
 converter-simplexml = { module = "com.squareup.retrofit2:converter-simplexml", version.ref = "converterSimplexml" }
 core = { module = "com.tickaroo.tikxml:core", version.ref = "annotation" }
 core-v0815 = { module = "com.tickaroo.tikxml:core", version.ref = "core" }
+jakewharton-timber = { module = "com.jakewharton:timber", version.ref = "timberVersion" }
 joda-time = { module = "joda-time:joda-time", version.ref = "jodaTime" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -85,6 +87,7 @@ retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit
 simple-xml = { module = "org.simpleframework:simple-xml", version.ref = "simpleXml" }
 tikxml-processor = { module = "tickaroo.tikxml:processor", version.ref = "processor" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+timber-debug = { module = "com.jakewharton:timber-debug", version.ref = "timberVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

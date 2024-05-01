@@ -11,13 +11,18 @@ import com.tickaroo.tikxml.annotation.Xml
  */
 @Xml(
     name = "OJP",
-    writeNamespaces = ["http://www.vdv.de/ojp", "siri=http://www.siri.org.uk/siri", "xsi=http://www.w3.org/2001/XMLSchema-instance", "xsd=http://www.w3.org/2001/XMLSchema"]
+    writeNamespaces = [
+        "vdv=http://www.vdv.de/ojp",  // Changed http to vdv (ensure consistency)
+        "siri=http://www.siri.org.uk/siri",
+        "xsi=http://www.w3.org/2001/XMLSchema-instance",
+        "xsd=http://www.w3.org/2001/XMLSchema"
+    ]
 )
 data class OjpDto(
-    @field:Element(name = "OJPRequest")
+    @Element(name = "OJPRequest")
     val ojpRequest: OjpRequestDto? = null,
 
-    @field:Element(name = "OJPResponse")
+    @Element(name = "OJPResponse")
     val ojpResponse: OjpResponseDto? = null,
 
     @Attribute(name = "version")

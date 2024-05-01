@@ -96,7 +96,7 @@ dependencies {
     implementation(libs.core)
     kapt(libs.processor)
     implementation(libs.converter.htmlescape)
-    implementation(libs.timber)
+    //implementation(libs.timber)
     implementation(libs.joda.time)
     implementation(libs.koin.core)
 
@@ -104,6 +104,10 @@ dependencies {
     implementation(libs.logging.interceptor)
 
     implementation(libs.retrofit.converter.v0813)
+
+    //implementation(libs.jakewharton.timber) // Replace with your version
+    //debugImplementation(libs.timber.debug) // Optional debug tree
+
 
 
 }

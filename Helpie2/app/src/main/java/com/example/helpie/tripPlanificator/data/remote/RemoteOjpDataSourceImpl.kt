@@ -1,6 +1,7 @@
 package com.example.helpie.tripPlanificator.data.remote
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.helpie.tripPlanificator.data.dto.request.OjpRequestDto
 import com.example.helpie.tripPlanificator.data.dto.request.ServiceRequestDto
@@ -17,7 +18,6 @@ import com.example.helpie.tripPlanificator.domain.usecase.Initializer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.joda.time.LocalDateTime
-import timber.log.Timber
 
 
 
@@ -29,10 +29,14 @@ class RemoteOjpDataSourceImpl(
     private val initializer: Initializer
 ) : RemoteOjpDataSource {
 
+    private val url: String
+        get() = initializer.baseUrl + initializer.endpoint
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun tripRequest(): OjpDto = withContext(Dispatchers.IO) {
         val requestTime = LocalDateTime.now()
-
+        Log.d("remote","create request")
         val request = OjpDto(
             ojpRequest = OjpRequestDto(
                 serviceRequest = ServiceRequestDto(
@@ -58,8 +62,7 @@ class RemoteOjpDataSourceImpl(
                 )
             )
         )
-
-        Timber.d("Request object: $request")
-        return@withContext ojpService.tripRequest(initializer.url, request)
+        Log.d("request","Request object: $request")
+        return@withContext ojpService.tripRequest(url, request)
     }
 }

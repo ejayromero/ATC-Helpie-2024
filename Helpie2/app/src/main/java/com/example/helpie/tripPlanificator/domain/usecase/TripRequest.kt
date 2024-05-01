@@ -1,5 +1,6 @@
 package com.example.helpie.tripPlanificator.domain.usecase
 
+import android.util.Log
 import ch.opentransportdata.ojp.data.dto.response.PlaceResultDto
 import com.example.helpie.tripPlanificator.domain.model.Response
 import com.example.helpie.tripPlanificator.domain.repository.OjpRepository
@@ -13,6 +14,7 @@ class TripRequest(
 ) {
     suspend operator fun invoke(
     ): Response<List<PlaceResultDto>> {
+        Log.d("triprequest","invoke")
         return when (val response =
             ojpRepository.tripResult()) {
             is Response.Success -> response

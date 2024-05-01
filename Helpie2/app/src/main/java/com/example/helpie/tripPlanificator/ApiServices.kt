@@ -12,14 +12,6 @@ const val token = "eyJvcmciOiI2NDA2NTFhNTIyZmEwNTAwMDEyOWJiZTEiLCJpZCI6IjAyZmIwZ
 
 class ApiServices {
 
-    fun createRequest() {
-
-    }
-
-    fun interpretResponse() {
-
-    }
-
     suspend fun tripRequest(): String {
         val xml = """
         <?xml version="1.0" encoding="utf-8"?>
