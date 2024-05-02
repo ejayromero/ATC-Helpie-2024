@@ -1,4 +1,4 @@
-package ch.opentransportdata.ojp.data.remote
+package com.example.helpie.tripPlanificator.data.remote
 
 import com.example.helpie.tripPlanificator.data.dto.OjpDto
 import retrofit2.http.Body

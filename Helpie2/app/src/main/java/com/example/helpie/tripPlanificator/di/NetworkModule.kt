@@ -1,6 +1,6 @@
 package com.example.helpie.tripPlanificator.di
 
-import ch.opentransportdata.ojp.data.remote.OjpService
+import com.example.helpie.tripPlanificator.data.remote.OjpService
 import com.example.helpie.tripPlanificator.di.interceptor.TokenInterceptor
 import com.example.helpie.tripPlanificator.domain.usecase.Initializer
 import com.tickaroo.tikxml.TikXml

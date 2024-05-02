@@ -5,13 +5,14 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.helpie.tripPlanificator.data.dto.request.OjpRequestDto
 import com.example.helpie.tripPlanificator.data.dto.request.ServiceRequestDto
-import ch.opentransportdata.ojp.data.remote.OjpService
 import ch.opentransportdata.ojp.utils.toInstantString
 import com.example.helpie.tripPlanificator.data.dto.OjpDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.DestinationDto
+import com.example.helpie.tripPlanificator.data.dto.request.tr.GeoPositionDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.LocationNameDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.OriginDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.ParamsDto
+import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceGeoRefDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceRefDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.TripRequestDto
 import com.example.helpie.tripPlanificator.domain.usecase.Initializer
@@ -45,8 +46,8 @@ class RemoteOjpDataSourceImpl(
                     tripRequest = TripRequestDto(
                         requestTimestamp = requestTime.toInstantString(),
                         origin = OriginDto(
-                            placeRef = PlaceRefDto(
-                                stopPlaceRef = "",
+                            placeRef = PlaceGeoRefDto(
+                                position = GeoPositionDto(0.0,0.0),
                                 locationName = LocationNameDto()
                             ),
                             depArrTime = ""
