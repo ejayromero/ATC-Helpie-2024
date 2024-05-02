@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.helpie.tripPlanificator.data.dto.request.OjpRequestDto
 import com.example.helpie.tripPlanificator.data.dto.request.ServiceRequestDto
-import ch.opentransportdata.ojp.utils.toInstantString
+import com.example.helpie.tripPlanificator.utils.toInstantString
 import com.example.helpie.tripPlanificator.data.dto.OjpDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.DestinationDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.GeoPositionDto
@@ -33,6 +33,7 @@ class RemoteOjpDataSourceImpl(
     private val url: String
         get() = initializer.baseUrl + initializer.endpoint
 
+    //trajet fixe pour l'instant
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun tripRequest(): OjpDto = withContext(Dispatchers.IO) {
@@ -47,15 +48,15 @@ class RemoteOjpDataSourceImpl(
                         requestTimestamp = requestTime.toInstantString(),
                         origin = OriginDto(
                             placeRef = PlaceGeoRefDto(
-                                position = GeoPositionDto(0.0,0.0),
-                                locationName = LocationNameDto()
+                                position = GeoPositionDto(7.446683,46.928306),
+                                locationName = LocationNameDto("Wabern bei Bern")
                             ),
-                            depArrTime = ""
+                            depArrTime = "2024-05-02T10:43:02"
                         ),
                         destination = DestinationDto(
                             placeRef = PlaceRefDto(
-                                stopPlaceRef = "",
-                                locationName = LocationNameDto()
+                                stopPlaceRef = "8503000",
+                                locationName = LocationNameDto("Zürich")
                             )
                         ),
                         params = ParamsDto()
@@ -64,6 +65,8 @@ class RemoteOjpDataSourceImpl(
             )
         )
         Log.d("request","Request object: $request")
+
+
         return@withContext ojpService.tripRequest(url, request)
     }
 }

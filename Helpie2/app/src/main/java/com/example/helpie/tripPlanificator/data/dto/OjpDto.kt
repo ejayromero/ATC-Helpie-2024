@@ -1,7 +1,7 @@
 package com.example.helpie.tripPlanificator.data.dto
 
 import com.example.helpie.tripPlanificator.data.dto.request.OjpRequestDto
-import ch.opentransportdata.ojp.data.dto.response.OjpResponseDto
+import com.example.helpie.tripPlanificator.data.dto.response.OjpResponseDto
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.Xml
@@ -12,7 +12,7 @@ import com.tickaroo.tikxml.annotation.Xml
 @Xml(
     name = "OJP",
     writeNamespaces = [
-        "vdv=http://www.vdv.de/ojp",  // Changed http to vdv (ensure consistency)
+        "ojp=http://www.vdv.de/ojp",
         "siri=http://www.siri.org.uk/siri",
         "xsi=http://www.w3.org/2001/XMLSchema-instance",
         "xsd=http://www.w3.org/2001/XMLSchema"

@@ -1,4 +1,4 @@
-package ch.opentransportdata.ojp.utils
+package com.example.helpie.tripPlanificator.utils
 
 import org.joda.time.DateTimeZone
 import org.joda.time.Instant

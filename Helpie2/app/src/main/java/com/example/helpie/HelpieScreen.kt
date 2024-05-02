@@ -132,7 +132,7 @@ fun HelpieApp(
             if (currentScreen != HelpieScreen.Help.name) {
                 Button(
                     onClick = {
-                        Log.d("scree","go")
+                        //Log.d("scree","go")
                         viewModel.request()
                         navController.navigate(HelpieScreen.Help.name)
                     },

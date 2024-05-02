@@ -1,7 +1,8 @@
 package com.example.helpie.tripPlanificator.domain.usecase
 
 import android.util.Log
-import ch.opentransportdata.ojp.data.dto.response.PlaceResultDto
+import com.example.helpie.tripPlanificator.data.dto.response.PlaceResultDto
+import com.example.helpie.tripPlanificator.data.dto.response.TripResultDto
 import com.example.helpie.tripPlanificator.domain.model.Response
 import com.example.helpie.tripPlanificator.domain.repository.OjpRepository
 
@@ -13,7 +14,7 @@ class TripRequest(
     private val ojpRepository: OjpRepository
 ) {
     suspend operator fun invoke(
-    ): Response<List<PlaceResultDto>> {
+    ): Response<List<TripResultDto>> {
         Log.d("triprequest","invoke")
         return when (val response =
             ojpRepository.tripResult()) {

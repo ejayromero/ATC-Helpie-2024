@@ -1,4 +1,4 @@
-package ch.opentransportdata.ojp.data.dto.response
+package com.example.helpie.tripPlanificator.data.dto.response
 
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.PropertyElement
@@ -15,6 +15,12 @@ data class ServiceDeliveryDto(
     @PropertyElement(name = "siri:ProducerRef")
     val producerRef: String? = null,
 
-    @Element(name = "OJPLocationInformationDelivery")
-    val locationInformation: LocationInformationResponseDto,
+    @PropertyElement(name = "siri:ResponseMessageIdentifier")
+    val respMessageRef: String? = null,
+
+    @PropertyElement(name = "siri:Status")
+    val status: Boolean? = null,
+
+    @Element(name = "OJPTripDelivery")
+    val tripDelivery: TripRequestResponseDto,
 )

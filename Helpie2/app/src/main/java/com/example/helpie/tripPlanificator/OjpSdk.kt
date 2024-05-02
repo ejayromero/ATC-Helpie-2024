@@ -1,7 +1,8 @@
 package com.example.helpie.tripPlanificator
 
 import android.util.Log
-import ch.opentransportdata.ojp.data.dto.response.PlaceResultDto
+import com.example.helpie.tripPlanificator.data.dto.response.PlaceResultDto
+import com.example.helpie.tripPlanificator.data.dto.response.TripResultDto
 import com.example.helpie.tripPlanificator.di.context.OjpKoinContext
 import com.example.helpie.tripPlanificator.domain.model.Response
 import com.example.helpie.tripPlanificator.domain.usecase.Initializer
@@ -18,8 +19,8 @@ class OjpSdk(
         OjpKoinContext.koinApp.koin.get<Initializer>().init(baseUrl, endpoint, requesterReference, httpHeaders)
     }
 
-    suspend fun TripRequest(
-    ): Response<List<PlaceResultDto>> {
+    suspend fun tripRequest(
+    ): Response<List<TripResultDto>> {
         Log.d("helpie","triprequest")
         return OjpKoinContext.koinApp.koin.get<TripRequest>().invoke()
     }

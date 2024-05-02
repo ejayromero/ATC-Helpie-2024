@@ -59,12 +59,13 @@ class HelpieViewModel : ViewModel() {
     }
 
     fun request() {
-        Log.d("helpie","ojpSdk")
+        //Log.d("helpie","ojpSdk")
         viewModelScope.launch {
-            Log.d("helpie","coroutine")
+            //Log.d("helpie","coroutine")
             //val T = api.tripRequest()
             //Log.d("helpie",T)
-            val response = planificator.TripRequest()
+            val response = planificator.tripRequest()
+            Log.d("helpie","Request object: $response")
         }
     }
 }

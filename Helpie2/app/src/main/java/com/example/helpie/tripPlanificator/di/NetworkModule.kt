@@ -1,5 +1,6 @@
 package com.example.helpie.tripPlanificator.di
 
+import android.util.Log
 import com.example.helpie.tripPlanificator.data.remote.OjpService
 import com.example.helpie.tripPlanificator.di.interceptor.TokenInterceptor
 import com.example.helpie.tripPlanificator.domain.usecase.Initializer
@@ -27,10 +28,12 @@ val networkModule = module {
 }
 
 fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+    Log.d("network","provide http")
     return HttpLoggingInterceptor()
 }
 
 fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor, tokenInterceptor: TokenInterceptor): OkHttpClient {
+    Log.d("network","provide client")
     return OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .addInterceptor(tokenInterceptor)
@@ -39,6 +42,7 @@ fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor, tokenInterce
 }
 
 fun provideRetrofit(ojpHttpClient: OkHttpClient, tikXml: TikXml, initializer: Initializer): Retrofit {
+    Log.d("network","provide retrofit")
     return Retrofit.Builder()
         .baseUrl(initializer.baseUrl)
         .client(ojpHttpClient)
@@ -47,6 +51,7 @@ fun provideRetrofit(ojpHttpClient: OkHttpClient, tikXml: TikXml, initializer: In
 }
 
 fun provideTikXml(): TikXml {
+    Log.d("network","provide tikxml")
     return TikXml.Builder()
         .addTypeConverter(String::class.java, HtmlEscapeStringConverter())
         .exceptionOnUnreadXml(false)
@@ -54,5 +59,6 @@ fun provideTikXml(): TikXml {
 }
 
 fun provideOjpService(retrofit: Retrofit): OjpService {
+    Log.d("network","provide ojpclass")
     return retrofit.create(OjpService::class.java)
 }

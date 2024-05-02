@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.d("main activity","try")
         requestPermissionsIfNecessary()
+
         setContent {
             AppTheme {
                 HelpieApp()
