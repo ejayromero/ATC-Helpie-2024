@@ -1,5 +1,5 @@
 package com.example.helpie.tripPlanificator
-
+/*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -65,3 +65,4 @@ class ApiServices {
         }
     }
 }
+*/

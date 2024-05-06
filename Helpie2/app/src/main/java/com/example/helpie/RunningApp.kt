@@ -9,6 +9,7 @@ import com.example.helpie.tripPlanificator.di.dataSourceModule
 import com.example.helpie.tripPlanificator.di.networkModule
 import com.example.helpie.tripPlanificator.di.repositoryModule
 import com.example.helpie.tripPlanificator.di.useCaseModule
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class RunningApp: Application() {
@@ -27,6 +28,7 @@ class RunningApp: Application() {
         }
 
         startKoin {
+            androidContext(this@RunningApp)
             modules(listOf(networkModule, repositoryModule, dataSourceModule, useCaseModule))
         }
     }

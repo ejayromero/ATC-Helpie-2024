@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.UiState
-import com.example.helpie.tripPlanificator.ApiServices
 import com.example.helpie.tripPlanificator.OjpSdk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +18,7 @@ class HelpieViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-    private  val api = ApiServices()
+    //private  val api = ApiServices()
     private val planificator = OjpSdk(
         baseUrl = "https://api.opentransportdata.swiss/",
         endpoint = "https://api.opentransportdata.swiss/ojp2020",

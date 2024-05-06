@@ -9,9 +9,8 @@ import retrofit2.http.Url
  * Created by Michael Ruppen on 08.04.2024
  */
 interface OjpService {
-
     @POST
-    suspend fun tripRequest(
+    suspend fun sendRequest(
         @Url url: String,
         @Body ojpDto: OjpDto
     ): OjpDto

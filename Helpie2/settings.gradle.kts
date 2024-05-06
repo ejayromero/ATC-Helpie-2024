@@ -20,10 +20,6 @@ dependencyResolutionManagement {
             setUrl("http://oss.sonatype.org/content/repositories/snapshots")
             isAllowInsecureProtocol = true
         }
-        /*maven {
-            url = uri("https://jitpack.io")
-                credentials { username = "eyJvcmciOiI2NDA2NTFhNTIyZmEwNTAwMDEyOWJiZTEiLCJpZCI6IjAyZmIwZmM2OWQxMDRkNjY4NWNiZjQ0NWI1MjQyZjgxIiwiaCI6Im11cm11cjEyOCJ9"}
-        }*/
     }
 }
 

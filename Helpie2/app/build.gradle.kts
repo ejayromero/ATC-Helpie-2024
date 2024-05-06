@@ -98,7 +98,9 @@ dependencies {
     implementation(libs.converter.htmlescape)
     //implementation(libs.timber)
     implementation(libs.joda.time)
-    implementation(libs.koin.core)
+
+    implementation(libs.koin.core.v330)
+    implementation(libs.insert.koin.koin.android)
 
     implementation(libs.okhttp.v4120)
     implementation(libs.logging.interceptor)

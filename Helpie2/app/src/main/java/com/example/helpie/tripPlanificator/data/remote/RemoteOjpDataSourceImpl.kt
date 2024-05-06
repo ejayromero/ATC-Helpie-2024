@@ -31,12 +31,14 @@ class RemoteOjpDataSourceImpl(
 ) : RemoteOjpDataSource {
 
     private val url: String
-        get() = initializer.baseUrl + initializer.endpoint
+        get() = initializer.endpoint //+ initializer.baseURL
+
 
     //trajet fixe pour l'instant
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun tripRequest(): OjpDto = withContext(Dispatchers.IO) {
+    override suspend fun tripRequest(): OjpDto = withContext(Dispatchers.IO)  {
+        Log.d("remote",url)
         val requestTime = LocalDateTime.now()
         Log.d("remote","create request")
         val request = OjpDto(
@@ -67,6 +69,6 @@ class RemoteOjpDataSourceImpl(
         Log.d("request","Request object: $request")
 
 
-        return@withContext ojpService.tripRequest(url, request)
+        return@withContext ojpService.sendRequest(url, request)
     }
 }
