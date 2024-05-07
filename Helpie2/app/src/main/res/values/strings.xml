@@ -19,4 +19,5 @@
     <string name="suivant">suivant</string>
     <string name="helpie_ticket">"Ce billet a été pris avec HELPIE, une application pour aider les personnes en situation de handicap à voyager "</string>
     <string name="back_to_app">Back to App</string>
+    <string name="bus_line_701">701</string>
 </resources>

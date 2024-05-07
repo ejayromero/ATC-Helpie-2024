@@ -14,5 +14,11 @@ data class UiState(
     val urlTicket : String = "https://app.sbbmobile.ch/ticketlist",
     val takeTicket : String = "https://app.sbbmobile.ch/easyride",
 
-    val request : String = ""
+    val request : String = "",
+
+//Bus journey
+    val takeBus : Boolean = false,
+    val busLine : String = "701",
+    val transportMode : String = "Bus",
+    val busStart : String = "St-Sulpice VD, Parc Scientifique"
 )

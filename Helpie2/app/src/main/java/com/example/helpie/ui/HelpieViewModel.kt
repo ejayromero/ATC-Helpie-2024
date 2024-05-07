@@ -3,11 +3,9 @@ package com.example.helpie.ui
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.UiState
-import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.network.fetchData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,6 +33,12 @@ class HelpieViewModel : ViewModel() {
     fun setPhone(number: String) {
         _uiState.update { currentState ->
             currentState.copy(phoneNumber = number)
+        }
+    }
+
+    fun updateBusLine(newBusLine: String) {
+        _uiState.update { currentState ->
+            currentState.copy(busLine = newBusLine)
         }
     }
 

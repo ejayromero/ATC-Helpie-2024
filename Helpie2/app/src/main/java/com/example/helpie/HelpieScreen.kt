@@ -49,6 +49,7 @@ import com.example.helpie.ui.HelpieViewModel
 import com.example.helpie.ui.StartScreen
 import com.example.helpie.ui.TakeTicketScreen
 import com.example.helpie.ui.TicketScreen
+import com.example.helpie.ui.TakeBusScreen
 import com.example.helpie.ui.theme.AppTheme
 
 
@@ -58,6 +59,7 @@ enum class HelpieScreen(val next:String) {
     TakeTicket(next = ""),
     Destination(next = HelpieScreen.TakeTicket.name),
     Start(next = ""),
+    TakeBus(next = ""),
 }
 
 
@@ -237,6 +239,7 @@ fun HelpieApp(
                     )
                 }
             }
+
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
