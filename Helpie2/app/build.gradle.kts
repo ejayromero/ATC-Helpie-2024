@@ -107,6 +107,8 @@ dependencies {
 
     implementation(libs.retrofit.converter.v0813)
 
+    implementation(libs.gson)
+
     //implementation(libs.jakewharton.timber) // Replace with your version
     //debugImplementation(libs.timber.debug) // Optional debug tree
 

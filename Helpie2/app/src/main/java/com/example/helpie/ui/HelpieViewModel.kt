@@ -23,9 +23,7 @@ class HelpieViewModel : ViewModel() {
         baseUrl = "https://api.opentransportdata.swiss/",
         endpoint = "https://api.opentransportdata.swiss/ojp2020",
         requesterReference = "Helpie",
-        httpHeaders = hashMapOf(
-            "Authorization" to "eyJvcmciOiI2NDA2NTFhNTIyZmEwNTAwMDEyOWJiZTEiLCJpZCI6IjAyZmIwZmM2OWQxMDRkNjY4NWNiZjQ0NWI1MjQyZjgxIiwiaCI6Im11cm11cjEyOCJ9"
-        )
+        token = "eyJvcmciOiI2NDA2NTFhNTIyZmEwNTAwMDEyOWJiZTEiLCJpZCI6IjAyZmIwZmM2OWQxMDRkNjY4NWNiZjQ0NWI1MjQyZjgxIiwiaCI6Im11cm11cjEyOCJ9"
     )
 
     fun setTicket(isTicket: Boolean) {
@@ -64,7 +62,7 @@ class HelpieViewModel : ViewModel() {
             //val T = api.tripRequest()
             //Log.d("helpie",T)
             val response = planificator.tripRequest()
-            Log.d("helpie","Request object: $response")
+            //Log.d("helpie","Request object: $response")
         }
     }
 }

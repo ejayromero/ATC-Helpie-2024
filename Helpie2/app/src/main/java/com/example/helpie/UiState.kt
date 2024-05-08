@@ -2,7 +2,6 @@ package com.example.helpie
 
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripResultDto
-import com.example.helpie.tripPlanificator.domain.model.Response
 
 data class UiState(
     //The Edit mode enable the helper to configure the app
