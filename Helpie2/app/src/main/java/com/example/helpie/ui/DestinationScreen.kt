@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +27,8 @@ import com.example.helpie.ui.theme.AppTheme
 
 @Composable
 fun DestinationScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRequest: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -48,8 +53,23 @@ fun DestinationScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
-
+            Button(
+                onClick = {
+                    onRequest()
+                },
+                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            )
+            {
+                Text(
+                    text = "GO",
+                    modifier = Modifier
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp
+                )
+            }
         }
     }
 }

@@ -56,7 +56,7 @@ enum class HelpieScreen(val next:String) {
     Help(next = ""),
     Ticket(next = ""),
     TakeTicket(next = ""),
-    Destination(next = HelpieScreen.TakeTicket.name),
+    Destination(next = TakeTicket.name),
     Start(next = ""),
 }
 
@@ -130,8 +130,6 @@ fun HelpieApp(
             if (currentScreen != HelpieScreen.Help.name) {
                 Button(
                     onClick = {
-                        //Log.d("scree","go")
-                        viewModel.request()
                         navController.navigate(HelpieScreen.Help.name)
                     },
                     shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
@@ -217,7 +215,6 @@ fun HelpieApp(
                 composable(route = HelpieScreen.Start.name) {
                     StartScreen(
                         onTicket = {
-                            viewModel.setTicket(it)
                             navController.navigate(HelpieScreen.Destination.name)
                         },
                         modifier = Modifier
@@ -227,6 +224,9 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
+                        onRequest = {
+                            viewModel.request()
+                        },
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -235,6 +235,7 @@ fun HelpieApp(
                 composable(route = HelpieScreen.TakeTicket.name) {
                     TakeTicketScreen(
                         takeTicket = {
+                            viewModel.setTicket(true)
                             viewModel.openLink(ctx,uiState.takeTicket)
                         },
                         modifier = Modifier

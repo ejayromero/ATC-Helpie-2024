@@ -68,14 +68,14 @@ class OjpSdk(
                         origin = OriginDto(
                             placeRef = PlaceGeoRefDto(
                                 position = GeoPositionDto(7.446683,46.928306),
-                                locationName = LocationNameDto("Wabern bei Bern")
+                                locationName = LocationNameDto("Me")
                             ),
-                            depArrTime = "2024-05-02T10:43:02"
+                            depArrTime = requestTime.toInstantString() //"2024-05-02T10:43:02"
                         ),
                         destination = DestinationDto(
-                            placeRef = PlaceRefDto(
-                                stopPlaceRef = "8503000",
-                                locationName = LocationNameDto("Zürich")
+                            placeRef = PlaceGeoRefDto(
+                                position = GeoPositionDto(6.538527,46.515077),
+                                locationName = LocationNameDto(" ")
                             )
                         ),
                         params = ParamsDto()
