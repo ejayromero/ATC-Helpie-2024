@@ -1,6 +1,5 @@
-package ch.opentransportdata.ojp.data.dto.response
+package com.example.helpie.tripPlanificator.data.dto.response
 
-import com.example.helpie.tripPlanificator.data.dto.response.NameDto
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml

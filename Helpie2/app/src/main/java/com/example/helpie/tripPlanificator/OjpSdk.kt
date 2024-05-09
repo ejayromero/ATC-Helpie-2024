@@ -109,20 +109,18 @@ class OjpSdk(
         val xmlString = buffer.readUtf8()
         Log.d("service","XML String: $xmlString")
 
-        println(xmlString)
-
         // Convert the XML string to a RequestBody
         val requestBody = xmlString.toRequestBody("application/xml".toMediaType())
 
 
-        val tosend = Request.Builder()
+        val toSend = Request.Builder()
             .url(url)
             .header("Authorization", token)
             .post(requestBody)
             .build()
 
         return withContext(Dispatchers.IO) {
-            val response = client.newCall(tosend).execute()
+            val response = client.newCall(toSend).execute()
             response.body?.string() ?: ""
         }
     }

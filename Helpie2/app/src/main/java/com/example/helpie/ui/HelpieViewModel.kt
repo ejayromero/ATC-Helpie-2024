@@ -18,7 +18,6 @@ class HelpieViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-    //private  val api = ApiServices()
     private val planificator = OjpSdk(
         baseUrl = "https://api.opentransportdata.swiss/",
         endpoint = "https://api.opentransportdata.swiss/ojp2020",
@@ -56,13 +55,9 @@ class HelpieViewModel : ViewModel() {
     }
 
     fun request() {
-        //Log.d("helpie","ojpSdk")
+        Log.d("helpie","ojpSdk")
         viewModelScope.launch {
-            //Log.d("helpie","coroutine")
-            //val T = api.tripRequest()
-            //Log.d("helpie",T)
             val response = planificator.tripRequest()
-            //Log.d("helpie","Request object: $response")
         }
     }
 }
