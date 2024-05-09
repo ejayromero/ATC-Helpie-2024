@@ -28,7 +28,7 @@ data class OjpDto(
     val ojpResponse: OjpResponseDto? = null,
 
     @Attribute(name = "version")
-    val version: String = "2.0",
+    val version: String = "1.0",
 )
 
 

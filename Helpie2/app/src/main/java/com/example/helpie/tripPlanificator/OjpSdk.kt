@@ -23,8 +23,6 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.Buffer
 import org.joda.time.LocalDateTime
-import org.simpleframework.xml.core.Persister
-import java.io.StringWriter
 
 class OjpSdk(
     baseUrl: String,
@@ -36,6 +34,7 @@ class OjpSdk(
     private var endpoint: String
     private var requesterReference: String
     private var token: String
+
     init {
         Log.d("ojk","initiating ")
         this.baseUrl = baseUrl
@@ -93,9 +92,7 @@ class OjpSdk(
 
 
         val client = OkHttpClient()
-        /*val serializer = OjpDtoSerializer()
-        Log.d("service - string","serialisation")
-        val xmlString = serializer.serialize(request)*/
+
         val tikXml = TikXml.Builder()
             .addTypeConverter(String::class.java, HtmlEscapeStringConverter())
             .exceptionOnUnreadXml(false)
@@ -106,14 +103,17 @@ class OjpSdk(
         val buffer = Buffer()
         Log.d("service","write")
         // Serialize the request object to XML
-        tikXml.write(buffer, request.ojpRequest)
+        tikXml.write(buffer, request)
         Log.d("service","to string")
         // Convert the buffer to a string and print it
         val xmlString = buffer.readUtf8()
         Log.d("service","XML String: $xmlString")
 
+        println(xmlString)
+
         // Convert the XML string to a RequestBody
         val requestBody = xmlString.toRequestBody("application/xml".toMediaType())
+
 
         val tosend = Request.Builder()
             .url(url)
@@ -127,16 +127,6 @@ class OjpSdk(
         }
     }
 
-}
-
-class OjpDtoSerializer {
-    private val serializer = Persister()
-
-    fun serialize(ojpDto: OjpDto): String {
-        val writer = StringWriter()
-        serializer.write(ojpDto, writer)
-        return writer.toString()
-    }
 }
 
 
