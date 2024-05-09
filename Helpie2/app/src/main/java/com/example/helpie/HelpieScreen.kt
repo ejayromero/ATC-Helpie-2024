@@ -56,7 +56,7 @@ enum class HelpieScreen(val next:String) {
     Help(next = ""),
     Ticket(next = ""),
     TakeTicket(next = ""),
-    Destination(next = TakeTicket.name),
+    Destination(next = ""),
     Start(next = ""),
 }
 
