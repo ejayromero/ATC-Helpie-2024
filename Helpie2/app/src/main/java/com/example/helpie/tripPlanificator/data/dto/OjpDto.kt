@@ -5,6 +5,8 @@ import com.example.helpie.tripPlanificator.data.dto.response.OjpResponseDto
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.Xml
+import org.simpleframework.xml.core.Persister
+import java.io.StringWriter
 
 /**
  * Created by Michael Ruppen on 08.04.2024
@@ -28,3 +30,5 @@ data class OjpDto(
     @Attribute(name = "version")
     val version: String = "2.0",
 )
+
+

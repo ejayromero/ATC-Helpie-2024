@@ -109,10 +109,5 @@ dependencies {
 
     implementation(libs.gson)
 
-    //implementation(libs.jakewharton.timber) // Replace with your version
-    //debugImplementation(libs.timber.debug) // Optional debug tree
-
-
-
 
 }

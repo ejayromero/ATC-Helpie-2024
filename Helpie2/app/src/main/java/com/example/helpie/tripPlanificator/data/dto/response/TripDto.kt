@@ -10,16 +10,16 @@ import com.tickaroo.tikxml.annotation.Xml
  */
 @Xml(name = "Trip")
 data class TripDto(
-    @Element(name = "TripId")
+    @PropertyElement(name = "TripId")
     val id: String? = null,
 
-    @Element(name = "Duration")
+    @PropertyElement(name = "Duration")
     val duration: String? = null,
 
-    @Element(name = "StartTime")
+    @PropertyElement(name = "StartTime")
     val start: String? = null,
 
-    @Element(name = "EndTime")
+    @PropertyElement(name = "EndTime")
     val end: String? = null,
 
     @Element(name = "TripLeg")
