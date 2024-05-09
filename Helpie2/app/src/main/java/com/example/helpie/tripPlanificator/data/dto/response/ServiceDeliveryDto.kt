@@ -21,6 +21,6 @@ data class ServiceDeliveryDto(
     @PropertyElement(name = "siri:Status")
     val status: Boolean? = null,
 
-    @Element(name = "OJPTripDelivery")
-    val tripDelivery: TripRequestResponseDto,
+    @Element(name = "ojp:OJPTripDelivery")
+    val tripDelivery: TripRequestResponseDto? = null,
 )

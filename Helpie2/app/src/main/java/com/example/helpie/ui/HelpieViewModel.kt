@@ -58,6 +58,7 @@ class HelpieViewModel : ViewModel() {
         Log.d("helpie","ojpSdk")
         viewModelScope.launch {
             val response = planificator.tripRequest()
+            Log.d("helpie","done !")
         }
     }
 }

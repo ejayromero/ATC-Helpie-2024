@@ -9,10 +9,10 @@ import com.tickaroo.tikxml.annotation.Xml
  */
 @Xml(name = "TripResult")
 data class TripResultDto(
-    @PropertyElement(name = "ResultId")
+    @PropertyElement(name = "ojp:ResultId")
     val id: String? = null,
 
-    @Element(name = "Trip")
+    @Element(name = "ojp:Trip")
     val trip: TripDto,
 
 )

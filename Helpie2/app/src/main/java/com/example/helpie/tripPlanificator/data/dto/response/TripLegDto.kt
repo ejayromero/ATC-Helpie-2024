@@ -1,6 +1,7 @@
 package com.example.helpie.tripPlanificator.data.dto.response
 
 import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
 
 /**
@@ -8,7 +9,6 @@ import com.tickaroo.tikxml.annotation.Xml
  */
 @Xml(name = "TripLeg")
 data class TripLegDto(
-    @Element(name = "LegId")
+    @PropertyElement(name = "ojp:LegId")
     val id: Int? = null,
-
 )

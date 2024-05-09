@@ -9,19 +9,19 @@ import com.tickaroo.tikxml.annotation.Xml
  */
 @Xml(name = "Trip")
 data class TripDto(
-    @PropertyElement(name = "TripId")
+    @PropertyElement(name = "ojp:TripId")
     val id: String? = null,
 
-    @PropertyElement(name = "Duration")
+    @PropertyElement(name = "ojp:Duration")
     val duration: String? = null,
 
-    @PropertyElement(name = "StartTime")
+    @PropertyElement(name = "ojp:StartTime")
     val start: String? = null,
 
-    @PropertyElement(name = "EndTime")
+    @PropertyElement(name = "ojp:EndTime")
     val end: String? = null,
 
-    @Element(name = "TripLeg")
-    val step: List<TripLegDto>?,
+    @Element(name = "ojp:TripLeg")
+    val step: List<TripLegDto>? = null,
 
 )

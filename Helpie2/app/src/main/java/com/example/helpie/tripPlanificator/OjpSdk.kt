@@ -22,6 +22,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.Buffer
+import okio.BufferedSource
 import org.joda.time.LocalDateTime
 
 class OjpSdk(
@@ -35,6 +36,12 @@ class OjpSdk(
     private var requesterReference: String
     private var token: String
 
+    private val client = OkHttpClient()
+    private val tikXml: TikXml = TikXml.Builder()
+        .addTypeConverter(String::class.java, HtmlEscapeStringConverter())
+        .exceptionOnUnreadXml(false)
+        .build()
+
     init {
         Log.d("ojk","initiating ")
         this.baseUrl = baseUrl
@@ -47,7 +54,7 @@ class OjpSdk(
         private const val ANDROID_SDK = "ANDROID_SDK"
     }
 
-    suspend fun tripRequest(): String  {
+    suspend fun tripRequest(): OjpDto  {
         Log.d("remote",endpoint)
         val requestTime = LocalDateTime.now()
         Log.d("remote","create request")
@@ -80,7 +87,20 @@ class OjpSdk(
 
         val response = sendRequest(endpoint, token, request)
         Log.d("service","Response object: $response")
-        return response
+
+        val result = interpretResponse(response)
+        Log.d("service","Response interpreted: $result")
+
+        return result
+    }
+
+    private fun interpretResponse(
+        response: String
+    ): OjpDto {
+        val source: BufferedSource = Buffer().writeUtf8(response)
+        // Deserialize the response XML string back into an object
+
+        return tikXml.read(source, OjpDto::class.java)
     }
 
     private suspend fun sendRequest(
@@ -90,13 +110,6 @@ class OjpSdk(
     ): String {
         Log.d("service","go")
 
-
-        val client = OkHttpClient()
-
-        val tikXml = TikXml.Builder()
-            .addTypeConverter(String::class.java, HtmlEscapeStringConverter())
-            .exceptionOnUnreadXml(false)
-            .build()
 
         Log.d("service","buffer")
         // Create a buffer to capture the XML output
@@ -120,8 +133,11 @@ class OjpSdk(
             .build()
 
         return withContext(Dispatchers.IO) {
+
             val response = client.newCall(toSend).execute()
-            response.body?.string() ?: ""
+            val responseBody = response.body?.string() ?: ""
+
+            responseBody
         }
     }
 

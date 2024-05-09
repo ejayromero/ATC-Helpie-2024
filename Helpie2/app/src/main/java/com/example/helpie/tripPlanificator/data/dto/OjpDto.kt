@@ -22,7 +22,7 @@ data class OjpDto(
     @Element(name = "OJPRequest")
     val ojpRequest: OjpRequestDto? = null,
 
-    @Element(name = "OJPResponse")
+    @Element(name = "siri:OJPResponse")
     val ojpResponse: OjpResponseDto? = null,
 
     @Attribute(name = "version")

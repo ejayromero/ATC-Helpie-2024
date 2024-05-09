@@ -7,6 +7,6 @@ import com.tickaroo.tikxml.annotation.Xml
  */
 @Xml(name = "OJPTripDelivery")
 data class TripRequestResponseDto(
-    @Element(name = "TripResult")
+    @Element(name = "ojp:TripResult")
     val tripResults: List<TripResultDto>?, // ideally we want only 1
 )
