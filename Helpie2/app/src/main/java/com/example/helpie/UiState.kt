@@ -1,5 +1,6 @@
 package com.example.helpie
 
+import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.OjpDto
 
 
@@ -18,8 +19,38 @@ data class UiState(
     val takeTicket: String = "https://app.sbbmobile.ch/easyride",
 
     //trip management
+
     val request: String = "",
 
-    val trip: OjpDto? = null
+    val planner: OjpSdk = OjpSdk(
+        baseUrl = "https://api.opentransportdata.swiss/",
+        endpoint = "https://api.opentransportdata.swiss/ojp2020",
+        requesterReference = "Helpie",
+        token = "eyJvcmciOiI2NDA2NTFhNTIyZmEwNTAwMDEyOWJiZTEiLCJpZCI6IjAyZmIwZmM2OWQxMDRkNjY4NWNiZjQ0NWI1MjQyZjgxIiwiaCI6Im11cm11cjEyOCJ9"
+    ),
 
+    val trip: OjpDto? = null,
+
+    val registeredLocation: List<Localisation> = listOf(
+        Localisation(
+            destinationName = "EPFL plasma center",
+            destinationAddress = "Address",
+            longitude = 6.564690632302699,
+            latitude = 46.51727585320471
+        ),
+        ),
+
+    val targetLocation: Localisation = Localisation(
+        destinationName = "EPFL plasma center",
+        destinationAddress = "Address",
+        longitude = 6.564690632302699,
+        latitude = 46.51727585320471
+    ),
+)
+
+    class Localisation(
+    val destinationName: String? = null,
+    val destinationAddress: String? = null,
+    val longitude: Double? = null,
+    val latitude: Double? = null
 )

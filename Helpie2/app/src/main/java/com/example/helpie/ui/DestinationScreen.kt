@@ -22,13 +22,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.helpie.Localisation
 import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
 
 @Composable
 fun DestinationScreen(
+    registeredLocation: List<Localisation>,
     modifier: Modifier = Modifier,
-    onRequest: () -> Unit = {}
+    onRequest: () -> Unit = {},
+    setTarget: (Localisation) -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -55,6 +58,7 @@ fun DestinationScreen(
         ) {
             Button(
                 onClick = {
+                    setTarget(registeredLocation[0])
                     onRequest()
                 },
                 shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
@@ -79,6 +83,14 @@ fun DestinationScreen(
 fun DestinationPreview() {
     AppTheme {
         DestinationScreen(
+            registeredLocation = listOf(
+                Localisation(
+                    destinationName = "EPFL plasma center",
+                    destinationAddress = "Address",
+                    longitude = 6.564690632302699,
+                    latitude = 46.51727585320471
+                )
+            )
         )
     }
 }

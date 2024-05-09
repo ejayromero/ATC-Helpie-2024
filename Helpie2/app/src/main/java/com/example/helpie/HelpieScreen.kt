@@ -224,8 +224,12 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
+                        registeredLocation = uiState.registeredLocation,
                         onRequest = {
                             viewModel.request()
+                        },
+                        setTarget = {
+                            viewModel.setTarget(it)
                         },
                         modifier = Modifier
                             .fillMaxSize()

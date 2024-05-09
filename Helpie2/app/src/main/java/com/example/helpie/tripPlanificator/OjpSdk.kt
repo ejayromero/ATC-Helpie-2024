@@ -1,6 +1,7 @@
 package com.example.helpie.tripPlanificator
 
 import android.util.Log
+import com.example.helpie.Localisation
 import com.example.helpie.tripPlanificator.data.dto.OjpDto
 import com.example.helpie.tripPlanificator.data.dto.request.OjpRequestDto
 import com.example.helpie.tripPlanificator.data.dto.request.ServiceRequestDto
@@ -10,7 +11,6 @@ import com.example.helpie.tripPlanificator.data.dto.request.tr.LocationNameDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.OriginDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.ParamsDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceGeoRefDto
-import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceRefDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.TripRequestDto
 import com.example.helpie.tripPlanificator.utils.toInstantString
 import com.tickaroo.tikxml.TikXml
@@ -54,7 +54,7 @@ class OjpSdk(
         private const val ANDROID_SDK = "ANDROID_SDK"
     }
 
-    suspend fun tripRequest(): OjpDto  {
+    suspend fun tripRequest(target: Localisation): OjpDto  {
         val requestTime = LocalDateTime.now()
         Log.d("remote","create request")
         val request = OjpDto(
@@ -73,8 +73,8 @@ class OjpSdk(
                         ),
                         destination = DestinationDto(
                             placeRef = PlaceGeoRefDto(
-                                position = GeoPositionDto(6.538527,46.515077),
-                                locationName = LocationNameDto(" ")
+                                position = GeoPositionDto(target.longitude,target.latitude),
+                                locationName = LocationNameDto(target.destinationName)
                             )
                         ),
                         params = ParamsDto()
