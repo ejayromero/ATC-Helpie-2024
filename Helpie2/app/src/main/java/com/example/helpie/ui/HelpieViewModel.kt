@@ -59,6 +59,9 @@ class HelpieViewModel : ViewModel() {
         viewModelScope.launch {
             val response = planificator.tripRequest()
             Log.d("helpie","done !")
+            _uiState.update { currentState ->
+                currentState.copy(trip = response)
+            }
         }
     }
 }

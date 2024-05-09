@@ -1,5 +1,7 @@
 package com.example.helpie
 
+import com.example.helpie.tripPlanificator.data.dto.OjpDto
+
 
 data class UiState(
     //The Edit mode enable the helper to configure the app
@@ -17,8 +19,7 @@ data class UiState(
 
     //trip management
     val request: String = "",
-    //val trip: Response<List<TripResultDto>>
 
-    //var planificator: OjpSdk? = null
+    val trip: OjpDto? = null
 
 )
