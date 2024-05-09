@@ -55,7 +55,6 @@ class OjpSdk(
     }
 
     suspend fun tripRequest(): OjpDto  {
-        Log.d("remote",endpoint)
         val requestTime = LocalDateTime.now()
         Log.d("remote","create request")
         val request = OjpDto(
@@ -108,16 +107,10 @@ class OjpSdk(
         token: String,
         request: OjpDto
     ): String {
-        Log.d("service","go")
-
-
-        Log.d("service","buffer")
         // Create a buffer to capture the XML output
         val buffer = Buffer()
-        Log.d("service","write")
         // Serialize the request object to XML
         tikXml.write(buffer, request)
-        Log.d("service","to string")
         // Convert the buffer to a string and print it
         val xmlString = buffer.readUtf8()
         Log.d("service","XML String: $xmlString")
