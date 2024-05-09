@@ -1,4 +1,4 @@
-package com.example.helpie.foregroundServices
+package com.example.helpie
 
 import android.app.Application
 import android.app.NotificationChannel

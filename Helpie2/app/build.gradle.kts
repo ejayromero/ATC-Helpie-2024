@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    id("kotlin-kapt")
 }
 
 android {
@@ -89,4 +90,24 @@ dependencies {
 
     //ojp implementation
    // implementation(libs.ojp.android)
+
+    //planificator
+    implementation(libs.annotation)
+    implementation(libs.core)
+    kapt(libs.processor)
+    implementation(libs.converter.htmlescape)
+    //implementation(libs.timber)
+    implementation(libs.joda.time)
+
+    implementation(libs.koin.core.v330)
+    implementation(libs.insert.koin.koin.android)
+
+    implementation(libs.okhttp.v4120)
+    implementation(libs.logging.interceptor)
+
+    implementation(libs.retrofit.converter.v0813)
+
+    implementation(libs.gson)
+
+
 }
