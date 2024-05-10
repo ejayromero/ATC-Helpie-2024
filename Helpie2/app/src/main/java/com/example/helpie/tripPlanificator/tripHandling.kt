@@ -62,7 +62,7 @@ fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
                     startLatitude = step.cLeg.start.position?.latitude,
                     endName = step.cLeg.end.name?.name,
                     endLongitude = step.cLeg.end.position?.longitude,
-                    endLatitude = step.cLeg.end.position?.longitude,
+                    endLatitude = step.cLeg.end.position?.latitude,
                 )
 
 
@@ -85,7 +85,7 @@ fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
                     startLatitude= step.transLeg.start.position?.latitude,
                     endName = step.transLeg.end.name?.name,
                     endLongitude = step.transLeg.end.position?.longitude,
-                    endLatitude=  step.transLeg.end.position?.longitude,
+                    endLatitude=  step.transLeg.end.position?.latitude,
                 )
 
 
