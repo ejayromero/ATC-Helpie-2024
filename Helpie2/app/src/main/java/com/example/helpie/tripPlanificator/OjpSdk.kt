@@ -66,8 +66,8 @@ class OjpSdk(
                         requestTimestamp = requestTime.toInstantString(),
                         origin = OriginDto(
                             placeRef = PlaceRefDto(
-                                position = GeoPositionDto(7.446683,46.928306),
-                                locationName = LocationNameDto("Me")
+                                position = GeoPositionDto(6.537042242329045,46.51600017680952),
+                                locationName = LocationNameDto("Manira Wokshop - Denges")
                             ),
                             depArrTime = requestTime.toInstantString() //"2024-05-02T10:43:02"
                         ),

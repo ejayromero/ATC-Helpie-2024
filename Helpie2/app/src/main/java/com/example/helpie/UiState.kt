@@ -31,7 +31,9 @@ data class UiState(
 
     val trip: TripDto? = null,
 
-    val currentStep : Int = 0,
+    val summary: TripSummary? = null,
+
+    val currentStep: Int = 0,
 
     val registeredLocation: List<Localisation> = listOf(
         Localisation(
@@ -63,3 +65,16 @@ data class TripSummary(
     val endTime: String,
     val npSteps: Int
 )
+
+data class StepInfo(
+    val mode: String? = null,
+
+    val startName: String? = null,
+    val startLongitude: Double? = 0.0,
+    val startLatitude: Double? = 0.0,
+    val endName: String? = null,
+    val endLongitude: Double? = 0.0,
+    val endLatitude: Double? = 0.0,
+
+    )
+

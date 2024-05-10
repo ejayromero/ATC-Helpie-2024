@@ -7,9 +7,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.Localisation
+import com.example.helpie.TripSummary
 import com.example.helpie.UiState
 import com.example.helpie.tripPlanificator.OjpSdk
+import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import com.example.helpie.tripPlanificator.extractTrip
+import com.example.helpie.tripPlanificator.nextStep
+import com.example.helpie.tripPlanificator.tripSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +28,9 @@ class HelpieViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    private val tripFlow: Flow<TripDto?> = _uiState.map { it.trip }
+    private val totalFlow: Flow<TripSummary?> = _uiState.map { it.summary }
+    private val stepFlow: Flow<Int> = _uiState.map { it.currentStep }
     private val plannerFlow: Flow<OjpSdk> = _uiState.map { it.planner }
     private val targetFlow: Flow<Localisation> = _uiState.map { it.targetLocation }
     fun request() {
@@ -40,6 +47,46 @@ class HelpieViewModel : ViewModel() {
                 currentStep = 0)
             }
         }
+    }
+
+   fun summary() {
+       viewModelScope.launch {
+           val sum = tripFlow.first()?.let { tripSummary(it) }
+
+           if (sum != null) {
+               Log.d("summary", "Duration: ${sum.duration}")
+               Log.d("summary", "Start Time: ${sum.startTime}")
+               Log.d("summary", "End Time: ${sum.endTime}")
+               Log.d("summary", "Number of Steps: ${sum.npSteps}")
+           }
+
+           _uiState.update { currentState ->
+               currentState.copy(summary = sum)
+           }
+       }
+   }
+
+    fun lauchNext() {
+        viewModelScope.launch {
+            if (stepFlow.first() < (totalFlow.first()?.npSteps ?: 0)) {
+                val travel = tripFlow.first()?.let { nextStep(it, stepFlow.first()) }
+
+                // Logging each element of StepInfo
+                if (travel != null) {
+                    Log.d("trip", "Mode: ${travel.mode}")
+                    Log.d("trip", "Start Name: ${travel.startName}")
+                    Log.d("trip", "Start Longitude: ${travel.startLongitude}")
+                    Log.d("trip", "Start Latitude: ${travel.startLatitude}")
+                    Log.d("trip", "End Name: ${travel.endName}")
+                    Log.d("trip", "End Longitude: ${travel.endLongitude}")
+                    Log.d("trip", "End Latitude: ${travel.endLatitude}")
+                }
+                _uiState.update { currentState ->
+                    currentState.copy(currentStep = stepFlow.first() + 1)
+                }
+            }
+        }
+        Log.d("trip", "done !")
     }
 
     fun setTicket(isTicket: Boolean) {
@@ -76,5 +123,7 @@ class HelpieViewModel : ViewModel() {
             currentState.copy(targetLocation = target)
         }
     }
+
+
 
 }

@@ -31,6 +31,8 @@ fun DestinationScreen(
     registeredLocation: List<Localisation>,
     modifier: Modifier = Modifier,
     onRequest: () -> Unit = {},
+    onSummary: () -> Unit = {},
+    onNext: () -> Unit = {},
     setTarget: (Localisation) -> Unit = {}
 ) {
     Box(
@@ -67,6 +69,42 @@ fun DestinationScreen(
             {
                 Text(
                     text = "GO",
+                    modifier = Modifier
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp
+                )
+            }
+
+            Button(
+                onClick = {
+                    onSummary()
+                },
+                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            )
+            {
+                Text(
+                    text = "summary",
+                    modifier = Modifier
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp
+                )
+            }
+
+            Button(
+                onClick = {
+                    onNext()
+                },
+                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            )
+            {
+                Text(
+                    text = "next",
                     modifier = Modifier
                         .padding(20.dp),
                     textAlign = TextAlign.Center,
