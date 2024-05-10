@@ -10,7 +10,7 @@ import com.example.helpie.tripPlanificator.data.dto.request.tr.GeoPositionDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.LocationNameDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.OriginDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.ParamsDto
-import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceGeoRefDto
+import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceRefDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.TripRequestDto
 import com.example.helpie.tripPlanificator.utils.toInstantString
 import com.tickaroo.tikxml.TikXml
@@ -65,14 +65,14 @@ class OjpSdk(
                     tripRequest = TripRequestDto(
                         requestTimestamp = requestTime.toInstantString(),
                         origin = OriginDto(
-                            placeRef = PlaceGeoRefDto(
+                            placeRef = PlaceRefDto(
                                 position = GeoPositionDto(7.446683,46.928306),
                                 locationName = LocationNameDto("Me")
                             ),
                             depArrTime = requestTime.toInstantString() //"2024-05-02T10:43:02"
                         ),
                         destination = DestinationDto(
-                            placeRef = PlaceGeoRefDto(
+                            placeRef = PlaceRefDto(
                                 position = GeoPositionDto(target.longitude,target.latitude),
                                 locationName = LocationNameDto(target.destinationName)
                             )
@@ -91,15 +91,6 @@ class OjpSdk(
         Log.d("service","Response interpreted: $result")
 
         return result
-    }
-
-    private fun interpretResponse(
-        response: String
-    ): OjpDto {
-        val source: BufferedSource = Buffer().writeUtf8(response)
-        // Deserialize the response XML string back into an object
-
-        return tikXml.read(source, OjpDto::class.java)
     }
 
     private suspend fun sendRequest(
@@ -132,6 +123,15 @@ class OjpSdk(
 
             responseBody
         }
+    }
+
+    private fun interpretResponse(
+        response: String
+    ): OjpDto {
+        val source: BufferedSource = Buffer().writeUtf8(response)
+        // Deserialize the response XML string back into an object
+
+        return tikXml.read(source, OjpDto::class.java)
     }
 
 }

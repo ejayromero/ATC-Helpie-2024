@@ -1,7 +1,7 @@
 package com.example.helpie
 
 import com.example.helpie.tripPlanificator.OjpSdk
-import com.example.helpie.tripPlanificator.data.dto.OjpDto
+import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 
 
 data class UiState(
@@ -29,7 +29,9 @@ data class UiState(
         token = "eyJvcmciOiI2NDA2NTFhNTIyZmEwNTAwMDEyOWJiZTEiLCJpZCI6IjAyZmIwZmM2OWQxMDRkNjY4NWNiZjQ0NWI1MjQyZjgxIiwiaCI6Im11cm11cjEyOCJ9"
     ),
 
-    val trip: OjpDto? = null,
+    val trip: TripDto? = null,
+
+    val currentStep : Int = 0,
 
     val registeredLocation: List<Localisation> = listOf(
         Localisation(
@@ -48,9 +50,16 @@ data class UiState(
     ),
 )
 
-    class Localisation(
+data class Localisation(
     val destinationName: String? = null,
     val destinationAddress: String? = null,
     val longitude: Double? = null,
     val latitude: Double? = null
+)
+
+data class TripSummary(
+    val duration: String?,
+    val startTime: String,
+    val endTime: String,
+    val npSteps: Int
 )

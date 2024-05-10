@@ -227,6 +227,7 @@ fun HelpieApp(
                         registeredLocation = uiState.registeredLocation,
                         onRequest = {
                             viewModel.request()
+                            navController.navigate(HelpieScreen.TakeTicket.name)
                         },
                         setTarget = {
                             viewModel.setTarget(it)

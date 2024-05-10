@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.helpie.Localisation
 import com.example.helpie.UiState
 import com.example.helpie.tripPlanificator.OjpSdk
+import com.example.helpie.tripPlanificator.extractTrip
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,24 +23,21 @@ class HelpieViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-    /*private val planificator = OjpSdk(
-        baseUrl = "https://api.opentransportdata.swiss/",
-        endpoint = "https://api.opentransportdata.swiss/ojp2020",
-        requesterReference = "Helpie",
-        token = "eyJvcmciOiI2NDA2NTFhNTIyZmEwNTAwMDEyOWJiZTEiLCJpZCI6IjAyZmIwZmM2OWQxMDRkNjY4NWNiZjQ0NWI1MjQyZjgxIiwiaCI6Im11cm11cjEyOCJ9"
-    )*/
 
-    val plannerFlow: Flow<OjpSdk> = _uiState.map { it.planner }
-    val targetFlow: Flow<Localisation> = _uiState.map { it.targetLocation }
+    private val plannerFlow: Flow<OjpSdk> = _uiState.map { it.planner }
+    private val targetFlow: Flow<Localisation> = _uiState.map { it.targetLocation }
     fun request() {
         Log.d("helpie","ojpSdk")
         viewModelScope.launch {
             val planner = plannerFlow.first() // Accessing the planner from the Flow
 
             val response = planner.tripRequest(targetFlow.first())
+
+            val trip = extractTrip(response)
             Log.d("helpie","done !")
             _uiState.update {
-                    currentState -> currentState.copy(trip = response)
+                    currentState -> currentState.copy(trip = trip,
+                currentStep = 0)
             }
         }
     }

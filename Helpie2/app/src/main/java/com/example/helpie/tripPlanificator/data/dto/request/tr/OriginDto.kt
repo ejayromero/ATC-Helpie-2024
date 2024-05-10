@@ -8,7 +8,7 @@ import com.tickaroo.tikxml.annotation.Xml
 @Xml(name = "Origin")
 data class OriginDto(
     @Element(name = "PlaceRef")
-    val placeRef: PlaceGeoRefDto,
+    val placeRef: PlaceRefDto,
 
     @PropertyElement(name = "DepArrTime")
     val depArrTime: String
