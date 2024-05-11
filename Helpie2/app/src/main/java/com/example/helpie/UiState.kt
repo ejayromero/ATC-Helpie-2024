@@ -35,14 +35,37 @@ data class UiState(
 
     val currentStep: Int = 0,
 
+    val showDialog : Boolean = false,
+
     val registeredLocation: List<Localisation> = listOf(
+        Localisation(
+            destinationName = "Maison",
+            destinationAddress = "Rte de la Blécherette 1, 1052 Le Mont-sur-Lausanne",
+            longitude =6.635555,
+            latitude = 46.558945
+        ),
+        // Destination 2
+        Localisation(
+            destinationName = "Sport",
+            destinationAddress = "Centre sportif universitaire de Dorigny",
+            longitude = 6.580914360470724,
+            latitude = 46.5191049
+        ),
+        // Destination 3
         Localisation(
             destinationName = "EPFL plasma center",
             destinationAddress = "Address",
             longitude = 6.564690632302699,
             latitude = 46.51727585320471
         ),
+        // Destination 4
+        Localisation(
+            destinationName = "EPFL plasma center",
+            destinationAddress = "Address",
+            longitude = 6.564690632302699,
+            latitude = 46.51727585320471
         ),
+    ),
 
     val targetLocation: Localisation = Localisation(
         destinationName = "EPFL plasma center",

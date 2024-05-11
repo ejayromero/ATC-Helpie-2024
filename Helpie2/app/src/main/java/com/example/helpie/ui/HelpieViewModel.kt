@@ -124,6 +124,31 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
+    fun setLocalisationName(index: Int, name: String, registeredLocalisation: List<Localisation>) {
+        if (index in registeredLocalisation.indices) {
+            val updatedLocalisation = registeredLocalisation.toMutableList()
+            updatedLocalisation[index] = registeredLocalisation[index].copy(destinationName = name)
+            _uiState.update { currentState ->
+                currentState.copy(registeredLocation = updatedLocalisation)
+            }
+        }
+    }
+
+    fun setLocalisationAddress(index: Int, address: String, registeredLocalisation: List<Localisation>) {
+        if (index in registeredLocalisation.indices) {
+            val updatedLocalisation = registeredLocalisation.toMutableList()
+            updatedLocalisation[index] = registeredLocalisation[index].copy(destinationAddress = address)
+            _uiState.update { currentState ->
+                currentState.copy(registeredLocation = updatedLocalisation)
+            }
+        }
+    }
+
+    fun switchDialog() {
+        _uiState.update { currentState ->
+            currentState.copy(showDialog = !currentState.showDialog)
+        }
+    }
 
 
 }

@@ -225,6 +225,8 @@ fun HelpieApp(
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
                         registeredLocation = uiState.registeredLocation,
+                        showDialog = uiState.editMode,
+                        editMode = uiState.editMode,
                         onRequest = {
                             viewModel.request()
                             //navController.navigate(HelpieScreen.TakeTicket.name)
@@ -237,6 +239,16 @@ fun HelpieApp(
                         },
                         setTarget = {
                             viewModel.setTarget(it)
+                            navController.navigate(HelpieScreen.TakeTicket.name)
+                        },
+                        setLocalisationName = { index, name, it ->
+                            viewModel.setLocalisationName(index, name, uiState.registeredLocation)
+                        },
+                        setLocalisationAddress = { index, address, it ->
+                            viewModel.setLocalisationAddress(index, address, uiState.registeredLocation)
+                        },
+                        switchDialog = {
+                            viewModel.switchDialog()
                         },
                         modifier = Modifier
                             .fillMaxSize()
