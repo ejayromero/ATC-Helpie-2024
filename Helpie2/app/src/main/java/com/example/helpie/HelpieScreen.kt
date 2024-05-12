@@ -47,11 +47,10 @@ import com.example.helpie.ui.DestinationScreen
 import com.example.helpie.ui.HelpScreen
 import com.example.helpie.ui.HelpieViewModel
 import com.example.helpie.ui.StartScreen
+import com.example.helpie.ui.TakeBusScreen
 import com.example.helpie.ui.TakeTicketScreen
 import com.example.helpie.ui.TicketScreen
-import com.example.helpie.ui.TakeBusScreen
 import com.example.helpie.ui.theme.AppTheme
-
 
 enum class HelpieScreen(val next:String) {
     Help(next = ""),
@@ -78,6 +77,7 @@ fun HelpieApp(
     val backStackEntry by navController.currentBackStackEntryAsState()
 
     val currentScreen = backStackEntry?.destination?.route
+
 
     Scaffold(
         topBar = {
@@ -204,7 +204,7 @@ fun HelpieApp(
                 composable(route = HelpieScreen.Ticket.name) {
                     TicketScreen(
                         showTicket = {
-                            viewModel.openLink(ctx,uiState.urlTicket)
+                            viewModel.openLink(ctx, uiState.urlTicket)
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -232,14 +232,20 @@ fun HelpieApp(
                 composable(route = HelpieScreen.TakeTicket.name) {
                     TakeTicketScreen(
                         takeTicket = {
-                            viewModel.openLink(ctx,uiState.takeTicket)
+                            viewModel.openLink(ctx, uiState.takeTicket)
                         },
                         modifier = Modifier
                             .fillMaxSize()
                     )
                 }
-            }
 
+                composable(route = HelpieScreen.TakeBus.name) {
+                    TakeBusScreen(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+            }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

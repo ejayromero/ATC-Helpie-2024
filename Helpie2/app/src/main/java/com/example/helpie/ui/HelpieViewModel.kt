@@ -2,9 +2,11 @@ package com.example.helpie.ui
 
 import android.content.Context
 import android.content.Intent
+import android.health.connect.datatypes.ExerciseRoute
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.location.Location
 import com.example.helpie.UiState
 import com.example.helpie.network.fetchData
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HelpieViewModel : ViewModel() {
+class HelpieViewModel() : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()

@@ -1,19 +1,21 @@
 package com.example.helpie
 
-import android.os.Build
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.core.app.ActivityCompat
-import com.example.helpie.ui.theme.AppTheme
 import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.helpie.foregroundServices.ForegroundService
+import com.example.helpie.ui.theme.AppTheme
+
 
 class MainActivity : ComponentActivity() {
     companion object {
@@ -21,7 +23,6 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         requestPermissionsIfNecessary()
         setContent {
             AppTheme {
@@ -70,7 +71,6 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         requestPermissionsIfNecessary()
     }
-
     override fun onPause() {
         super.onPause()
         startForegroundService()

@@ -20,5 +20,20 @@ data class UiState(
     val takeBus : Boolean = false,
     val busLine : String = "701",
     val transportMode : String = "Bus",
-    val busStart : String = "St-Sulpice VD, Parc Scientifique"
+    val busStart : String = "St-Sulpice VD, Parc Scientifique",
+
+    //location
+    val targetLocation: Localisation = Localisation(
+        destinationName = "EPFL plasma center",
+        destinationAddress = "Address",
+        longitude = 6.564690632302699,
+        latitude = 46.51727585320471
+    ),
+)
+
+class Localisation(
+    val destinationName: String? = null,
+    val destinationAddress: String? = null,
+    val longitude: Double? = null,
+    val latitude: Double? = null
 )
