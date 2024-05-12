@@ -35,7 +35,9 @@ data class UiState(
 
     val currentStep: Int = 0,
 
-    val showDialog : Boolean = false,
+    val stepOngoing: StepInfo? = null,
+
+    val showDialog: Boolean = false,
 
     val registeredLocation: List<Localisation> = listOf(
         Localisation(
@@ -99,5 +101,5 @@ data class StepInfo(
     val endLongitude: Double? = 0.0,
     val endLatitude: Double? = 0.0,
 
-    )
+)
 

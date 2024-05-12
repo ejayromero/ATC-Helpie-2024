@@ -82,7 +82,8 @@ class HelpieViewModel : ViewModel() {
                     Log.d("trip", "End Latitude: ${travel.endLatitude}")
                 }
                 _uiState.update { currentState ->
-                    currentState.copy(currentStep = stepFlow.first() + 1)
+                    currentState.copy(currentStep = stepFlow.first() + 1,
+                        stepOngoing = travel)
                 }
             }
         }
