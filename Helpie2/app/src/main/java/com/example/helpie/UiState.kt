@@ -162,6 +162,5 @@ data class walkInfo(
     val length: Double? = 0.0, //metre
     val buffer: String? = null,
 
-): StepInfo(mode
+    ): StepInfo(mode
 )
-
