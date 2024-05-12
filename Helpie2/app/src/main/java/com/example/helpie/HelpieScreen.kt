@@ -47,6 +47,8 @@ import com.example.helpie.ui.DestinationScreen
 import com.example.helpie.ui.HelpScreen
 import com.example.helpie.ui.HelpieViewModel
 import com.example.helpie.ui.StartScreen
+import com.example.helpie.ui.StepScreen
+import com.example.helpie.ui.SummaryScreen
 import com.example.helpie.ui.TakeTicketScreen
 import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.theme.AppTheme
@@ -55,7 +57,9 @@ import com.example.helpie.ui.theme.AppTheme
 enum class HelpieScreen(val next:String) {
     Help(next = ""),
     Ticket(next = ""),
+    Step(next = ""),
     TakeTicket(next = ""),
+    Summary(next = ""),
     Destination(next = ""),
     Start(next = ""),
 }
@@ -231,20 +235,14 @@ fun HelpieApp(
                             viewModel.request()
                             //navController.navigate(HelpieScreen.TakeTicket.name)
                         },
-                        onSummary = {
-                            viewModel.summary()
-                        },
-                        onNext = {
-                            viewModel.lauchNext()
-                        },
                         setTarget = {
                             viewModel.setTarget(it)
-                            navController.navigate(HelpieScreen.TakeTicket.name)
+                            navController.navigate(HelpieScreen.Summary.name)
                         },
-                        setLocalisationName = { index, name, it ->
+                        setLocalisationName = { index, name, _ ->
                             viewModel.setLocalisationName(index, name, uiState.registeredLocation)
                         },
-                        setLocalisationAddress = { index, address, it ->
+                        setLocalisationAddress = { index, address, _ ->
                             viewModel.setLocalisationAddress(index, address, uiState.registeredLocation)
                         },
                         switchDialog = {
@@ -255,16 +253,39 @@ fun HelpieApp(
                     )
                 }
 
+                composable(route = HelpieScreen.Summary.name) {
+                    SummaryScreen(
+                        onSummary = {
+                            viewModel.summary()
+                        },
+                        onNext = {
+                            navController.navigate(HelpieScreen.TakeTicket.name)
+                        },
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+
                 composable(route = HelpieScreen.TakeTicket.name) {
                     TakeTicketScreen(
                         takeTicket = {
                             viewModel.setTicket(true)
+                            navController.navigate(HelpieScreen.Step.name)
                             viewModel.openLink(ctx,uiState.takeTicket)
                         },
                         modifier = Modifier
                             .fillMaxSize()
                     )
                 }
+                composable(route = HelpieScreen.Step.name) {
+                StepScreen(
+                    onNext = {
+                        viewModel.lauchNext()
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+            }
             }
 
                 Column(
@@ -275,7 +296,7 @@ fun HelpieApp(
                         Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                            if((currentScreen != HelpieScreen.Start.name) and (navController.previousBackStackEntry != null)){
+                            if((currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Step.name) and (navController.previousBackStackEntry != null)){
                             Button(
                                 onClick = {
                                     navController.navigateUp()

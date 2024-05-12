@@ -39,8 +39,6 @@ fun DestinationScreen(
     showDialog: Boolean,
     editMode: Boolean,
     onRequest: () -> Unit = {},
-    onSummary: () -> Unit = {},
-    onNext: () -> Unit = {},
     setTarget: (Localisation) -> Unit = {},
     setLocalisationName: (Int, String, List<Localisation>) -> Unit = { _, _, _ -> },
     setLocalisationAddress: (Int, String, List<Localisation>) -> Unit = { _, _, _ -> },
@@ -353,25 +351,6 @@ fun DestinationScreen(
                                 Text("Confirm")
                             }
                         }
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.destination_spacer)))
-
-                Button(
-                    onClick = {
-                        onSummary()
-                    },
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-                    modifier = Modifier
-                        .height(dimensionResource(R.dimen.button_destination_height))
-                        .width(dimensionResource(R.dimen.button_destination_width)*2 + 30.dp),
-                )
-                {
-                    Text(
-                        text = "summary",
-                        fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() }
                     )
                 }
             }
