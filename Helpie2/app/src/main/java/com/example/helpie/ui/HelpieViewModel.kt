@@ -72,15 +72,7 @@ class HelpieViewModel : ViewModel() {
                 val travel = tripFlow.first()?.let { nextStep(it, stepFlow.first()) }
 
                 // Logging each element of StepInfo
-                if (travel != null) {
-                    Log.d("trip", "Mode: ${travel.mode}")
-                    Log.d("trip", "Start Name: ${travel.startName}")
-                    Log.d("trip", "Start Longitude: ${travel.startLongitude}")
-                    Log.d("trip", "Start Latitude: ${travel.startLatitude}")
-                    Log.d("trip", "End Name: ${travel.endName}")
-                    Log.d("trip", "End Longitude: ${travel.endLongitude}")
-                    Log.d("trip", "End Latitude: ${travel.endLatitude}")
-                }
+                travel?.logValues()
                 _uiState.update { currentState ->
                     currentState.copy(currentStep = stepFlow.first() + 1,
                         stepOngoing = travel)

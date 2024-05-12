@@ -13,5 +13,8 @@ data class ServiceDto(
     val individualMode: String? = null,
 
     @Element(name = "ojp:Mode")
-    val mode: ModeDto? = null
+    val mode: ModeDto? = null,
+
+    @Element(name = "ojp:PublishedLineName")
+    val line: LocationDto? = null
 )

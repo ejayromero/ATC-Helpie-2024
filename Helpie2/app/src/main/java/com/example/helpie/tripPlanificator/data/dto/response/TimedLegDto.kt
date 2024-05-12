@@ -12,7 +12,7 @@ data class TimedLegDto(
     @Element(name = "ojp:LegBoard")
     val board : LegBoardDto? = null,
 
-    @Element(name = "ojp:LegLegAlight")
+    @Element(name = "ojp:LegAlight")
     val alight : LegAlightDto? = null,
 
     //about the transport
