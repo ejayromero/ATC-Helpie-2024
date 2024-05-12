@@ -46,6 +46,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.helpie.ui.DestinationScreen
 import com.example.helpie.ui.HelpScreen
 import com.example.helpie.ui.HelpieViewModel
+import com.example.helpie.ui.InBusScreen
+import com.example.helpie.ui.ReachStopScreen
 import com.example.helpie.ui.StartScreen
 import com.example.helpie.ui.StepScreen
 import com.example.helpie.ui.SummaryScreen
@@ -62,6 +64,9 @@ enum class HelpieScreen(val next:String) {
     Summary(next = ""),
     Destination(next = ""),
     Start(next = ""),
+    ReachStop(next = ""),
+    InBus(next = ""),
+    OutBus(next = ""),
 }
 
 
@@ -278,14 +283,33 @@ fun HelpieApp(
                     )
                 }
                 composable(route = HelpieScreen.Step.name) {
-                StepScreen(
-                    onNext = {
-                        viewModel.lauchNext()
-                    },
-                    modifier = Modifier
-                        .fillMaxSize()
-                )
-            }
+                    StepScreen(
+                        onNext = {
+                            viewModel.lauchNext()
+                            if (uiState.stepOngoing?.mode.toString() == "bus") {
+                                navController.navigate(HelpieScreen.InBus.name)
+                            } else {
+                                navController.navigate(HelpieScreen.ReachStop.name)
+                            }
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                composable(route = HelpieScreen.InBus.name) {
+                    InBusScreen(
+                        stepInfo = uiState.stepOngoing!!,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                composable(route = HelpieScreen.ReachStop.name) {
+                    ReachStopScreen(
+                        stepInfo = uiState.stepOngoing!!,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
             }
 
                 Column(

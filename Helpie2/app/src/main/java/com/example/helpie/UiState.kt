@@ -101,5 +101,5 @@ data class StepInfo(
     val endLongitude: Double? = 0.0,
     val endLatitude: Double? = 0.0,
 
-)
+    )
 

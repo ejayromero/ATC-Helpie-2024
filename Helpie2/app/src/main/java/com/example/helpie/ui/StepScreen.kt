@@ -3,11 +3,10 @@ package com.example.helpie.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -35,19 +34,19 @@ fun StepScreen(
     Box(
         modifier = modifier
     ) {
-        Column (
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxSize()
         ) {
-           Text(
-                    text = "Etape",
-                    modifier = Modifier
-                        .padding(20.dp),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 50.sp
-                )
+            Text(
+                text = "Etape",
+                modifier = Modifier
+                    .padding(20.dp),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                fontSize = 50.sp
+            )
         }
 
         // 4 buttons for preselected destinations
@@ -65,7 +64,7 @@ fun StepScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
                 modifier = Modifier
                     .height(dimensionResource(R.dimen.button_destination_height))
-                    .width(dimensionResource(R.dimen.button_destination_width)*2 + 30.dp),
+                    .width(dimensionResource(R.dimen.button_destination_width) * 2 + 30.dp),
             )
             {
                 Text(
@@ -73,9 +72,9 @@ fun StepScreen(
                     fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() }
                 )
             }
-            }
         }
     }
+}
 
 @Preview
 @Composable
