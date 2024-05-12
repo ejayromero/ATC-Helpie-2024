@@ -31,4 +31,4 @@ data class TransLegDto(
     val walk: String,
 
 
-)
+    )

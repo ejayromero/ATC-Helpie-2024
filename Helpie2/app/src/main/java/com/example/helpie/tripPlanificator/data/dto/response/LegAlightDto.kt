@@ -19,4 +19,4 @@ data class LegAlightDto(
     @Element(name = "ojp:ServiceArrival")
     val time : DepartureDto? = null,
 
-)
+    )

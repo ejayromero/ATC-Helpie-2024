@@ -20,4 +20,4 @@ data class TimedLegDto(
     val service : ServiceDto,
 
 
-)
+    )

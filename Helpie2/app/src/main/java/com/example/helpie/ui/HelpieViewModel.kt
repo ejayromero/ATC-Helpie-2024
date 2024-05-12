@@ -49,22 +49,22 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-   fun summary() {
-       viewModelScope.launch {
-           val sum = tripFlow.first()?.let { tripSummary(it) }
+    fun summary() {
+        viewModelScope.launch {
+            val sum = tripFlow.first()?.let { tripSummary(it) }
 
-           if (sum != null) {
-               Log.d("summary", "Duration: ${sum.duration}")
-               Log.d("summary", "Start Time: ${sum.startTime}")
-               Log.d("summary", "End Time: ${sum.endTime}")
-               Log.d("summary", "Number of Steps: ${sum.npSteps}")
-           }
+            if (sum != null) {
+                Log.d("summary", "Duration: ${sum.duration}")
+                Log.d("summary", "Start Time: ${sum.startTime}")
+                Log.d("summary", "End Time: ${sum.endTime}")
+                Log.d("summary", "Number of Steps: ${sum.npSteps}")
+            }
 
-           _uiState.update { currentState ->
-               currentState.copy(summary = sum)
-           }
-       }
-   }
+            _uiState.update { currentState ->
+                currentState.copy(summary = sum)
+            }
+        }
+    }
 
     fun lauchNext() {
         viewModelScope.launch {

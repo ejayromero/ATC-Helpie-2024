@@ -30,4 +30,4 @@ data class ContinuousLegDto(
     @PropertyElement(name = "ojp:Length")
     val length: Double,
 
-)
+    )

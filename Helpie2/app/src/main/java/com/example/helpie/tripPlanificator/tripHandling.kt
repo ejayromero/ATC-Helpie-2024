@@ -122,10 +122,8 @@ fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
         } else {
             throw IllegalStateException("No steps found in the response")
         }
-        } catch (e: Exception) {
-            // Handle the exception or log the error
-            throw IllegalStateException("Failed to extract steps: ${e.message}")
-        }
+    } catch (e: Exception) {
+        // Handle the exception or log the error
+        throw IllegalStateException("Failed to extract steps: ${e.message}")
+    }
 }
-
-
