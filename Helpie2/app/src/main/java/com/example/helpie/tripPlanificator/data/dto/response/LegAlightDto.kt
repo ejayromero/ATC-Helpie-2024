@@ -16,7 +16,7 @@ data class LegAlightDto(
     @Element(name = "ojp:PlannedQuay")
     val quay : LocationDto? = null,
 
-    @Element(name = "ojp:ServiceDeparture")
+    @Element(name = "ojp:ServiceArrival")
     val time : DepartureDto? = null,
 
 )

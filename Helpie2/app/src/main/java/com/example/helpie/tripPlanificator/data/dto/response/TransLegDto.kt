@@ -27,5 +27,8 @@ data class TransLegDto(
     @PropertyElement(name = "ojp:Duration")
     val duration: String,
 
+    @PropertyElement(name = "ojp:WalkDuration")
+    val walk: String,
+
 
 )

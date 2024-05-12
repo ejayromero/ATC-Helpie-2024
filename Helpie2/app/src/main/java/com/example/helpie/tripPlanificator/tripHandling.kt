@@ -3,8 +3,10 @@ package com.example.helpie.tripPlanificator
 import android.util.Log
 import com.example.helpie.StepInfo
 import com.example.helpie.TripSummary
+import com.example.helpie.transportInfo
 import com.example.helpie.tripPlanificator.data.dto.OjpDto
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
+import com.example.helpie.walkInfo
 
 fun extractTrip(response: OjpDto): TripDto {
     try {
@@ -55,37 +57,61 @@ fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
             if (step.cLeg != null) {
                 Log.d("trip", "continuous leg")
 
-                return StepInfo(
+                return walkInfo(
                     mode = step.cLeg.service.individualMode,
+
                     startName = step.cLeg.start.name?.name,
                     startLongitude = step.cLeg.start.position?.longitude,
                     startLatitude = step.cLeg.start.position?.latitude,
+
                     endName = step.cLeg.end.name?.name,
                     endLongitude = step.cLeg.end.position?.longitude,
                     endLatitude = step.cLeg.end.position?.latitude,
+
+                    startTime = step.cLeg.timeStart,
+                    endTime = step.cLeg.timeEnd,
+                    duration = step.cLeg.duration,
+                    length = step.cLeg.length
                 )
 
 
             } else if (step.tLeg != null) {
                 Log.d("trip","trip leg")
 
-                return StepInfo(
+                return transportInfo(
                     mode = step.tLeg.service.mode?.ptMode,
+
                     startName = step.tLeg.board?.name?.name,
+                    startTime = step.tLeg.board?.time?.time,
+                    startTimeEstimated = step.tLeg.board?.time?.timeEstimate,
+
                     endName = step.tLeg.alight?.name?.name,
+                    endTime = step.tLeg.alight?.time?.time,
+                    endTimeEstimated = step.tLeg.alight?.time?.timeEstimate,
+
+                    line = step.tLeg.service.line?.name,
+                    startQuay = step.tLeg.board?.quay?.name,
+                    endQuay = step.tLeg.alight?.quay?.name,
                 )
 
             } else if (step.transLeg != null) {
                 Log.d("trip","transfer leg")
 
-                return StepInfo(
+                return walkInfo(
                     mode = step.transLeg.service,
+
                     startName = step.transLeg.start.name?.name,
                     startLongitude = step.transLeg.start.position?.longitude,
-                    startLatitude= step.transLeg.start.position?.latitude,
+                    startLatitude = step.transLeg.start.position?.latitude,
+
                     endName = step.transLeg.end.name?.name,
                     endLongitude = step.transLeg.end.position?.longitude,
-                    endLatitude=  step.transLeg.end.position?.latitude,
+                    endLatitude =  step.transLeg.end.position?.latitude,
+
+                    startTime = step.transLeg.timeStart,
+                    endTime = step.transLeg.timeEnd,
+                    duration = step.transLeg.walk,
+                    buffer = step.transLeg.duration
                 )
 
 
