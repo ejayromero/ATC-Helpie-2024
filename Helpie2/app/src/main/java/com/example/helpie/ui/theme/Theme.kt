@@ -1,12 +1,22 @@
 package com.example.helpie.ui.theme
 
 import android.app.Activity
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
@@ -56,5 +66,19 @@ fun AppTheme(
         colorScheme = colorScheme,
         typography = Typography,
         content = content
+    )
+}
+
+@Composable
+fun CustomTextView(text: String, color: Color) {
+    Text(
+        text = text,
+        color = color,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .padding(top = 32.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)
+            .wrapContentSize(Alignment.Center),
     )
 }

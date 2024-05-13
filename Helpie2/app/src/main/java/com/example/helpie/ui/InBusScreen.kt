@@ -24,13 +24,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.helpie.R
-import com.example.helpie.StepInfo
+import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
+import com.example.helpie.ui.theme.CustomTextView
 
 @Composable
 fun InBusScreen(
     modifier: Modifier = Modifier,
-    stepInfo: StepInfo,
+    stepInfo: transportInfo,
+    onNext: () -> Unit = {},
 ) {
 
     Column(
@@ -78,7 +80,7 @@ fun InBusScreen(
                 Column() {
                     // Bus line text
                     Text(
-                        text = "701",
+                        text = stepInfo.line.toString(),
                         color = Color.White,
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold
@@ -103,10 +105,10 @@ fun InBusScreen(
 fun InBusScreenPreview() {
     AppTheme {
         InBusScreen(
-            stepInfo = StepInfo(
+            stepInfo = transportInfo(
                 startName = "Saint-Sulpice, Innovation Park",
                 endName = "Morges, Gare",
-                mode = "rail"
+                mode = "bus"
             )
         )
     }

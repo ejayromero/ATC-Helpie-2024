@@ -24,13 +24,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.helpie.R
-import com.example.helpie.StepInfo
+import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
+import com.example.helpie.ui.theme.CustomTextView
 
 @Composable
 fun OutBusScreen(
     modifier: Modifier = Modifier,
-    stepInfo: StepInfo
+    stepInfo: transportInfo,
+    onNext: () -> Unit = {},
 ) {
 
     Column(
@@ -75,7 +77,7 @@ fun OutBusScreen(
                 Spacer(modifier = Modifier.width(28.dp))
                 Column() {
                     Text(
-                        text = "701",
+                        text = stepInfo.line.toString(),
                         color = Color.White,
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold
@@ -100,7 +102,10 @@ fun OutBusScreen(
 fun OutBusScreenPreview() {
     AppTheme {
         OutBusScreen(
-            stepInfo = StepInfo("rail", "Saint-Sulpice, Innovation Park ", endName = "Morges, Gare"
+            stepInfo = transportInfo(
+                "rail",
+                "Saint-Sulpice, Innovation Park ",
+                endName = "Morges, Gare"
             )
         )
     }

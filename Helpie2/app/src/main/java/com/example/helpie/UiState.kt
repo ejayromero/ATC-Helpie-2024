@@ -1,9 +1,13 @@
 package com.example.helpie
 
-import android.health.connect.datatypes.units.Length
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.Duration
 
 
 data class UiState(
@@ -96,6 +100,26 @@ data class TripSummary(
 open class StepInfo(
     open val mode: String? = null,
 ) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun calculateDuration(): String {
+        return when (this) {
+            is walkInfo -> {
+                Log.d("duration", "Duration: ${this.duration}")
+                this.duration.toString()
+            }
+            is transportInfo -> {
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                val start = LocalDateTime.parse(this.startTime, formatter)
+                val end = LocalDateTime.parse(this.endTime, formatter)
+                val duration = Duration.between(start, end)
+                Log.d("duration", "Duration: ${duration}")
+                duration.toString()
+            }
+            else -> {
+                "0"
+            }
+        }
+    }
     fun logValues() {
         Log.d("trip", "Mode: $mode")
 
@@ -140,7 +164,8 @@ data class transportInfo(
     //transport
     val line: String? = null,
     val startQuay: String? = null,
-    val endQuay: String? = null
+    val endQuay: String? = null,
+
 ): StepInfo(mode
 )
 

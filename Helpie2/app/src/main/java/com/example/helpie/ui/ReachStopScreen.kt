@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,32 +20,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.helpie.R
-import com.example.helpie.StepInfo
 import com.example.helpie.ui.theme.AppTheme
-
-@Composable
-fun CustomTextView(text: String, color: Color) {
-    Text(
-        text = text,
-        color = color,
-        fontSize = 24.sp,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .padding(top = 32.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)
-            .wrapContentSize(Alignment.Center),
-    )
-}
+import com.example.helpie.ui.theme.CustomTextView
+import com.example.helpie.walkInfo
 
 @Composable
 fun ReachStopScreen(
     modifier: Modifier = Modifier,
-    stepInfo: StepInfo,
+    stepInfo: walkInfo,
+    onNext: () -> Unit = {},
 ) {
 
     Column(
@@ -96,6 +82,7 @@ fun ReachStopScreen(
                     // Bus line text
                     Text(
                         text = "701",
+//                        text = stepInfo.line.toString(),
                         color = Color.White,
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold
@@ -121,7 +108,10 @@ fun ReachStopScreen(
 fun ReachStopScreenPreview() {
     AppTheme {
         ReachStopScreen(
-            stepInfo = StepInfo("rail", "Saint-Sulpice, Innovation park", endName = "Morges Gare"
+            stepInfo = walkInfo(
+                "rail",
+                "Saint-Sulpice, ",
+                endName = "Morges Gare"
             )
         )
     }

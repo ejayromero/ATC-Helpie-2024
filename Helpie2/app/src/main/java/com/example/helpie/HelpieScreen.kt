@@ -286,29 +286,37 @@ fun HelpieApp(
                     StepScreen(
                         onNext = {
                             viewModel.lauchNext()
-                            if (uiState.stepOngoing?.mode.toString() == "bus") {
+                            if (uiState.stepOngoing?.mode.toString() == "bus" || uiState.stepOngoing?.mode.toString() == "rail") {
                                 navController.navigate(HelpieScreen.InBus.name)
                             } else {
-                                navController.navigate(HelpieScreen.ReachStop.name)
+                                navController.navigate(HelpieScreen.ReachStop.name) //need to be replaced by the map for the walking step and then once reaching the stop we display this screen
                             }
                         },
                         modifier = Modifier.fillMaxSize()
                     )
                 }
 
+                composable(route = HelpieScreen.ReachStop.name) {
+                    ReachStopScreen(
+                        stepInfo = uiState.stepOngoing!! as walkInfo, //walkInfo tobe changed in the future
+                        modifier = Modifier.fillMaxSize(),
+                        onNext = {
+                            viewModel.lauchNext()
+                            navController.navigate(HelpieScreen.InBus.name)
+                        }
+                    )
+
+                }
                 composable(route = HelpieScreen.InBus.name) {
                     InBusScreen(
-                        stepInfo = uiState.stepOngoing!!,
+                        stepInfo = uiState.stepOngoing!! as transportInfo,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
 
-                composable(route = HelpieScreen.ReachStop.name) {
-                    ReachStopScreen(
-                        stepInfo = uiState.stepOngoing!!,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+
+
+
 
             }
 

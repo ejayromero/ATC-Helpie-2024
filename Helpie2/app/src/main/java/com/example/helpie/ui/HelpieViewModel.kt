@@ -77,6 +77,7 @@ class HelpieViewModel : ViewModel() {
                     currentState.copy(currentStep = stepFlow.first() + 1,
                         stepOngoing = travel)
                 }
+                Log.d("HelpieViewModel", "Type of stepOngoing: ${uiState.value.stepOngoing?.javaClass?.simpleName}")
             }
         }
         Log.d("trip", "done !")
