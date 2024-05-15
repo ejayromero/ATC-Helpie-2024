@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.ui.theme.AppTheme
+import android.provider.Settings
 
 
 class MainActivity : ComponentActivity() {
@@ -35,6 +36,14 @@ class MainActivity : ComponentActivity() {
 
     private fun requestPermissionsIfNecessary() {
         val permissionsToRequest = mutableListOf<String>()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            !Settings.canDrawOverlays(this) &&
+            !hasWindowPermission()
+        ) {
+            // Add window permission to the list of permissions to request
+            permissionsToRequest.add(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+        }
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -112,6 +121,12 @@ class MainActivity : ComponentActivity() {
         return false
     }
 
+    private fun hasWindowPermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return Settings.canDrawOverlays(this)
+        }
+        return true // For pre-Marshmallow devices, assume permission is granted
+    }
 
 
 }

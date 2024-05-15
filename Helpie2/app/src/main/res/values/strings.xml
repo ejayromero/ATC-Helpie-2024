@@ -13,6 +13,7 @@
     <string name="numero_du_proche_aidant">Numero du proche aidant</string>
     <string name="billet_cff_qrcode">billet cff QRCODE</string>
     <string name="commencer_un_trajet">Commencer un trajet</string>
+    <string name="Voyage_en_cours">Voyage en cours</string>
     <string name="appel">Appel</string>
     <string name="ligne_accessibilit_cff">Ligne accessibilité CFF</string>
     \\ destination

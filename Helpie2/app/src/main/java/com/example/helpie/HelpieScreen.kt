@@ -234,7 +234,7 @@ fun HelpieApp(
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
                         registeredLocation = uiState.registeredLocation,
-                        showDialog = uiState.editMode,
+                        showDialog = uiState.showDialog,
                         editMode = uiState.editMode,
                         onRequest = {
                             viewModel.request()
