@@ -23,7 +23,7 @@
         android:id="@+id/textMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Voyage en cours"
+        android:text="@string/Voyage_en_cours"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
