@@ -238,7 +238,7 @@ fun HelpieApp(
                         editMode = uiState.editMode,
                         onRequest = {
                             viewModel.request()
-                            //navController.navigate(HelpieScreen.TakeTicket.name)
+                            viewModel.summary()
                         },
                         setTarget = {
                             viewModel.setTarget(it)
@@ -259,16 +259,20 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.Summary.name) {
-                    SummaryScreen(
-                        onSummary = {
-                            viewModel.summary()
-                        },
-                        onNext = {
-                            navController.navigate(HelpieScreen.TakeTicket.name)
-                        },
-                        modifier = Modifier
-                            .fillMaxSize()
-                    )
+                    uiState.summary?.let { it1 ->
+                        SummaryScreen(
+                            targetLocation = uiState.targetLocation,
+                            summary = it1,
+                            onSummary = {
+                                viewModel.summary()
+                            },
+                            onNext = {
+                                navController.navigate(HelpieScreen.TakeTicket.name)
+                            },
+                            modifier = Modifier
+                                .fillMaxSize()
+                        )
+                    }
                 }
 
                 composable(route = HelpieScreen.TakeTicket.name) {
@@ -313,9 +317,6 @@ fun HelpieApp(
                         modifier = Modifier.fillMaxSize()
                     )
                 }
-
-
-
 
 
             }

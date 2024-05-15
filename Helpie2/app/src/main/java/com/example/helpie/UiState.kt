@@ -91,10 +91,10 @@ data class Localisation(
 )
 
 data class TripSummary(
-    val duration: String?,
-    val startTime: String,
-    val endTime: String,
-    val npSteps: Int
+    val duration: String? = null,
+    val startTime: String = "",
+    val endTime: String ="",
+    val npSteps: Int = 0
 )
 
 open class StepInfo(

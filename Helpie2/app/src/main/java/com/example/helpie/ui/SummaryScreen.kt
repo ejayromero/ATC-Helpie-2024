@@ -23,12 +23,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.helpie.Localisation
 import com.example.helpie.R
+import com.example.helpie.TripSummary
 import com.example.helpie.ui.theme.AppTheme
 
 @Composable
 fun SummaryScreen(
     modifier: Modifier = Modifier,
+    targetLocation: Localisation,
+    summary : TripSummary,
     onSummary: () -> Unit = {},
     onNext: () -> Unit = {},
 ) {
@@ -51,29 +55,38 @@ fun SummaryScreen(
                 )
         }
 
-        // 4 buttons for preselected destinations
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
 
-                Button(
-                    onClick = {
-                        onSummary()
-                    },
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-                    modifier = Modifier
-                        .height(dimensionResource(R.dimen.button_destination_height))
-                        .width(dimensionResource(R.dimen.button_destination_width)*2 + 30.dp),
-                )
-                {
-                    Text(
-                        text = "Résumé",
-                        fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() }
-                    )
-                }
+            // Display destination, end time, and number of steps
+            Text(
+                text = "Ta destination : ${targetLocation.destinationName ?: "Unknown"}",
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Normal,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(10.dp)
+            )
+
+            Text(
+                text = "Arrivé prévu à : ${summary.endTime}",
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Normal,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(10.dp)
+            )
+
+            Text(
+                text = "nombre d'étapes : ${summary.npSteps}",
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Normal,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(10.dp)
+            )
+
+
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.button_corner_radius)))
 
             Button(
@@ -101,6 +114,8 @@ fun SummaryScreen(
 fun SummaryPreview() {
     AppTheme {
         SummaryScreen(
+            targetLocation = Localisation(),
+            summary = TripSummary()
         )
     }
 }
