@@ -26,6 +26,7 @@ import com.example.helpie.ui.theme.AppTheme
 fun TakeTicketScreen(
     modifier: Modifier = Modifier,
     takeTicket: () -> Unit = {}
+
 ) {
 
     Box(

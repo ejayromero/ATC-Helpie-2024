@@ -129,6 +129,11 @@ class ForegroundService: Service(){
         }
     }
 
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        stopSelf() // Stop the service when the app's task is removed
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

@@ -111,6 +111,7 @@ class HelpieViewModel : ViewModel() {
         _uiState.update { currentState ->
             currentState.copy(targetLocation = target)
         }
+        setTripOngoing()
     }
 
     fun setLocalisationName(index: Int, name: String, registeredLocalisation: List<Localisation>) {
@@ -139,5 +140,10 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
+    fun setTripOngoing() {
+        _uiState.update { currentState ->
+            currentState.copy(tripOngoing = !currentState.tripOngoing)
+        }
+    }
 
 }
