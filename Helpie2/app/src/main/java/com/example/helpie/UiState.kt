@@ -43,6 +43,8 @@ data class UiState(
 
     val currentStep: Int = 0,
 
+    val remainingTime: Int = 0,
+
     val showDialog: Boolean = false,
 
     val registeredLocation: List<Localisation> = listOf(
@@ -100,25 +102,46 @@ data class TripSummary(
 open class StepInfo(
     open val mode: String? = null,
 ) {
+
+    private fun extractMinutesFromWalkDuration(durationString: String): String? {
+        val pattern = Regex("""PT(\d+)M""")
+        val matchResult = pattern.find(durationString)
+        return matchResult?.groupValues?.get(1)
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun calculateDuration(): String {
         return when (this) {
             is walkInfo -> {
-                Log.d("duration", "Duration: ${this.duration}")
-                this.duration.toString()
-            }
-            is transportInfo -> {
-                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
                 val start = LocalDateTime.parse(this.startTime, formatter)
                 val end = LocalDateTime.parse(this.endTime, formatter)
                 val duration = Duration.between(start, end)
-                Log.d("duration", "Duration: ${duration}")
-                duration.toString()
+
+                // Format the duration as an ISO 8601 string
+                val formattedDuration = formatDurationToMin(duration)
+                formattedDuration
+            }
+            is transportInfo -> {
+                val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+                val start = LocalDateTime.parse(this.startTime, formatter)
+                val end = LocalDateTime.parse(this.endTime, formatter)
+                val duration = Duration.between(start, end)
+
+                val formattedDuration = formatDurationToMin(duration)
+                formattedDuration
             }
             else -> {
-                "0"
+                "0"  // Default duration (fallback value)
             }
         }
+    }
+
+    // Helper function to format Duration to ISO 8601 string
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun formatDurationToMin(duration: Duration): String {
+        val seconds = duration.seconds
+        return (seconds.toInt()/60).toString()
     }
     fun logValues() {
         Log.d("trip", "Mode: $mode")

@@ -21,6 +21,8 @@ coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
+kotlinxDatetime = "0.4.1"
+kotlinxDatetimeVersion = "0.3.0"
 kotlinxSerializationJson = "1.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.8.2"
@@ -45,6 +47,7 @@ tickarooRetrofitConverter = "0.8.15"
 tickarooRetrofitConverterVersion = "0.8.13"
 timber = "5.0.1"
 timberVersion = "5.0.0"
+roomKtx = "2.6.1"
 
 [libraries]
 androidx-activity-compose-v180 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -86,6 +89,8 @@ koin-android-v222 = { module = "org.koin:koin-android", version.ref = "koinAndro
 koin-androidx-viewmodel = { module = "org.koin:koin-androidx-viewmodel", version.ref = "koinAndroidxViewmodel" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 koin-core-v330 = { module = "io.insert-koin:koin-core", version.ref = "koinCoreVersion" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-datetime-v030 = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetimeVersion" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 ojp-android = { module = "com.github.team-odmch:ojp-android", version.ref = "ojpAndroid" }
@@ -104,6 +109,7 @@ simple-xml = { module = "org.simpleframework:simple-xml", version.ref = "simpleX
 tikxml-processor = { module = "tickaroo.tikxml:processor", version.ref = "processor" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 timber-debug = { module = "com.jakewharton:timber-debug", version.ref = "timberVersion" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

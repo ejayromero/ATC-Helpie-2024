@@ -1,5 +1,7 @@
 package com.example.helpie.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,11 +31,13 @@ import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.walkInfo
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun InBusScreen(
+fun WaitingTransportScreen(
     modifier: Modifier = Modifier,
     stepInfo: transportInfo,
     onNext: () -> Unit = {},
+    time : Int
 ) {
 
     Column(
@@ -42,12 +46,6 @@ fun InBusScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CustomTextView(
-            text = "Le ${stepInfo.mode.toString()} arrive bientot, prépare toi à monter !",
-            color = Color.Black
-        )
-
-
         Box(
             modifier = Modifier
                 .width(250.dp)
@@ -61,10 +59,11 @@ fun InBusScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
 
-                val (iconResource, contentDescription) = when (stepInfo.mode.toString()) {
-                    "rail" -> Pair(R.drawable.rail_icon, "Train Icon")
+                val (iconResource, contentDescription) = when (stepInfo.mode) {
                     "bus" -> Pair(R.drawable.bus_icon, "Bus Icon")
-                    else -> throw IllegalArgumentException("Invalid mode: ${stepInfo.mode.toString()}")
+                    "rail" -> Pair(R.drawable.rail_icon, "Train Icon")
+                    "walk" -> Pair(R.drawable.rail_icon, "Walk Icon")
+                    else -> throw IllegalArgumentException("Invalid mode: ${stepInfo.mode}")
                 }
 
                 Image(
@@ -76,6 +75,8 @@ fun InBusScreen(
                         .fillMaxSize()
                 )
 
+
+                // Spacer to create space between icon and text
                 Spacer(modifier = Modifier.width(28.dp))
                 Column() {
                     // Bus line text
@@ -89,27 +90,31 @@ fun InBusScreen(
                         text = stepInfo.mode.toString(),
                         color = Color.White,
                         fontSize = 16.sp,
-                    )
+
+                        )
                 }
             }
         }
 
         CustomTextView(
-            text = stepInfo.startName.toString(),
+            text = "Le ${stepInfo.mode} arrive dans ${time} minutes",
             color = Color.Black,
         )
     }
 }
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun InBusScreenPreview() {
+fun WaitingTransportScreenPreview() {
     AppTheme {
-        InBusScreen(
+        WaitingTransportScreen(
             stepInfo = transportInfo(
-                startName = "Saint-Sulpice, Innovation Park",
-                endName = "Morges, Gare",
-                mode = "bus"
-            )
+                mode = "bus",
+                startName = "Morges",
+                startTime = "2022-12-12T12:00:00",
+                endTime = "2022-12-12T12:30:00"
+            ),
+            time = 5
         )
     }
 }
