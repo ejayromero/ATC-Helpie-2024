@@ -39,14 +39,6 @@ class ForegroundService: Service(){
     }
 
     private  fun start() {
-        // Check if the permission is already granted for window overlay
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            // Permission not granted, request it
-            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            return
-        }
 
         // Create an Intent to navigate back to the last activity before closing the app
         val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
@@ -68,8 +60,19 @@ class ForegroundService: Service(){
             .build()
 
         startForeground(1, notification)
+
+
     }
     private fun showFloatingWindow() {
+        // Check if the permission is already granted for window overlay
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            // Permission not granted, request it
+            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            return
+        }
+
         // Create WindowManager
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
@@ -94,7 +97,7 @@ class ForegroundService: Service(){
 
         // Add the view to the WindowManager
         windowManager.addView(floatingView, layoutParams)
-
+        /*
         // Set a click listener to the floating window
         floatingView.setOnClickListener {
             // Create an Intent to launch the main activity
@@ -105,6 +108,19 @@ class ForegroundService: Service(){
             startActivity(intent)
         }
 
+         */
+        // Set a click listener to the floating window
+        floatingView.setOnClickListener {
+            // Create an Intent to launch the app
+            val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
+            previousActivityIntent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            val pendingIntent = PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
+            try {
+                pendingIntent.send()
+            } catch (e: PendingIntent.CanceledException) {
+                e.printStackTrace()
+            }
+        }
         // Set a long click listener to the floating window to remove it
         floatingView.setOnLongClickListener {
             // Remove the floating window from the screen
