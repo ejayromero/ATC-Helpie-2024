@@ -297,12 +297,12 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.ReachStop.name) {
+                    viewModel.launchNext()
                     if (uiState.steps[uiState.currentStep] is walkInfo) {
                         ReachStopScreen(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
                             modifier = Modifier.fillMaxSize(),
                             onNext = {
-                                viewModel.launchNext()
                                 Log.d("type1", "Current step type : ${uiState.steps[uiState.currentStep].javaClass.simpleName}")
                                 navController.navigate(HelpieScreen.WaitingTransport.name)
                             }
@@ -313,6 +313,7 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.WaitingTransport.name) {
+                    viewModel.launchNext()
                     uiState.steps[uiState.currentStep].calculateDuration().let { duration ->
                         viewModel.setRemainingTime(duration)
                     }
