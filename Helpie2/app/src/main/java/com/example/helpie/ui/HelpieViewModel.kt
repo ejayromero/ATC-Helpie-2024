@@ -51,6 +51,7 @@ class HelpieViewModel : ViewModel() {
                     currentState -> currentState.copy(trip = trip,
                 currentStep = 0)
             }
+            summary()
         }
     }
 

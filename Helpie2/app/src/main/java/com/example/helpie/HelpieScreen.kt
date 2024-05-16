@@ -247,9 +247,8 @@ fun HelpieApp(
                         onRequest = {
                             runBlocking {
                                 viewModel.request()
+                                navController.navigate(HelpieScreen.Summary.name)
                             }
-                            viewModel.summary()
-                            navController.navigate(HelpieScreen.Summary.name)
                         },
                         setTarget = {
                             viewModel.setTarget(it)
@@ -289,26 +288,11 @@ fun HelpieApp(
                     TakeTicketScreen(
                         takeTicket = {
                             viewModel.setTicket(true)
-                            navController.navigate(HelpieScreen.Step.name)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            viewModel.launchNext()
+                            navController.navigate(HelpieScreen.ReachStop.name)
                         },
                         modifier = Modifier
                             .fillMaxSize()
-                    )
-                }
-                composable(route = HelpieScreen.Step.name) {
-                    StepScreen(
-                        onNext = {
-                            viewModel.launchNext()
-                            navController.navigate(HelpieScreen.ReachStop.name)
-                            if (uiState.steps[uiState.currentStep].mode.toString() == "bus" || uiState.steps[uiState.currentStep].mode.toString() == "rail") {
-                                navController.navigate(HelpieScreen.InBus.name)
-                            } else {
-                                navController.navigate(HelpieScreen.ReachStop.name) //need to be replaced by the map for the walking step and then once reaching the stop we display this screen
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize()
                     )
                 }
 
@@ -319,6 +303,7 @@ fun HelpieApp(
                             modifier = Modifier.fillMaxSize(),
                             onNext = {
                                 viewModel.launchNext()
+                                Log.d("type1", "Current step type : ${uiState.steps[uiState.currentStep].javaClass.simpleName}")
                                 navController.navigate(HelpieScreen.WaitingTransport.name)
                             }
                         )
@@ -334,9 +319,9 @@ fun HelpieApp(
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2) {
                             navController.navigate(HelpieScreen.InBus.name)
-                            Log.d("time", "${uiState.remainingTime}")
-                        }
+                            }
                     }
+                    Log.d("type1", "Current step type : ${uiState.steps[uiState.currentStep].javaClass.simpleName}")
                     WaitingTransportScreen(
                         onNext = {
                             viewModel.startUpdatingRemainingTime()
