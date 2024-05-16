@@ -289,6 +289,7 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(true)
                             viewModel.openLink(ctx,uiState.takeTicket)
+                            viewModel.launchNext()
                             navController.navigate(HelpieScreen.ReachStop.name)
                         },
                         modifier = Modifier
@@ -297,7 +298,6 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.ReachStop.name) {
-                    viewModel.launchNext()
                     if (uiState.steps[uiState.currentStep] is walkInfo) {
                         ReachStopScreen(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
