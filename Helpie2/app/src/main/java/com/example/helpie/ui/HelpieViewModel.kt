@@ -14,6 +14,7 @@ import com.example.helpie.UiState
 import com.example.helpie.tripPlanificator.extractTrip
 import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
+import com.example.helpie.walkInfo
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,10 +84,6 @@ class HelpieViewModel : ViewModel() {
 
     fun launchNext() {
         if (_uiState.value.currentStep < (_uiState.value.summary?.npSteps ?: 0)) {
-            val travel = _uiState.value.trip?.let { nextStep(it, _uiState.value.currentStep) }
-
-            // Logging each element of StepInfo
-            travel?.logValues()
             _uiState.update { currentState ->
                 currentState.copy(currentStep = _uiState.value.currentStep + 1,)
             }
