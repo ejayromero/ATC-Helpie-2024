@@ -247,10 +247,12 @@ fun HelpieApp(
                         showDialog = uiState.editMode,
                         editMode = uiState.editMode,
                         onRequest = {
+                            viewModel.setWait(true)
                             runBlocking {
                                 viewModel.request()
-                                navController.navigate(HelpieScreen.Summary.name)
                             }
+                            while (uiState.wait) { }
+                                navController.navigate(HelpieScreen.Summary.name)
                         },
                         setTarget = {
                             viewModel.setTarget(it)

@@ -124,7 +124,9 @@ fun SummaryScreen(
                                 "rail" -> Pair(R.drawable.rail_icon, "Train Icon")
                                 "bus" -> Pair(R.drawable.bus_icon, "Bus Icon")
                                 "walk" -> Pair(R.drawable.walking_icon, "walk Icon")
-                                else -> throw IllegalArgumentException("Invalid mode:")
+                                "metro" -> Pair(R.drawable.metro_icon, "metro Icon")
+                                "boat" -> Pair(R.drawable.boat_icon, "metro Icon")
+                                else -> Pair(R.drawable.travel_icon, "transport Icon")
                             }
 
                             Image(

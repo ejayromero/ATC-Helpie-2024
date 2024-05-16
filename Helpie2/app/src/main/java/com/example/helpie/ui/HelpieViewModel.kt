@@ -6,23 +6,16 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
 import com.example.helpie.UiState
-import com.example.helpie.transportInfo
-import com.example.helpie.tripPlanificator.OjpSdk
-import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import com.example.helpie.tripPlanificator.extractTrip
 import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
-import com.example.helpie.walkInfo
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,6 +49,12 @@ class HelpieViewModel : ViewModel() {
     }
 
     fun summary() {
+
+        _uiState.update { currentState ->
+            currentState.copy(summary = null,
+                steps = listOf())
+        }
+
         val sum = _uiState.value.trip?.let { tripSummary(it) }
         var i = 0
         val steps = mutableListOf<StepInfo>()
@@ -76,7 +75,8 @@ class HelpieViewModel : ViewModel() {
         }
         _uiState.update { currentState ->
             currentState.copy(summary = sum,
-                steps = steps)
+                steps = steps,
+                wait = false)
         }
     }
 
@@ -96,6 +96,12 @@ class HelpieViewModel : ViewModel() {
     fun setTicket(isTicket: Boolean) {
         _uiState.update { currentState ->
             currentState.copy(ticket = isTicket)
+        }
+    }
+
+    fun setWait(wait: Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(wait = wait)
         }
     }
 
