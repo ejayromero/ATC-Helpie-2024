@@ -161,6 +161,7 @@ class HelpieViewModel : ViewModel() {
         _uiState.update { currentState ->
             currentState.copy(targetLocation = target)
         }
+        setTripOngoing()
     }
 
     fun setLocalisationName(index: Int, name: String, registeredLocalisation: List<Localisation>) {
@@ -193,7 +194,7 @@ class HelpieViewModel : ViewModel() {
     init {
         startUpdatingRemainingTime()
     }
-
+   
     @RequiresApi(Build.VERSION_CODES.O)
     fun startUpdatingRemainingTime() {
         timerJob?.cancel() // Cancel previous job if any
@@ -225,6 +226,12 @@ class HelpieViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         timerJob?.cancel() // Cancel the timer job when ViewModel is cleared
+    }
+    
+    fun setTripOngoing() {
+        _uiState.update { currentState ->
+            currentState.copy(tripOngoing = !currentState.tripOngoing)
+        }
     }
 
 }
