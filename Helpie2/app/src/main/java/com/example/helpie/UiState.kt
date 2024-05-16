@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
+import com.google.android.gms.maps.model.LatLng
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.Duration
@@ -50,6 +51,8 @@ data class UiState(
     val remainingTime: Int = 0,
 
     val showDialog: Boolean = false,
+
+    val currentLocation: LatLng = LatLng(0.0,0.0),
 
     val registeredLocation: List<Localisation> = listOf(
         Localisation(
