@@ -7,38 +7,28 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.Localisation
-import com.example.helpie.TripSummary
+import com.example.helpie.StepInfo
 import com.example.helpie.UiState
-import com.example.helpie.tripPlanificator.OjpSdk
-import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import com.example.helpie.tripPlanificator.extractTrip
 import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
 
 class HelpieViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
-    private val tripFlow: Flow<TripDto?> = _uiState.map { it.trip }
-    private val totalFlow: Flow<TripSummary?> = _uiState.map { it.summary }
-    private val stepFlow: Flow<Int> = _uiState.map { it.currentStep }
-    private val plannerFlow: Flow<OjpSdk> = _uiState.map { it.planner }
-    private val targetFlow: Flow<Localisation> = _uiState.map { it.targetLocation }
     fun request() {
         Log.d("helpie","ojpSdk")
         viewModelScope.launch {
-            val planner = plannerFlow.first() // Accessing the planner from the Flow
+            val planner = _uiState.value.planner // Accessing the planner from the Flow
 
-            val response = planner.tripRequest(targetFlow.first())
+            val response = planner.tripRequest(_uiState.value.targetLocation)
 
             val trip = extractTrip(response)
             Log.d("helpie","done !")
@@ -50,36 +40,41 @@ class HelpieViewModel : ViewModel() {
     }
 
     fun summary() {
-        viewModelScope.launch {
-            val sum = tripFlow.first()?.let { tripSummary(it) }
+        val sum = _uiState.value.trip?.let { tripSummary(it) }
+        var i = 0
+        val steps = mutableListOf<StepInfo>()
 
-            if (sum != null) {
-                Log.d("summary", "Duration: ${sum.duration}")
-                Log.d("summary", "Start Time: ${sum.startTime}")
-                Log.d("summary", "End Time: ${sum.endTime}")
-                Log.d("summary", "Number of Steps: ${sum.npSteps}")
-            }
+        if (sum != null) {
+            Log.d("summary", "Duration: ${sum.duration}")
+            Log.d("summary", "Start Time: ${sum.startTime}")
+            Log.d("summary", "End Time: ${sum.endTime}")
+            Log.d("summary", "Number of Steps: ${sum.npSteps}")
 
-            _uiState.update { currentState ->
-                currentState.copy(summary = sum)
+            while (i < sum.npSteps) {
+                val travel = _uiState.value.trip?.let { nextStep(it, i) }
+                if (travel != null) {
+                    steps.add(travel)
+                }
+                i += 1
             }
+        }
+        _uiState.update { currentState ->
+            currentState.copy(summary = sum,
+                steps = steps)
         }
     }
 
     fun lauchNext() {
-        viewModelScope.launch {
-            if (stepFlow.first() < (totalFlow.first()?.npSteps ?: 0)) {
-                val travel = tripFlow.first()?.let { nextStep(it, stepFlow.first()) }
+        if (_uiState.value.currentStep < _uiState.value.steps.size) {
+            // Logging each element of StepInfo
+            _uiState.value.steps[_uiState.value.currentStep].logValues()
 
-                // Logging each element of StepInfo
-                travel?.logValues()
-                _uiState.update { currentState ->
-                    currentState.copy(currentStep = stepFlow.first() + 1,
-                        stepOngoing = travel)
-                }
-                Log.d("HelpieViewModel", "Type of stepOngoing: ${uiState.value.stepOngoing?.javaClass?.simpleName}")
+            _uiState.update { currentState ->
+                currentState.copy(currentStep = _uiState.value.currentStep + 1)
             }
-        }
+
+            Log.d("HelpieViewModel", "Type of stepOngoing: ${uiState.value.steps[_uiState.value.currentStep].javaClass.simpleName}")
+            }
         Log.d("trip", "done !")
     }
 

@@ -109,7 +109,7 @@ fun SummaryScreen(
         }
     }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SummaryPreview() {
     AppTheme {

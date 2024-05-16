@@ -54,6 +54,7 @@ import com.example.helpie.ui.SummaryScreen
 import com.example.helpie.ui.TakeTicketScreen
 import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.theme.AppTheme
+import kotlinx.coroutines.runBlocking
 
 
 enum class HelpieScreen(val next:String) {
@@ -237,12 +238,14 @@ fun HelpieApp(
                         showDialog = uiState.editMode,
                         editMode = uiState.editMode,
                         onRequest = {
-                            viewModel.request()
+                            runBlocking {
+                                viewModel.request()
+                            }
                             viewModel.summary()
+                            navController.navigate(HelpieScreen.Summary.name)
                         },
                         setTarget = {
                             viewModel.setTarget(it)
-                            navController.navigate(HelpieScreen.Summary.name)
                         },
                         setLocalisationName = { index, name, _ ->
                             viewModel.setLocalisationName(index, name, uiState.registeredLocation)
@@ -267,7 +270,6 @@ fun HelpieApp(
                                 viewModel.summary()
                             },
                             onNext = {
-                                viewModel.lauchNext()
                                 navController.navigate(HelpieScreen.TakeTicket.name)
                             },
                             modifier = Modifier
@@ -282,6 +284,7 @@ fun HelpieApp(
                             viewModel.setTicket(true)
                             navController.navigate(HelpieScreen.Step.name)
                             viewModel.openLink(ctx,uiState.takeTicket)
+                            viewModel.lauchNext()
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -291,7 +294,7 @@ fun HelpieApp(
                     StepScreen(
                         onNext = {
                             viewModel.lauchNext()
-                            if (uiState.stepOngoing?.mode.toString() == "bus" || uiState.stepOngoing?.mode.toString() == "rail") {
+                            if (uiState.steps[uiState.currentStep].mode.toString() == "bus" || uiState.steps[uiState.currentStep].mode.toString() == "rail") {
                                 navController.navigate(HelpieScreen.InBus.name)
                             } else {
                                 navController.navigate(HelpieScreen.ReachStop.name) //need to be replaced by the map for the walking step and then once reaching the stop we display this screen
@@ -303,7 +306,7 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.ReachStop.name) {
                     ReachStopScreen(
-                        stepInfo = uiState.stepOngoing!! as walkInfo, //walkInfo tobe changed in the future
+                        stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo tobe changed in the future
                         modifier = Modifier.fillMaxSize(),
                         onNext = {
                             viewModel.lauchNext()
@@ -314,7 +317,7 @@ fun HelpieApp(
                 }
                 composable(route = HelpieScreen.InBus.name) {
                     InBusScreen(
-                        stepInfo = uiState.stepOngoing!! as transportInfo,
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
