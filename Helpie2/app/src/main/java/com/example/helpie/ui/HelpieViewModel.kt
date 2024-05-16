@@ -96,7 +96,7 @@ class HelpieViewModel : ViewModel() {
 
         val dir = _uiState.value.steps[_uiState.value.currentStep] as walkInfo
 
-        val destination = "${dir.endLatitude},${dir.endLatitude}"
+        val destination = "${dir.endLatitude},${dir.endLongitude}"
 
         // Create a URI for the Google Maps app with satellite view
         val gmmIntentUri: Uri = Uri.parse("google.navigation:q=$destination&mode=w&t=s")

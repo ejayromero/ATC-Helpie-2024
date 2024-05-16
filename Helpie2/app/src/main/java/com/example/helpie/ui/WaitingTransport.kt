@@ -64,7 +64,7 @@ fun WaitingTransportScreen(
                     "rail" -> Pair(R.drawable.rail_icon, "Train Icon")
                     "walk" -> Pair(R.drawable.walking_icon, "Walk Icon")
                     "metro" -> Pair(R.drawable.metro_icon, "metro Icon")
-                    "boat" -> Pair(R.drawable.boat_icon, "metro Icon")
+                    "boat" -> Pair(R.drawable.boat_icon, "boat Icon")
                     else -> Pair(R.drawable.travel_icon, "transport Icon")
                 }
 

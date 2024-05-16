@@ -472,6 +472,13 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
+                        var retour = "retour"
+                        var next = "suivant"
+                        if (currentScreen == HelpieScreen.ReachStop.name) {
+                            retour = "Non"
+                            next = "Oui"
+
+                        }
                             if((currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Step.name) and (navController.previousBackStackEntry != null)){
                             Button(
                                 onClick = {
@@ -482,7 +489,7 @@ fun HelpieApp(
                             )
                             {
                                 Text(
-                                    text = "Retour",
+                                    text = retour,
                                     modifier = Modifier
                                         .padding(16.dp),
                                     textAlign = TextAlign.Center,
@@ -504,7 +511,7 @@ fun HelpieApp(
                                 )
                                 {
                                     Text(
-                                        text = "suivant",
+                                        text = next,
                                         modifier = Modifier
                                             .padding(16.dp),
                                         textAlign = TextAlign.Center,
