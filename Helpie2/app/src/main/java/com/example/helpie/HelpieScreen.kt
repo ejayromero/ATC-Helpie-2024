@@ -310,14 +310,12 @@ fun HelpieApp(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
                             modifier = Modifier.fillMaxSize(),
                             onNext = {
-                                runBlocking {
                                     viewModel.launchNext()
                                     Log.d(
                                         "type1",
                                         "Current step type : ${uiState.steps[uiState.currentStep].javaClass.simpleName}"
                                     )
                                     navController.navigate(HelpieScreen.WaitingTransport.name)
-                                }
                             }
                         )
                     } else {

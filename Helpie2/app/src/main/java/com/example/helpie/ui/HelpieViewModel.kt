@@ -85,7 +85,7 @@ class HelpieViewModel : ViewModel() {
     fun launchNext() {
         if (_uiState.value.currentStep < (_uiState.value.summary?.npSteps ?: 0)) {
             _uiState.update { currentState ->
-                currentState.copy(currentStep = _uiState.value.currentStep + 1,)
+                currentState.copy(currentStep = _uiState.value.currentStep + 1)
             }
         }
         Log.d("trip", "done !")
