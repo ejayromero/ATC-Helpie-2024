@@ -52,7 +52,7 @@ data class UiState(
 
     val showDialog: Boolean = false,
 
-    val currentLocation: LatLng = LatLng(0.0,0.0),
+    val currentLocation: LatLng = LatLng(46.51912267765663,6.566314197944148),
 
     val registeredLocation: List<Localisation> = listOf(
         Localisation(

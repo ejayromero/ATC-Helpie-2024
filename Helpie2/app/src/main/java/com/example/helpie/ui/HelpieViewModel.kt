@@ -203,7 +203,14 @@ class HelpieViewModel : ViewModel() {
         timerJob = viewModelScope.launch {
             while (true) {
                 delay(30000) // Update every 30 seconds
-                uiState.value.steps[uiState.value.currentStep].let { setRemainingTime(it.calculateDuration(), done) } // Update remainingTime
+                if (uiState.value.steps.size > 0) {
+                    uiState.value.steps[uiState.value.currentStep].let {
+                        setRemainingTime(
+                            it.calculateDuration(),
+                            done
+                        )
+                    }
+                }// Update remainingTime
             }
         }
     }
