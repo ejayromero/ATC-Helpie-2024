@@ -7,6 +7,7 @@ import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import kotlinx.datetime.Instant
 import org.joda.time.LocalDate
+import com.google.android.gms.maps.model.LatLng
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.Duration
@@ -55,6 +56,8 @@ data class UiState(
 
     val showDialog: Boolean = false,
 
+    val currentLocation: LatLng = LatLng(46.51912267765663,6.566314197944148),
+
     val registeredLocation: List<Localisation> = listOf(
         Localisation(
             destinationName = "Maison",
@@ -71,14 +74,22 @@ data class UiState(
         ),
         // Destination 3
         Localisation(
-            destinationName = "EPFL plasma center",
-            destinationAddress = "Address",
-            longitude = 6.564690632302699,
-            latitude = 46.51727585320471
+            destinationName = "La grange de Dorigny",
+            destinationAddress = "Grange Dorigny, Quartier, 1015 Lausanne",
+            longitude = 6.581891310828132,
+            latitude = 46.52425828710366
         ),
         // Destination 4
         Localisation(
-            destinationName = "EPFL plasma center",
+            destinationName = "Parc scientifique EPFL",
+            destinationAddress = "EPFL Innovation Park, 1015 Lausanne",
+            longitude =  6.5637746049080805,
+            latitude = 46.51666499690354
+        ),
+
+        // Destination input
+        Localisation(
+            destinationName = "Ta destination",
             destinationAddress = "Address",
             longitude = 6.564690632302699,
             latitude = 46.51727585320471

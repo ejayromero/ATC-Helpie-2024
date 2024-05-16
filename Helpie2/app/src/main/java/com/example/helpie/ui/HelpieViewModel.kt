@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.helpie.HelpieScreen
 import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
 import com.example.helpie.UiState
@@ -16,6 +17,7 @@ import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
 import com.example.helpie.tripPlanificator.utils.instantToLocalDate
 import com.example.helpie.walkInfo
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,15 +41,13 @@ class HelpieViewModel : ViewModel() {
         viewModelScope.launch {
             val planner = _uiState.value.planner // Accessing the planner from the Flow
 
-            val response = planner.tripRequest(_uiState.value.targetLocation)
+            val response = planner.tripRequest(_uiState.value.currentLocation,_uiState.value.targetLocation)
 
             val trip = extractTrip(response)
-            Log.d("helpie", "done !")
-            _uiState.update { currentState ->
-                currentState.copy(
-                    trip = trip,
-                    currentStep = 0
-                )
+            Log.d("helpie","done !")
+            _uiState.update {
+                    currentState -> currentState.copy(trip = trip,
+                currentStep = -1)
             }
             summary()
         }
@@ -89,20 +89,32 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    fun launchNext() {
+    fun launchNext(): String {
+
         if (_uiState.value.currentStep < (_uiState.value.summary?.npSteps ?: 0)) {
+
+            var next = _uiState.value.currentStep +1
             _uiState.update { currentState ->
-                currentState.copy(currentStep = _uiState.value.currentStep + 1)
+                currentState.copy(currentStep = next)
             }
+            return if (_uiState.value.steps[next] is  walkInfo) {
+                Log.d("trip", "walk !")
+                HelpieScreen.Walk.name
+            } else {
+                Log.d("trip", "transport !")
+                HelpieScreen.WaitingTransport.name
+            }
+
         }
-        _uiState.value.steps[_uiState.value.currentStep].logValues()
+        Log.d("trip", "done !")
+        return HelpieScreen.Final.name
     }
 
     fun launchGoogleMaps(context: Context) {
 
         val dir = _uiState.value.steps[_uiState.value.currentStep] as walkInfo
 
-        val destination = "${dir.endLatitude},${dir.endLatitude}"
+        val destination = "${dir.endLatitude},${dir.endLongitude}"
 
         // Create a URI for the Google Maps app with satellite view
         val gmmIntentUri: Uri = Uri.parse("google.navigation:q=$destination&mode=w&t=s")
@@ -207,7 +219,6 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-
     fun setRemainingTime(point: String) {
         _uiState.update { currentState ->
             currentState.copy(timeNeeded = point)
@@ -241,3 +252,12 @@ class HelpieViewModel : ViewModel() {
     }
 }
 
+    fun updateCurrentLocation(current: LatLng) {
+        _uiState.update { currentState ->
+            currentState.copy(currentLocation = current)
+        }
+        Log.d("LOCATION", "Location has been updated")
+    }
+
+
+}

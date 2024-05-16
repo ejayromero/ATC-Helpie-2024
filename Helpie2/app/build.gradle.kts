@@ -114,5 +114,14 @@ dependencies {
     implementation(libs.kotlinx.datetime.v030)
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
 
+    // Dependency to include Maps SDK for Android
+    implementation(libs.play.services.maps)
+    // add location services
+    implementation(libs.play.services.location)
+    //add place and fragments services
+    implementation(libs.places)
+    implementation(libs.androidx.fragment.ktx)
+
+
 
 }

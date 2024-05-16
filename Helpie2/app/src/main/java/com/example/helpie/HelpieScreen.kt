@@ -58,6 +58,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.helpie.ui.DestinationScreen
+import com.example.helpie.ui.FinalScreen
 import com.example.helpie.ui.HelpScreen
 import com.example.helpie.ui.HelpieViewModel
 import com.example.helpie.ui.InBusScreen
@@ -72,8 +73,9 @@ import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.WaitingTransportScreen
 import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-
+import okhttp3.internal.wait
 
 
 enum class HelpieScreen(val next:String) {
@@ -84,6 +86,7 @@ enum class HelpieScreen(val next:String) {
     Summary(next = ""),
     Destination(next = ""),
     Start(next = ""),
+    Final(next = ""),
     ReachStop(next = "WaitingTransport"),
     InBus(next = "JourneyInTransport"),
     Walk(next = ""),
@@ -305,6 +308,16 @@ fun HelpieApp(
                     )
                 }
 
+                composable(route = HelpieScreen.Final.name) {
+                    FinalScreen(
+                        recommencer = {
+                            navController.navigate(HelpieScreen.Start.name)
+                        },
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
                         registeredLocation = uiState.registeredLocation,
@@ -358,8 +371,7 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(true)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            viewModel.launchNext()
-                            navController.navigate(HelpieScreen.ReachStop.name)
+                            navController.navigate(viewModel.launchNext())
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -368,18 +380,14 @@ fun HelpieApp(
 
 
                 composable(route = HelpieScreen.ReachStop.name) {
-                    if (uiState.steps[uiState.currentStep-1] is walkInfo) {
+                    if (uiState.steps[uiState.currentStep] is walkInfo) {
                         ReachStopScreen(
-                            stepInfo = uiState.steps[uiState.currentStep-1] as walkInfo, //walkInfo to be changed in the future
+                            stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
                             modifier = Modifier.fillMaxSize(),
                             onNext = {
-                                viewModel.launchNext()
-                                navController.navigate(HelpieScreen.WaitingTransport.name)
+                                navController.navigate(viewModel.launchNext())
                             }
                         )
-                    } else {
-                        //should never go in this loop
-                        navController.navigate(HelpieScreen.InBus.name)
                     }
                 }
 
@@ -457,6 +465,13 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
+                        var retour = "retour"
+                        var next = "suivant"
+                        if (currentScreen == HelpieScreen.ReachStop.name) {
+                            retour = "Non"
+                            next = "Oui"
+
+                        }
                             if((currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Step.name) and (navController.previousBackStackEntry != null)){
                             Button(
                                 onClick = {
@@ -467,7 +482,7 @@ fun HelpieApp(
                             )
                             {
                                 Text(
-                                    text = "Retour",
+                                    text = retour,
                                     modifier = Modifier
                                         .padding(16.dp),
                                     textAlign = TextAlign.Center,
@@ -489,7 +504,7 @@ fun HelpieApp(
                                 )
                                 {
                                     Text(
-                                        text = "suivant",
+                                        text = next,
                                         modifier = Modifier
                                             .padding(16.dp),
                                         textAlign = TextAlign.Center,
@@ -506,6 +521,7 @@ fun HelpieApp(
             }
         }
 }
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
