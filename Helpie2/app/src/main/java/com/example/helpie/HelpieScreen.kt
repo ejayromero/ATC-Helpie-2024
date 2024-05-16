@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -138,13 +139,14 @@ fun HelpieApp(
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ) {
             }
+            if (currentScreen != HelpieScreen.Help.name) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
                     .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
             ) {
-            if (currentScreen != HelpieScreen.Help.name) {
+
                 Button(
                     onClick = {
                         navController.navigate(HelpieScreen.Help.name)
@@ -270,19 +272,20 @@ fun HelpieApp(
                 composable(route = HelpieScreen.Summary.name) {
                     uiState.summary?.let { it1 ->
                         SummaryScreen(
+                            modifier = Modifier
+                                .fillMaxSize(),
                             targetLocation = uiState.targetLocation,
                             summary = it1,
-                            onSummary = {
-                                viewModel.summary()
-                            },
+                            steps = uiState.steps,
                             onNext = {
                                 navController.navigate(HelpieScreen.TakeTicket.name)
-                            },
-                            modifier = Modifier
-                                .fillMaxSize()
+                            }
                         )
                     }
+
+
                 }
+
 
                 composable(route = HelpieScreen.TakeTicket.name) {
                     TakeTicketScreen(
@@ -340,12 +343,16 @@ fun HelpieApp(
                 }
             }
 
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Bottom,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                        Row( horizontalArrangement = Arrangement.Center,
+                    Spacer(modifier = Modifier.height(20.dp))
+
+
+                    Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
                             if((currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Step.name) and (navController.previousBackStackEntry != null)){
@@ -394,9 +401,10 @@ fun HelpieApp(
                 }
                     Spacer(modifier = Modifier.height(20.dp))
                 }
+            }
         }
-    }
 }
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
