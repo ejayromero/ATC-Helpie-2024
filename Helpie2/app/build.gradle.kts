@@ -110,6 +110,8 @@ dependencies {
 
     implementation(libs.gson)
 
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.datetime.v030)
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
 
 

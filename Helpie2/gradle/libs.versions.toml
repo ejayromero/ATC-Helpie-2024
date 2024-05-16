@@ -48,6 +48,7 @@ tickarooRetrofitConverterVersion = "0.8.13"
 timber = "5.0.1"
 timberVersion = "5.0.0"
 roomKtx = "2.6.1"
+composePreviewRenderer = "0.0.1-alpha01"
 
 [libraries]
 androidx-activity-compose-v180 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -110,6 +111,7 @@ tikxml-processor = { module = "tickaroo.tikxml:processor", version.ref = "proces
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 timber-debug = { module = "com.jakewharton:timber-debug", version.ref = "timberVersion" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+compose-preview-renderer = { group = "com.android.tools.compose", name = "compose-preview-renderer", version.ref = "composePreviewRenderer" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

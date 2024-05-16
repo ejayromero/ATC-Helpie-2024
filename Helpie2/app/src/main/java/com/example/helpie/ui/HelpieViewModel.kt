@@ -192,35 +192,33 @@ class HelpieViewModel : ViewModel() {
     private var timerJob: Job? = null
     private var startTime: Instant? = null
     init {
-        startUpdatingRemainingTime()
+        startUpdatingRemainingTime(done = false)
     }
    
     @RequiresApi(Build.VERSION_CODES.O)
-    fun startUpdatingRemainingTime() {
+    fun startUpdatingRemainingTime(done: Boolean) {
         timerJob?.cancel() // Cancel previous job if any
 
         timerJob = viewModelScope.launch {
             while (true) {
                 delay(30000) // Update every 30 seconds
-                uiState.value.steps[uiState.value.currentStep].let { setRemainingTime(it.calculateDuration()) } // Update remainingTime
+                uiState.value.steps[uiState.value.currentStep].let { setRemainingTime(it.calculateDuration(), done) } // Update remainingTime
             }
         }
     }
-    fun setRemainingTime(time: String) {
-        try {
-            var remainingTimeInMinutes = 0
-            if (startTime == null) {
-                    startTime = Clock.System.now() // Start the timer at the first call
-            }
-            val elapsedMinutes = (Clock.System.now().epochSeconds - startTime!!.epochSeconds) / 60
-            remainingTimeInMinutes = max(0, time.toInt() - elapsedMinutes.toInt())
-            _uiState.update { currentState -> currentState.copy(remainingTime = remainingTimeInMinutes)
-            }
-        } catch (e: DateTimeParseException) {
-            println("Error parsing Instant from input string: $time")
-            e.printStackTrace()
-            // Handle the parsing error (e.g., log, show error message, etc.)
+    fun setRemainingTime(time: String, done: Boolean = false) {
+        if(done) {
+            startTime = null
         }
+        var remainingTimeInMinutes = 0
+        if (startTime == null) {
+            startTime = Clock.System.now() // Start the timer at the first call
+        }
+        val elapsedMinutes = (Clock.System.now().epochSeconds - startTime!!.epochSeconds) / 60
+        remainingTimeInMinutes = max(0, time.toInt() - elapsedMinutes.toInt())
+        _uiState.update { currentState -> currentState.copy(remainingTime = remainingTimeInMinutes)
+        }
+        Log.d("remainingTime1", "Remaining time: $remainingTimeInMinutes")
     }
 
     override fun onCleared() {
