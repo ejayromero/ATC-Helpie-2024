@@ -267,6 +267,7 @@ fun HelpieApp(
                                 viewModel.summary()
                             },
                             onNext = {
+                                viewModel.lauchNext()
                                 navController.navigate(HelpieScreen.TakeTicket.name)
                             },
                             modifier = Modifier
