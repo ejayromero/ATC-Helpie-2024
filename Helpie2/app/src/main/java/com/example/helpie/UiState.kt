@@ -39,9 +39,9 @@ data class UiState(
 
     val summary: TripSummary? = null,
 
-    val currentStep: Int = 0,
+    val steps : List<StepInfo> = listOf(),
 
-    val stepOngoing: StepInfo? = StepInfo(),
+    val currentStep: Int = 0,
 
     val showDialog: Boolean = false,
 
