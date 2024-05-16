@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.helpie.HelpieScreen
 import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
 import com.example.helpie.UiState
@@ -45,7 +46,7 @@ class HelpieViewModel : ViewModel() {
             Log.d("helpie","done !")
             _uiState.update {
                     currentState -> currentState.copy(trip = trip,
-                currentStep = 0)
+                currentStep = -1)
             }
             summary()
         }
@@ -83,13 +84,22 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    fun launchNext() {
+    fun launchNext(): String {
+
         if (_uiState.value.currentStep < (_uiState.value.summary?.npSteps ?: 0)) {
             _uiState.update { currentState ->
                 currentState.copy(currentStep = _uiState.value.currentStep + 1)
             }
+            if (_uiState.value.steps[_uiState.value.currentStep] is  walkInfo) {
+                return HelpieScreen.Walk.name
+            } else {
+                return HelpieScreen.WaitingTransport.name
+            }
+
         }
         Log.d("trip", "done !")
+        return HelpieScreen.Final.name
+
     }
 
     fun launchGoogleMaps(context: Context) {
@@ -246,5 +256,6 @@ class HelpieViewModel : ViewModel() {
         }
         Log.d("LOCATION", "Location has been updated")
     }
+
 
 }

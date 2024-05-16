@@ -55,7 +55,7 @@ fun JourneyInTransportScreen(
                     "boat" -> Pair(R.drawable.boat_icon, "boat Icon")
                     else -> Pair(R.drawable.travel_icon, "transport Icon")
                 }
-                
+
 
                 Image(
                     painter = painterResource(id = iconResource),

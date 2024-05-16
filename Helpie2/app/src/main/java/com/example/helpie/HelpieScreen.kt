@@ -58,6 +58,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.helpie.ui.DestinationScreen
+import com.example.helpie.ui.FinalScreen
 import com.example.helpie.ui.HelpScreen
 import com.example.helpie.ui.HelpieViewModel
 import com.example.helpie.ui.InBusScreen
@@ -85,6 +86,7 @@ enum class HelpieScreen(val next:String) {
     Summary(next = ""),
     Destination(next = ""),
     Start(next = ""),
+    Final(next = ""),
     ReachStop(next = "WaitingTransport"),
     InBus(next = "JourneyInTransport"),
     Walk(next = ""),
@@ -311,6 +313,16 @@ fun HelpieApp(
                     )
                 }
 
+                composable(route = HelpieScreen.Final.name) {
+                    FinalScreen(
+                        recommencer = {
+                            navController.navigate(HelpieScreen.Start.name)
+                        },
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
                         registeredLocation = uiState.registeredLocation,
@@ -364,7 +376,7 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(true)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            navController.navigate(HelpieScreen.Walk.name)
+                            navController.navigate(viewModel.launchNext())
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -378,12 +390,7 @@ fun HelpieApp(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
                             modifier = Modifier.fillMaxSize(),
                             onNext = {
-                                runBlocking {
-                                    viewModel.launchNext()
-                                    delay(1000)
-
-                                }
-                                navController.navigate(HelpieScreen.WaitingTransport.name)
+                                navController.navigate(viewModel.launchNext())
                             }
                         )
                     } else {
@@ -393,7 +400,7 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.WaitingTransport.name) {
-                    uiState.steps[1].calculateDuration().let { duration ->
+                    uiState.steps[uiState.currentStep].calculateDuration().let { duration ->
                         viewModel.setRemainingTime(duration, timerDone)
                     }
                     Log.d("RemainingTime", "${uiState.remainingTime}")
@@ -408,14 +415,14 @@ fun HelpieApp(
                             viewModel.startUpdatingRemainingTime(timerDone)
                                  },
                         time = uiState.remainingTime,
-                        stepInfo = uiState.steps[1] as transportInfo,
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                     )
 
                 }
 
                 composable(route = HelpieScreen.InBus.name) {
                     InBusScreen(
-                        stepInfo = uiState.steps[1] as transportInfo,
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                         modifier = Modifier.fillMaxSize(),
                         onNext = {
                             navController.navigate(HelpieScreen.JourneyInTransport.name)
@@ -424,7 +431,7 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.JourneyInTransport.name) {
-                    uiState.steps[1].calculateDuration().let { duration ->
+                    uiState.steps[uiState.currentStep].calculateDuration().let { duration ->
                         viewModel.setRemainingTime(duration, timerDone)
                     }
                     LaunchedEffect(uiState.remainingTime) {
@@ -436,7 +443,7 @@ fun HelpieApp(
                         onNext = {
                             viewModel.startUpdatingRemainingTime(timerDone)
                         },
-                        stepInfo = uiState.steps[1] as transportInfo,
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                         modifier = Modifier.fillMaxSize(),
                         time = uiState.remainingTime
                     )
@@ -444,7 +451,7 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.OutBus.name) {
                     OutBusScreen(
-                        stepInfo = uiState.steps[1] as transportInfo,
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
@@ -528,6 +535,7 @@ fun HelpieApp(
             }
         }
 }
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
