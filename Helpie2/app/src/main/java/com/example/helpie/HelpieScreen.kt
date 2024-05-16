@@ -291,7 +291,7 @@ fun HelpieApp(
                             viewModel.setTicket(true)
                             navController.navigate(HelpieScreen.Step.name)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            viewModel.lauchNext()
+                            viewModel.launchNext()
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -328,10 +328,9 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.WaitingTransport.name) {
-                    uiState.stepOngoing?.calculateDuration()?.let { duration ->
+                    uiState.steps[uiState.currentStep].calculateDuration().let { duration ->
                         viewModel.setRemainingTime(duration)
                     }
-                    Log.d("test2", "Type of stepOngoing: ${uiState.stepOngoing?.javaClass?.simpleName}")
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2) {
                             navController.navigate(HelpieScreen.InBus.name)
