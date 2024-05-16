@@ -67,14 +67,22 @@ data class UiState(
         ),
         // Destination 3
         Localisation(
-            destinationName = "EPFL plasma center",
-            destinationAddress = "Address",
-            longitude = 6.564690632302699,
-            latitude = 46.51727585320471
+            destinationName = "La grange de Dorigny",
+            destinationAddress = "Grange Dorigny, Quartier, 1015 Lausanne",
+            longitude = 6.581891310828132,
+            latitude = 46.52425828710366
         ),
         // Destination 4
         Localisation(
-            destinationName = "EPFL plasma center",
+            destinationName = "Parc scientifique EPFL",
+            destinationAddress = "EPFL Innovation Park, 1015 Lausanne",
+            longitude =  6.5637746049080805,
+            latitude = 46.51666499690354
+        ),
+
+        // Destination input
+        Localisation(
+            destinationName = "Ta destination",
             destinationAddress = "Address",
             longitude = 6.564690632302699,
             latitude = 46.51727585320471
