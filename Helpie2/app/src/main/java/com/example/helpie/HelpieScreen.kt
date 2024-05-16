@@ -59,6 +59,7 @@ import com.example.helpie.ui.SummaryScreen
 import com.example.helpie.ui.TakeTicketScreen
 import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.WaitingTransportScreen
+import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 
@@ -72,6 +73,7 @@ enum class HelpieScreen(val next:String) {
     Destination(next = ""),
     Start(next = ""),
     ReachStop(next = "WaitingTransport"),
+    Walk(next = ""),
     InBus(next = ""),
     OutBus(next = ""),
     WaitingTransport(next = ""),
@@ -294,7 +296,7 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(true)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            navController.navigate(HelpieScreen.ReachStop.name)
+                            navController.navigate(HelpieScreen.Walk.name)
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -340,6 +342,17 @@ fun HelpieApp(
                 composable(route = HelpieScreen.InBus.name) {
                     InBusScreen(
                         stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                composable(route = HelpieScreen.Walk.name) {
+                    WalkScreen(
+                        stepInfo = uiState.steps[uiState.currentStep] as walkInfo,
+                        lauchMaps = {
+                            viewModel.launchGoogleMaps(ctx)
+                            navController.navigate(HelpieScreen.ReachStop.name)
+                        },
                         modifier = Modifier.fillMaxSize()
                     )
                 }

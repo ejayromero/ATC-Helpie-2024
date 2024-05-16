@@ -14,6 +14,7 @@ import com.example.helpie.UiState
 import com.example.helpie.tripPlanificator.extractTrip
 import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
+import com.example.helpie.walkInfo
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,6 +92,37 @@ class HelpieViewModel : ViewModel() {
             }
         }
         Log.d("trip", "done !")
+    }
+
+    fun launchGoogleMaps(context: Context) {
+
+        val dir = _uiState.value.steps[_uiState.value.currentStep] as walkInfo
+
+        val destination = "${dir.endLatitude},${dir.endLatitude}"
+
+        // Create a URI for the Google Maps app with satellite view
+        val gmmIntentUri: Uri = Uri.parse("google.navigation:q=$destination&mode=w&t=s")
+
+        // Create an Intent object
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+
+        // Set the package to Google Maps
+        mapIntent.setPackage("com.google.android.apps.maps")
+
+        context.startActivity(mapIntent)
+
+
+        /*
+        // Verify that Google Maps is installed
+        if (mapIntent.resolveActivity(packageManager) != null) {
+            // Start Google Maps
+            startActivity(mapIntent)
+        } else {
+            Log.d("Google_Maps", "Google maps not installed")
+            // Google Maps not installed, handle accordingly
+            //Toast.makeText(this, "Google Maps app not installed", Toast.LENGTH_SHORT).show()
+            //redirectToPlayStore()
+        }*/
     }
 
     fun setTicket(isTicket: Boolean) {
