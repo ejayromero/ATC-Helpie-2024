@@ -132,11 +132,6 @@ fun HelpieApp(
         }
     }
 
-
-
-
-    var timerDone : Boolean = false
-
     Scaffold(
         topBar = {
             Column(Modifier.fillMaxWidth()) {
@@ -389,19 +384,15 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.WaitingTransport.name) {
-                    uiState.steps[uiState.currentStep].calculateDuration().let { duration ->
-                        viewModel.setRemainingTime(duration, timerDone)
-                    }
-                    Log.d("RemainingTime", "${uiState.remainingTime}")
+                    viewModel.setRemainingTime("start")
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2) {
-                            timerDone = true
                             navController.navigate(HelpieScreen.InBus.name)
                             }
                     }
                     WaitingTransportScreen(
                         onNext = {
-                            viewModel.startUpdatingRemainingTime(timerDone)
+                            viewModel.startUpdatingRemainingTime()
                                  },
                         time = uiState.remainingTime,
                         stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
@@ -420,9 +411,7 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.JourneyInTransport.name) {
-                    uiState.steps[uiState.currentStep].calculateDuration().let { duration ->
-                        viewModel.setRemainingTime(duration, timerDone)
-                    }
+                    viewModel.setRemainingTime("end")
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2) {
                             navController.navigate(HelpieScreen.OutBus.name)
@@ -430,7 +419,7 @@ fun HelpieApp(
                     }
                     JourneyInTransportScreen(
                         onNext = {
-                            viewModel.startUpdatingRemainingTime(timerDone)
+                            viewModel.startUpdatingRemainingTime()
                         },
                         stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                         modifier = Modifier.fillMaxSize(),

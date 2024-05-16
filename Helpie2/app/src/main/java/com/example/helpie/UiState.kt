@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
+import kotlinx.datetime.Instant
+import org.joda.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.Duration
@@ -48,6 +50,8 @@ data class UiState(
     val currentStep: Int = 0,
 
     val remainingTime: Int = 0,
+
+    val timeNeeded: String = "start",
 
     val showDialog: Boolean = false,
 
@@ -107,33 +111,36 @@ open class StepInfo(
     open val mode: String? = null,
 ) {
 
-    private fun extractMinutesFromWalkDuration(durationString: String): String? {
-        val pattern = Regex("""PT(\d+)M""")
-        val matchResult = pattern.find(durationString)
-        return matchResult?.groupValues?.get(1)
-    }
+//    private fun extractMinutesFromWalkDuration(durationString: String): String? {
+//        val pattern = Regex("""PT(\d+)M""")
+//        val matchResult = pattern.find(durationString)
+//        return matchResult?.groupValues?.get(1)
+//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun calculateDuration(): String {
+    fun giveTime(point: String): String {
         return when (this) {
             is walkInfo -> {
-                val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                val start = LocalDateTime.parse(this.startTime, formatter)
-                val end = LocalDateTime.parse(this.endTime, formatter)
-                val duration = Duration.between(start, end)
-
-                // Format the duration as an ISO 8601 string
-                val formattedDuration = formatDurationToMin(duration)
-                formattedDuration
+                if(point == "start") {
+                    Log.d("givetime_start", "given")
+                    "2024-05-16T19:42:00Z"
+//                    this.startTime!!
+                } else{
+                    Log.d("givetime_end", "given")
+                    this.endTime!!
+                    "2024-05-16T19:47:00Z"
+                }
             }
             is transportInfo -> {
-                val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                val start = LocalDateTime.parse(this.startTime, formatter)
-                val end = LocalDateTime.parse(this.endTime, formatter)
-                val duration = Duration.between(start, end)
-
-                val formattedDuration = formatDurationToMin(duration)
-                formattedDuration
+                if(point == "start") {
+                    Log.d("givetime_start", "given")
+//                    this.startTime!!
+                    "2024-05-16T19:42:00Z"
+                } else{
+                    Log.d("givetime_end", "given")
+//                    this.endTime!!
+                    "2024-05-16T19:47:00Z"
+                }
             }
             else -> {
                 "0"  // Default duration (fallback value)
@@ -193,7 +200,7 @@ data class transportInfo(
     val startQuay: String? = null,
     val endQuay: String? = null,
 
-): StepInfo(mode
+    ): StepInfo(mode
 )
 
 data class walkInfo(
