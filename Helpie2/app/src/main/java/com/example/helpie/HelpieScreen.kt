@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -58,6 +59,7 @@ import com.example.helpie.ui.SummaryScreen
 import com.example.helpie.ui.TakeTicketScreen
 import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.WaitingTransportScreen
+import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 
@@ -71,6 +73,7 @@ enum class HelpieScreen(val next:String) {
     Destination(next = ""),
     Start(next = ""),
     ReachStop(next = "WaitingTransport"),
+    Walk(next = ""),
     InBus(next = ""),
     OutBus(next = ""),
     WaitingTransport(next = ""),
@@ -138,13 +141,14 @@ fun HelpieApp(
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ) {
             }
+            if (currentScreen != HelpieScreen.Help.name) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
                     .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
             ) {
-            if (currentScreen != HelpieScreen.Help.name) {
+
                 Button(
                     onClick = {
                         navController.navigate(HelpieScreen.Help.name)
@@ -245,10 +249,12 @@ fun HelpieApp(
                         showDialog = uiState.editMode,
                         editMode = uiState.editMode,
                         onRequest = {
+                            viewModel.setWait(true)
                             runBlocking {
                                 viewModel.request()
-                                navController.navigate(HelpieScreen.Summary.name)
                             }
+                            while (uiState.wait) { }
+                                navController.navigate(HelpieScreen.Summary.name)
                         },
                         setTarget = {
                             viewModel.setTarget(it)
@@ -270,27 +276,28 @@ fun HelpieApp(
                 composable(route = HelpieScreen.Summary.name) {
                     uiState.summary?.let { it1 ->
                         SummaryScreen(
+                            modifier = Modifier
+                                .fillMaxSize(),
                             targetLocation = uiState.targetLocation,
                             summary = it1,
-                            onSummary = {
-                                viewModel.summary()
-                            },
+                            steps = uiState.steps,
                             onNext = {
                                 navController.navigate(HelpieScreen.TakeTicket.name)
-                            },
-                            modifier = Modifier
-                                .fillMaxSize()
+                            }
                         )
                     }
+
+
                 }
+
 
                 composable(route = HelpieScreen.TakeTicket.name) {
                     TakeTicketScreen(
                         takeTicket = {
                             viewModel.setTicket(true)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            viewModel.launchNext()
-                            navController.navigate(HelpieScreen.ReachStop.name)
+                            navController.navigate(HelpieScreen.Walk.name)
+
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -340,14 +347,29 @@ fun HelpieApp(
                         modifier = Modifier.fillMaxSize()
                     )
                 }
+
+                composable(route = HelpieScreen.Walk.name) {
+                    WalkScreen(
+                        stepInfo = uiState.steps[uiState.currentStep] as walkInfo,
+                        lauchMaps = {
+                            viewModel.launchGoogleMaps(ctx)
+                            navController.navigate(HelpieScreen.ReachStop.name)
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
+
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Bottom,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                        Row( horizontalArrangement = Arrangement.Center,
+                    Spacer(modifier = Modifier.height(20.dp))
+
+
+                    Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
                             if((currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Step.name) and (navController.previousBackStackEntry != null)){
@@ -396,9 +418,10 @@ fun HelpieApp(
                 }
                     Spacer(modifier = Modifier.height(20.dp))
                 }
+            }
         }
-    }
 }
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable

@@ -41,6 +41,8 @@ data class UiState(
 
     val steps : List<StepInfo> = listOf(),
 
+    val wait :Boolean = false,
+
     val currentStep: Int = 0,
 
     val remainingTime: Int = 0,
