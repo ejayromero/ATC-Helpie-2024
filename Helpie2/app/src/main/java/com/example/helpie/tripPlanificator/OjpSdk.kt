@@ -13,6 +13,7 @@ import com.example.helpie.tripPlanificator.data.dto.request.tr.ParamsDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceRefDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.TripRequestDto
 import com.example.helpie.tripPlanificator.utils.toInstantString
+import com.google.android.gms.maps.model.LatLng
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +55,7 @@ class OjpSdk(
         private const val ANDROID_SDK = "ANDROID_SDK"
     }
 
-    suspend fun tripRequest(target: Localisation): OjpDto  {
+    suspend fun tripRequest(here : LatLng, target: Localisation): OjpDto  {
         val requestTime = LocalDateTime.now()
         Log.d("remote","create request")
         val request = OjpDto(
@@ -66,8 +67,8 @@ class OjpSdk(
                         requestTimestamp = requestTime.toInstantString(),
                         origin = OriginDto(
                             placeRef = PlaceRefDto(
-                                position = GeoPositionDto(6.537042242329045,46.51600017680952),
-                                locationName = LocationNameDto("Manira Wokshop - Denges")
+                                position = GeoPositionDto(here.longitude,here.latitude),
+                                locationName = LocationNameDto("You")
                             ),
                             depArrTime = requestTime.toInstantString() //"2024-05-02T10:43:02"
                         ),

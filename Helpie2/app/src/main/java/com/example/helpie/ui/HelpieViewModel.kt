@@ -15,6 +15,7 @@ import com.example.helpie.tripPlanificator.extractTrip
 import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
 import com.example.helpie.walkInfo
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +39,7 @@ class HelpieViewModel : ViewModel() {
         viewModelScope.launch {
             val planner = _uiState.value.planner // Accessing the planner from the Flow
 
-            val response = planner.tripRequest(_uiState.value.targetLocation)
+            val response = planner.tripRequest(_uiState.value.currentLocation,_uiState.value.targetLocation)
 
             val trip = extractTrip(response)
             Log.d("helpie","done !")
@@ -230,6 +231,13 @@ class HelpieViewModel : ViewModel() {
         _uiState.update { currentState ->
             currentState.copy(tripOngoing = !currentState.tripOngoing)
         }
+    }
+
+    fun updateCurrentLocation(current: LatLng) {
+        _uiState.update { currentState ->
+            currentState.copy(currentLocation = current)
+        }
+        Log.d("LOCATION", "Location has been updated")
     }
 
 }
