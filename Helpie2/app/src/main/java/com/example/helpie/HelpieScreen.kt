@@ -393,9 +393,6 @@ fun HelpieApp(
                                 navController.navigate(viewModel.launchNext())
                             }
                         )
-                    } else {
-                        //should never go in this loop
-                        navController.navigate(HelpieScreen.InBus.name)
                     }
                 }
 

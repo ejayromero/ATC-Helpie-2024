@@ -87,18 +87,23 @@ class HelpieViewModel : ViewModel() {
     fun launchNext(): String {
 
         if (_uiState.value.currentStep < (_uiState.value.summary?.npSteps ?: 0)) {
+
+            var next = _uiState.value.currentStep +1
             _uiState.update { currentState ->
-                currentState.copy(currentStep = _uiState.value.currentStep + 1)
+                currentState.copy(currentStep = next)
             }
-            if (_uiState.value.steps[_uiState.value.currentStep] is  walkInfo) {
-                return HelpieScreen.Walk.name
+            return if (_uiState.value.steps[next] is  walkInfo) {
+                Log.d("trip", "walk !")
+                HelpieScreen.Walk.name
             } else {
-                return HelpieScreen.WaitingTransport.name
+                Log.d("trip", "transport !")
+                HelpieScreen.WaitingTransport.name
             }
 
         }
         Log.d("trip", "done !")
         return HelpieScreen.Final.name
+
 
     }
 
