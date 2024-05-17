@@ -48,6 +48,8 @@ data class UiState(
 
     val wait :Boolean = false,
 
+    val togo :String = "",
+
     val currentStep: Int = 0,
 
     val remainingTime: Int = 0,
