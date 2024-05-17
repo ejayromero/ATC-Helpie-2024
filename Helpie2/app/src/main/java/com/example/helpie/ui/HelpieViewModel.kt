@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.helpie.HelpieScreen
 import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
@@ -22,6 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -84,27 +86,27 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    fun launchNext(): String {
+    suspend fun launchNext(): String {
+        val currentState = _uiState.value
 
-        if (_uiState.value.currentStep < (_uiState.value.summary?.npSteps ?: 0)) {
+        if (currentState.currentStep < (currentState.summary?.npSteps ?: 0)) {
+            val next = currentState.currentStep + 1
+            _uiState.update { it.copy(currentStep = next) }
 
-            var next = _uiState.value.currentStep +1
-            _uiState.update { currentState ->
-                currentState.copy(currentStep = next)
-            }
-            return if (_uiState.value.steps[next] is  walkInfo) {
+            // Wait for the state to reflect the update
+            val updatedState = uiState.first { it.currentStep == next }
+
+            return if (updatedState.steps[next] is walkInfo) {
                 Log.d("trip", "walk !")
                 HelpieScreen.Walk.name
             } else {
                 Log.d("trip", "transport !")
                 HelpieScreen.WaitingTransport.name
             }
-
         }
+
         Log.d("trip", "done !")
         return HelpieScreen.Final.name
-
-
     }
 
     fun launchGoogleMaps(context: Context) {
@@ -218,7 +220,7 @@ class HelpieViewModel : ViewModel() {
         timerJob = viewModelScope.launch {
             while (true) {
                 delay(30000) // Update every 30 seconds
-                if (uiState.value.steps.size > 0) {
+                if (uiState.value.steps.size > 0 && uiState.value.currentStep != -1) {
                     uiState.value.steps[uiState.value.currentStep].let {
                         setRemainingTime(
                             it.calculateDuration(),

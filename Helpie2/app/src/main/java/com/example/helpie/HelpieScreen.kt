@@ -12,11 +12,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
@@ -35,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -73,9 +70,9 @@ import com.example.helpie.ui.TicketScreen
 import com.example.helpie.ui.WaitingTransportScreen
 import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 
 enum class HelpieScreen(val next:String) {
@@ -332,9 +329,11 @@ fun HelpieApp(
                             viewModel.setWait(true)
                             runBlocking {
                                 viewModel.request()
-                            }
-                            while (uiState.wait) { }
+                                Log.d("wait", uiState.wait.toString())
+                                while (uiState.wait) { Log.d("wait", "wait")}
                                 navController.navigate(HelpieScreen.Summary.name)
+                            }
+
                         },
                         setTarget = {
                             viewModel.setTarget(it)
@@ -376,7 +375,11 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(true)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            navController.navigate(viewModel.launchNext())
+
+                            viewModel.viewModelScope.launch {
+                                val nextScreen = viewModel.launchNext()
+                                navController.navigate(nextScreen)
+                            }
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -390,14 +393,17 @@ fun HelpieApp(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
                             modifier = Modifier.fillMaxSize(),
                             onNext = {
-                                navController.navigate(viewModel.launchNext())
+                                viewModel.viewModelScope.launch {
+                                    val nextScreen = viewModel.launchNext()
+                                    navController.navigate(nextScreen)
+                                }
                             }
                         )
                     }
                 }
 
                 composable(route = HelpieScreen.WaitingTransport.name) {
-                    uiState.steps[uiState.currentStep].calculateDuration().let { duration ->
+                    uiState.steps[uiState.currentStep +1].calculateDuration().let { duration ->
                         viewModel.setRemainingTime(duration, timerDone)
                     }
                     Log.d("RemainingTime", "${uiState.remainingTime}")
@@ -412,7 +418,7 @@ fun HelpieApp(
                             viewModel.startUpdatingRemainingTime(timerDone)
                                  },
                         time = uiState.remainingTime,
-                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
+                        stepInfo = uiState.steps[uiState.currentStep +1] as transportInfo,
                     )
 
                 }
