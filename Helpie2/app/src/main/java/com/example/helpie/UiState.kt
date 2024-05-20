@@ -46,7 +46,7 @@ data class UiState(
 
     val togo :String = "",
 
-    val currentStep: Int = 0,
+    val currentStep: Int = -1,
 
     val remainingTime: Int = 0,
 

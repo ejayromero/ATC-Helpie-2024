@@ -32,7 +32,6 @@ import com.example.helpie.ui.theme.CustomTextView
 fun OutBusScreen(
     modifier: Modifier = Modifier,
     stepInfo: transportInfo,
-    onNext: () -> Unit = {},
 ) {
 
     Column(

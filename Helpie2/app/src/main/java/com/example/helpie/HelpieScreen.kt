@@ -74,21 +74,21 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 
-enum class HelpieScreen(val next:String) {
-    Help(next = ""),
-    Ticket(next = ""),
-    Step(next = ""),
-    TakeTicket(next = ""),
-    Summary(next = ""),
-    Destination(next = ""),
-    Start(next = ""),
-    Final(next = ""),
-    ReachStop(next = "WaitingTransport"),
-    InBus(next = "JourneyInTransport"),
-    Walk(next = ""),
-    OutBus(next = "ReachStop"),
-    WaitingTransport(next = ""),
-    JourneyInTransport(next = ""),
+enum class HelpieScreen {
+    Help,
+    Ticket,
+    Step,
+    TakeTicket,
+    Summary,
+    Destination,
+    Start,
+    Final,
+    ReachStop,
+    InBus,
+    Walk,
+    OutBus,
+    WaitingTransport,
+    JourneyInTransport,
 }
 
 
@@ -386,18 +386,14 @@ fun HelpieApp(
                     if (uiState.steps[uiState.currentStep] is walkInfo) {
                         ReachStopScreen(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
-                            modifier = Modifier.fillMaxSize(),
-                            onNext = {
-                               val nextScreen = viewModel.launchNext()
-                                    navController.navigate(nextScreen)
-                            }
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
 
                 composable(route = HelpieScreen.WaitingTransport.name) {
                     Log.d("currentstep", "${uiState.currentStep}")
-                    viewModel.setRemainingTime(uiState.timeNeeded, uiState.steps[uiState.currentStep+1])
+                    viewModel.setRemainingTime(uiState.timeNeeded, uiState.steps[uiState.currentStep])
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2) {
                             navController.navigate(HelpieScreen.InBus.name)
@@ -410,7 +406,7 @@ fun HelpieApp(
                             }
                                  },
                         time = uiState.remainingTime,
-                        stepInfo = uiState.steps[uiState.currentStep+1] as transportInfo,
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                     )
 
                 }
@@ -418,17 +414,14 @@ fun HelpieApp(
                 composable(route = HelpieScreen.InBus.name) {
                     Log.d("currentstep", "${uiState.currentStep}")
                     InBusScreen(
-                        stepInfo = uiState.steps[uiState.currentStep+1] as transportInfo,
-                        modifier = Modifier.fillMaxSize(),
-                        onNext = {
-                            navController.navigate(HelpieScreen.JourneyInTransport.name)
-                        }
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
 
                 composable(route = HelpieScreen.JourneyInTransport.name) {
                     Log.d("currentstep", "${uiState.currentStep}")
-                    viewModel.setRemainingTime("end", uiState.steps[uiState.currentStep+1])
+                    viewModel.setRemainingTime("end", uiState.steps[uiState.currentStep])
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2) {
                             navController.navigate(HelpieScreen.OutBus.name)
@@ -438,7 +431,7 @@ fun HelpieApp(
                         onNext = {
                             viewModel.startUpdatingRemainingTime()
                         },
-                        stepInfo = uiState.steps[uiState.currentStep+1] as transportInfo,
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                         modifier = Modifier.fillMaxSize(),
                         time = uiState.remainingTime
                     )
@@ -447,13 +440,8 @@ fun HelpieApp(
                 composable(route = HelpieScreen.OutBus.name) {
                     Log.d("currentstep", "${uiState.currentStep}")
                     OutBusScreen(
-                        stepInfo = uiState.steps[uiState.currentStep+1] as transportInfo,
-                        modifier = Modifier.fillMaxSize(),
-                        onNext = {
-                            val nextScreen = viewModel.launchNext()
-                            navController.navigate(nextScreen)
-
-                        }
+                        stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
 
@@ -509,11 +497,18 @@ fun HelpieApp(
                             }
                             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.button_corner_radius)))
 
-                            val nextScreen: String = HelpieScreen.entries.find { it.name == currentScreen }?.next ?: ""
-
-                            if(nextScreen != "") {
+                            if((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.InBus.name) or (currentScreen == HelpieScreen.OutBus.name)) {
                                 Button(
-                                    onClick = { navController.navigate(nextScreen)},
+                                    onClick = {
+                                        if ((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.OutBus.name)) {
+                                            viewModel.viewModelScope.launch {
+                                                val nextScreen = viewModel.launchNext()
+                                                navController.navigate(nextScreen)
+                                            }
+                                        } else {
+                                            navController.navigate(HelpieScreen.JourneyInTransport.name)
+                                        }
+                                              },
                                     shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
                                 )

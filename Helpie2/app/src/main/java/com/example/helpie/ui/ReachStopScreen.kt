@@ -32,7 +32,6 @@ import com.example.helpie.walkInfo
 fun ReachStopScreen(
     modifier: Modifier = Modifier,
     stepInfo: walkInfo,
-    onNext: () -> Unit = {},
 ) {
 
     Column(
