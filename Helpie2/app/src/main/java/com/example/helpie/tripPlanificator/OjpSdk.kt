@@ -26,6 +26,9 @@ import okio.Buffer
 import okio.BufferedSource
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Duration.Companion.hours
 
 
 class OjpSdk(
@@ -58,7 +61,7 @@ class OjpSdk(
     }
 
     suspend fun tripRequest(here : LatLng, target: Localisation): OjpDto  {
-        val requestTime = Clock.System.now()
+        val requestTime = Clock.System.now().plus(2.hours)
         Log.d("LE TEMPS", requestTime.toString())
         Log.d("remote","create request")
         Log.d("remote", here.longitude.toString())

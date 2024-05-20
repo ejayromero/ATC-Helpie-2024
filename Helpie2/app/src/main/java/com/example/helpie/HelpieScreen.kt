@@ -1,5 +1,6 @@
 package com.example.helpie
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -383,7 +384,7 @@ fun HelpieApp(
 
 
                 composable(route = HelpieScreen.ReachStop.name) {
-                    Log.d("reachstep", "${uiState.currentStep}")
+                    Log.d("reach", "${uiState.currentStep}")
                     if (uiState.steps[uiState.currentStep] is walkInfo) {
                         ReachStopScreen(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
@@ -414,7 +415,7 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.InBus.name) {
-                    Log.d("inbusstep", "${uiState.currentStep}")
+                    Log.d("inbus", "${uiState.currentStep}")
                     InBusScreen(
                         stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                         modifier = Modifier.fillMaxSize()
@@ -435,9 +436,6 @@ fun HelpieApp(
                         }
                     }
                     JourneyInTransportScreen(
-                        onNext = {
-                            viewModel.startUpdatingRemainingTime()
-                        },
                         stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
                         modifier = Modifier.fillMaxSize(),
                         time = uiState.remainingTime
@@ -457,6 +455,7 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.Walk.name) {
+                    Log.d("walk", "${uiState.currentStep}")
                     WalkScreen(
                         stepInfo = uiState.steps[uiState.currentStep] as walkInfo,
                         lauchMaps = {

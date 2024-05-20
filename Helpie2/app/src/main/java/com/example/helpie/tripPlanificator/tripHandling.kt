@@ -9,12 +9,13 @@ import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import com.example.helpie.walkInfo
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlin.time.Duration.Companion.hours
 
 fun extractTrip(response: OjpDto): TripDto {
     try {
         val tripList = response.ojpResponse?.serviceDelivery?.tripDelivery?.tripResults
 
-        val startTime = Clock.System.now()
+        val startTime = Clock.System.now().plus(2.hours)
 
         var i = 0
         if (tripList != null) {

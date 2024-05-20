@@ -119,13 +119,6 @@ data class TripSummary(
 open class StepInfo(
     open val mode: String? = null,
 ) {
-
-//    private fun extractMinutesFromWalkDuration(durationString: String): String? {
-//        val pattern = Regex("""PT(\d+)M""")
-//        val matchResult = pattern.find(durationString)
-//        return matchResult?.groupValues?.get(1)
-//    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun giveTime(point: String): String {
         return when (this) {
@@ -133,14 +126,12 @@ open class StepInfo(
                 when (point) {
                     "start" -> {
                                            this.startTime!!
-//                        Log.d("getter", "start")
-//                        "2024-05-20T13:25:00Z"
+//                        "2024-05-20T17:55:00Z"
                     }
 
                     "end" -> {
                                             this.endTime!!
-//                        Log.d("getter", "end")
-//                        "2024-05-20T13:28:00Z"
+//                        "2024-05-20T17:58:00Z"
                     }
 
                     else -> {
@@ -152,13 +143,11 @@ open class StepInfo(
                 when (point) {
                     "start" -> {
                                this.startTime!!
-//                        Log.d("getter", "start")
-//                        "2024-05-20T13:25:00Z"
+//                        "2024-05-20T17:55:00Z"
                     }
                     "end" -> {
                                 this.endTime!!
-//                        Log.d("getter", "end")
-//                        "2024-05-20T13:28:00Z"
+//                        "2024-05-20T17:58:00Z"
                     }
                     else -> {
                         "0end"
@@ -173,10 +162,6 @@ open class StepInfo(
 
     // Helper function to format Duration to ISO 8601 string
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun formatDurationToMin(duration: Duration): String {
-        val seconds = duration.seconds
-        return (seconds.toInt()/60).toString()
-    }
     fun logValues() {
         Log.d("trip", "Mode: $mode")
 

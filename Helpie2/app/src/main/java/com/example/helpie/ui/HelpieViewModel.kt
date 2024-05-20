@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.math.max
+import kotlin.time.Duration.Companion.hours
 
 @RequiresApi(Build.VERSION_CODES.O)
 class HelpieViewModel : ViewModel() {
@@ -198,8 +199,6 @@ class HelpieViewModel : ViewModel() {
     }
 
     private var timerJob: Job? = null
-    private var stepToBeUpdated: StepInfo = StepInfo("walk")
-
     init {
         Log.d("init", "start initiating")
         viewModelScope.launch {
@@ -241,10 +240,10 @@ class HelpieViewModel : ViewModel() {
                 // Parse the time
                 val timeParsed = Instant.parse(time)
                 Log.d("givetime $point parsed", "$timeParsed")
-                Log.d("givetime now", "${Clock.System.now()}")
 
                 // Get the current time
-                val startTime = Clock.System.now()
+                val startTime = Clock.System.now().plus(2.hours)
+                Log.d("givetime now", "${startTime}")
 
                 // Calculate elapsed minutes
                 val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
