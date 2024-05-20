@@ -7,12 +7,27 @@ import com.example.helpie.transportInfo
 import com.example.helpie.tripPlanificator.data.dto.OjpDto
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import com.example.helpie.walkInfo
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 fun extractTrip(response: OjpDto): TripDto {
     try {
         val tripList = response.ojpResponse?.serviceDelivery?.tripDelivery?.tripResults
 
-        val selectedTrip = tripList?.get(0)?.trip
+        val startTime = Clock.System.now()
+
+        var i = 0
+        if (tripList != null) {
+            while(((tripList[i].trip.start?.let { Instant.parse(it).epochSeconds }
+                    ?.minus(startTime.epochSeconds))?.div(60))!! < 0) {
+                i += 1
+            }
+        }
+        val selectedTrip = tripList?.get(i)?.trip
+
+        if (selectedTrip != null) {
+            Log.d("the time", selectedTrip.start.toString())
+        }
 
         if (selectedTrip != null) {
             return selectedTrip
