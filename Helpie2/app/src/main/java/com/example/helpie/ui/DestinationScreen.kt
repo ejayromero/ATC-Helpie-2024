@@ -337,7 +337,6 @@ fun DestinationScreen(
                                 value = registeredLocation[4].destinationAddress ?: "",
                                 onValueChange = { address ->
                                     setLocalisationAddress(4, address, registeredLocation)
-                                    setLocalisationName(4, address, registeredLocation)
                                 },
                             )
                         },
