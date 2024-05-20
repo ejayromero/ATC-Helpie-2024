@@ -24,7 +24,9 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.Buffer
 import okio.BufferedSource
-import org.joda.time.LocalDateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+
 
 class OjpSdk(
     baseUrl: String,
@@ -56,24 +58,24 @@ class OjpSdk(
     }
 
     suspend fun tripRequest(here : LatLng, target: Localisation): OjpDto  {
-        val requestTime = LocalDateTime.now()
+        val requestTime = Clock.System.now()
         Log.d("remote","create request")
         Log.d("remote", here.longitude.toString())
         Log.d("remote", here.latitude.toString())
         val request = OjpDto(
             ojpRequest = OjpRequestDto(
                 serviceRequest = ServiceRequestDto(
-                    requestTimestamp = requestTime.toInstantString(),
+                    requestTimestamp = requestTime.toString(),
                     requestorRef = requesterReference,
                     tripRequest = TripRequestDto(
-                        requestTimestamp = requestTime.toInstantString(),
+                        requestTimestamp = requestTime.toString(),
                         origin = OriginDto(
                             placeRef = PlaceRefDto(
                                 //position = GeoPositionDto(here.longitude,here.latitude),
                                 position = GeoPositionDto(6.537035659108079,46.515441573339686),
                                 locationName = LocationNameDto("You")
                             ),
-                            depArrTime = requestTime.toInstantString() //"2024-05-02T10:43:02"
+                            depArrTime = requestTime.toString() //"2024-05-02T10:43:02"
                         ),
                         destination = DestinationDto(
                             placeRef = PlaceRefDto(

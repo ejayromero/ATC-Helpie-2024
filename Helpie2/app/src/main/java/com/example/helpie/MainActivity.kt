@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
     private val updateRunnable = object: Runnable{
         @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
-            updateLocation()
+//            updateLocation()
             handler.postDelayed(this, updateIntervalMillis)
         }
     }
@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
         requestPermissionsIfNecessary()
 
         // Initialize ViewModel
-        viewModel = ViewModelProvider(this).get(HelpieViewModel::class.java)
+        viewModel = ViewModelProvider(this)[HelpieViewModel::class.java]
         //get location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 

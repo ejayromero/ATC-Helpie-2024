@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +27,7 @@ import com.example.helpie.ui.theme.CustomTextView
 @Composable
 fun FinalScreen(
     modifier: Modifier = Modifier,
-    recommencer: () -> Unit = {}
+    recommence: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -45,7 +44,7 @@ fun FinalScreen(
 
             Button(
                 onClick = {
-                    recommencer()
+                    recommence()
                 },
                 shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
@@ -64,7 +63,7 @@ fun FinalScreen(
     }
 }
 
-@Preview
+@Preview(showBackground = true )
 @Composable
 fun FinalPreview() {
     AppTheme {

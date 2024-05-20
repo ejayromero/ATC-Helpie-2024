@@ -5,11 +5,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
-import kotlinx.datetime.Instant
-import org.joda.time.LocalDate
 import com.google.android.gms.maps.model.LatLng
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.time.Duration
 
 
@@ -134,29 +130,43 @@ open class StepInfo(
     fun giveTime(point: String): String {
         return when (this) {
             is walkInfo -> {
-                if(point == "start") {
-                    Log.d("givetime_start", "given")
-                    "2024-05-16T19:42:00Z"
-//                    this.startTime!!
-                } else{
-                    Log.d("givetime_end", "given")
-                    this.endTime!!
-                    "2024-05-16T19:47:00Z"
+                when (point) {
+                    "start" -> {
+                                           this.startTime!!
+//                        Log.d("getter", "start")
+//                        "2024-05-20T13:25:00Z"
+                    }
+
+                    "end" -> {
+                                            this.endTime!!
+//                        Log.d("getter", "end")
+//                        "2024-05-20T13:28:00Z"
+                    }
+
+                    else -> {
+                        "0start"
+                    }
                 }
             }
             is transportInfo -> {
-                if(point == "start") {
-                    Log.d("givetime_start", "given")
-//                    this.startTime!!
-                    "2024-05-16T19:42:00Z"
-                } else{
-                    Log.d("givetime_end", "given")
-//                    this.endTime!!
-                    "2024-05-16T19:47:00Z"
+                when (point) {
+                    "start" -> {
+                               this.startTime!!
+//                        Log.d("getter", "start")
+//                        "2024-05-20T13:25:00Z"
+                    }
+                    "end" -> {
+                                this.endTime!!
+//                        Log.d("getter", "end")
+//                        "2024-05-20T13:28:00Z"
+                    }
+                    else -> {
+                        "0end"
+                    }
                 }
             }
             else -> {
-                "0"  // Default duration (fallback value)
+                "stepIssue"  // Default duration (fallback value)
             }
         }
     }

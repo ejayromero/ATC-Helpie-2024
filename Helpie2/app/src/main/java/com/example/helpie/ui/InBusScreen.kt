@@ -27,7 +27,6 @@ import com.example.helpie.R
 import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
-import com.example.helpie.walkInfo
 
 @Composable
 fun InBusScreen(

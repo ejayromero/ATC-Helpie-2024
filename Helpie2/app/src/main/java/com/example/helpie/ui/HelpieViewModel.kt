@@ -16,7 +16,6 @@ import com.example.helpie.UiState
 import com.example.helpie.tripPlanificator.extractTrip
 import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
-import com.example.helpie.tripPlanificator.utils.instantToLocalDate
 import com.example.helpie.walkInfo
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Job
@@ -26,10 +25,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.toLocalDate
 import kotlin.math.max
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -91,17 +90,13 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    suspend fun launchNext(): String {
-        val currentState = _uiState.value
-
-        if (currentState.currentStep < (currentState.summary?.npSteps ?: 0)) {
-            val next = currentState.currentStep + 1
-            _uiState.update { it.copy(currentStep = next) }
-
-            // Wait for the state to reflect the update
-            val updatedState = uiState.first { it.currentStep == next }
-
-            return if (updatedState.steps[next] is walkInfo) {
+    fun launchNext(): String {
+        if (_uiState.value.currentStep < (_uiState.value.summary?.npSteps ?: 0)) {
+            _uiState.update { currentState ->
+                currentState.copy(currentStep = _uiState.value.currentStep + 1)
+            }
+            val updatedState = _uiState.value
+            return if (updatedState.steps[updatedState.currentStep] is walkInfo) {
                 Log.d("trip", "walk !")
                 HelpieScreen.Walk.name
             } else {
@@ -113,6 +108,8 @@ class HelpieViewModel : ViewModel() {
         Log.d("trip", "done !")
         return HelpieScreen.Final.name
     }
+
+
 
     fun launchGoogleMaps(context: Context) {
 
@@ -201,38 +198,65 @@ class HelpieViewModel : ViewModel() {
     }
 
     private var timerJob: Job? = null
+    private var stepToBeUpdated: StepInfo = StepInfo("walk")
 
     init {
-        startUpdatingRemainingTime()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun startUpdatingRemainingTime() {
-        timerJob?.cancel() // Cancel previous job if any
-
-        timerJob = viewModelScope.launch {
-            while (true) {
-                delay(30000) // Update every 30 seconds
-                setRemainingTime(_uiState.value.timeNeeded)
+        Log.d("init", "start initiating")
+        viewModelScope.launch {
+            uiState.collect { currentState ->
+                if (currentState.steps.isNotEmpty() && currentState.currentStep >= 0) {
+                    startUpdatingRemainingTime()
+                }
             }
         }
     }
 
-    fun setRemainingTime(point: String) {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun startUpdatingRemainingTime() {
+        timerJob?.cancel() // Cancel previous job if any
+        timerJob = viewModelScope.launch {
+            while (isActive) {
+                delay(30000) // Update every 30 seconds
+                setRemainingTime(_uiState.value.timeNeeded, _uiState.value.steps[_uiState.value.currentStep])
+            }
+        }
+    }
+
+    fun setRemainingTime(point: String, step: StepInfo) {
+        // Update the timeNeeded in the state
         _uiState.update { currentState ->
             currentState.copy(timeNeeded = point)
         }
-        var remainingTimeInMinutes = 0
-        val time =
-            _uiState.value.steps[_uiState.value.currentStep].giveTime(_uiState.value.timeNeeded)
-        val timeParsed = Instant.parse(time)
-        Log.d("givetime start parsed", "$timeParsed")
-        Log.d("givetime now", "${Clock.System.now()}")
-        val startTime = Clock.System.now()
 
-        val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
-        Log.d("Test", "${timeParsed.epochSeconds - startTime.epochSeconds}")
-        remainingTimeInMinutes = max(0, elapsedMinutes.toInt())
+        // Initialize remainingTimeInMinutes
+        var remainingTimeInMinutes = 0
+
+        // Log the point and call giveTime based on the point
+        when (point) {
+            "start", "end" -> {
+                val time = step.giveTime(point)
+                Log.d("givetime $point", time)
+
+                // Parse the time
+                val timeParsed = Instant.parse(time)
+                Log.d("givetime $point parsed", "$timeParsed")
+                Log.d("givetime now", "${Clock.System.now()}")
+
+                // Get the current time
+                val startTime = Clock.System.now()
+
+                // Calculate elapsed minutes
+                val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
+                remainingTimeInMinutes = max(0, elapsedMinutes.toInt())
+            }
+            else -> {
+                // Handle any other points if needed
+                Log.d("givetime", "Unknown point: $point")
+            }
+        }
+
+        // Update the remaining time in the state
         _uiState.update { currentState ->
             currentState.copy(remainingTime = remainingTimeInMinutes)
         }
@@ -249,7 +273,7 @@ class HelpieViewModel : ViewModel() {
             currentState.copy(tripOngoing = !currentState.tripOngoing)
         }
     }
-}
+
 
     fun updateCurrentLocation(current: LatLng) {
         _uiState.update { currentState ->
@@ -257,6 +281,6 @@ class HelpieViewModel : ViewModel() {
         }
         Log.d("LOCATION", "Location has been updated")
     }
-
-
 }
+
+
