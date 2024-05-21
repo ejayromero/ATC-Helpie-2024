@@ -37,15 +37,11 @@ fun DestinationScreen(
     registeredLocation: List<Localisation>,
     modifier: Modifier = Modifier,
     showDialog: Boolean,
-    editMode: Boolean,
     onRequest: () -> Unit = {},
     setTarget: (Localisation) -> Unit = {},
-    setLocalisationName: (Int, String, List<Localisation>) -> Unit = { _, _, _ -> },
     setLocalisationAddress: (Int, String, List<Localisation>) -> Unit = { _, _, _ -> },
     switchDialog: () -> Unit = {}
 ) {
-    val textWeightLeft = 0.4f
-    val textWeightRight = 0.6f
 
     Box(
         modifier = modifier
@@ -55,7 +51,6 @@ fun DestinationScreen(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxSize()
         ) {
-            if (!editMode) {
                 Text(
                     text = stringResource(R.string.choisir_la_destination),
                     modifier = Modifier
@@ -64,7 +59,6 @@ fun DestinationScreen(
                     fontWeight = FontWeight.Bold,
                     fontSize = 50.sp
                 )
-            }
         }
 
         // 4 buttons for preselected destinations
@@ -73,151 +67,6 @@ fun DestinationScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            // Destination management
-            if (editMode) {
-                // Text field for destination 1
-                Text(
-                    text = stringResource(R.string.choisir_la_destination) + " 1",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 25.sp
-                )
-                // Button 1 edit
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TextField(
-                        value = registeredLocation[0].destinationName ?: "",
-                        onValueChange = { name ->
-                            setLocalisationName(0, name, registeredLocation)
-                        },
-                        label = { Text(stringResource(R.string.nom)) },
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(dimensionResource(R.dimen.destination_textField_height))
-                            .weight(textWeightLeft),
-                    )
-                    TextField(
-                        value = registeredLocation[0].destinationAddress ?: "",
-                        onValueChange = { address ->
-                            setLocalisationAddress(0, address, registeredLocation)
-                        },
-                        label = { Text(stringResource(R.string.adresse)) },
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(dimensionResource(R.dimen.destination_textField_height))
-                            .weight(textWeightRight),
-                    )
-                }
-
-                // Button 2 edit
-                Text(
-                    text = stringResource(R.string.choisir_la_destination) + " 2",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 25.sp
-                )
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TextField(
-                        value = registeredLocation[1].destinationName ?: "",
-                        onValueChange = { name ->
-                            setLocalisationName(1, name, registeredLocation)
-                        },
-                        label = { Text(stringResource(R.string.nom)) },
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(dimensionResource(R.dimen.destination_textField_height))
-                            .weight(textWeightLeft),
-                    )
-                    TextField(
-                        value = registeredLocation[1].destinationAddress ?: "",
-                        onValueChange = { address ->
-                            setLocalisationAddress(1, address, registeredLocation)
-                        },
-                        label = { Text(stringResource(R.string.adresse)) },
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(dimensionResource(R.dimen.destination_textField_height))
-                            .weight(textWeightRight),
-                    )
-                }
-
-                // Button 3 edit
-                Text(
-                    text = stringResource(R.string.choisir_la_destination) + " 3",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 25.sp
-                )
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TextField(
-                        value = registeredLocation[2].destinationName ?: "",
-                        onValueChange = { name ->
-                            setLocalisationName(2, name, registeredLocation)
-                        },
-                        label = { Text(stringResource(R.string.nom)) },
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(dimensionResource(R.dimen.destination_textField_height))
-                            .weight(textWeightLeft),
-                    )
-                    TextField(
-                        value = registeredLocation[2].destinationAddress ?: "",
-                        onValueChange = { address ->
-                            setLocalisationAddress(2, address, registeredLocation)
-                        },
-                        label = { Text(stringResource(R.string.adresse)) },
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(dimensionResource(R.dimen.destination_textField_height))
-                            .weight(textWeightRight),
-                    )
-                }
-
-                // Button 4 edit
-                Text(
-                    text = stringResource(R.string.choisir_la_destination) + " 4",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 25.sp
-                )
-
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TextField(
-                        value = registeredLocation[3].destinationName ?: "",
-                        onValueChange = { name ->
-                            setLocalisationName(3, name, registeredLocation)
-                        },
-                        label = { Text(stringResource(R.string.nom)) },
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(dimensionResource(R.dimen.destination_textField_height))
-                            .weight(textWeightLeft),
-                    )
-                    TextField(
-                        value = registeredLocation[3].destinationAddress ?: "",
-                        onValueChange = { address ->
-                            setLocalisationAddress(3, address, registeredLocation)
-                        },
-                        label = { Text(stringResource(R.string.adresse)) },
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(dimensionResource(R.dimen.destination_textField_height))
-                            .weight(textWeightRight),
-                    )
-                }
-
-            } else {
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier.fillMaxWidth()
@@ -309,6 +158,7 @@ fun DestinationScreen(
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.destination_spacer)))
                 // Button for new destination
+            if (false) {
                 Button(
                     onClick = {
                         switchDialog()
@@ -317,7 +167,7 @@ fun DestinationScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
                     modifier = Modifier
                         .height(dimensionResource(R.dimen.button_destination_height))
-                        .width(dimensionResource(R.dimen.button_destination_width)*2 + 30.dp),
+                        .width(dimensionResource(R.dimen.button_destination_width) * 2 + 30.dp),
                 )
                 {
                     Text(
@@ -353,9 +203,10 @@ fun DestinationScreen(
                             }
                         }
                     )
+
                 }
             }
-        }
+            }
     }
 }
 
@@ -370,10 +221,27 @@ fun DestinationPreview() {
                     destinationAddress = "Address",
                     longitude = 6.564690632302699,
                     latitude = 46.51727585320471
+                ),
+                Localisation(
+                    destinationName = "EPFL plasma center",
+                    destinationAddress = "Address",
+                    longitude = 6.564690632302699,
+                    latitude = 46.51727585320471
+                ),
+                Localisation(
+                    destinationName = "EPFL plasma center",
+                    destinationAddress = "Address",
+                    longitude = 6.564690632302699,
+                    latitude = 46.51727585320471
+                ),
+                Localisation(
+                    destinationName = "EPFL plasma center",
+                    destinationAddress = "Address",
+                    longitude = 6.564690632302699,
+                    latitude = 46.51727585320471
                 )
             ),
-            showDialog = false,
-            editMode = false,
+            showDialog = false
         )
     }
 }

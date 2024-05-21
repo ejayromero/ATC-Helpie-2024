@@ -23,7 +23,6 @@ import com.example.helpie.ui.theme.CustomTextView
 fun JourneyInTransportScreen(
     modifier: Modifier = Modifier,
     stepInfo: transportInfo,
-    onNext: () -> Unit = {},
     time: Int
 ) {
 
@@ -67,7 +66,7 @@ fun JourneyInTransportScreen(
                 )
 
                 Spacer(modifier = Modifier.width(28.dp))
-                Column() {
+                Column {
                     // Bus line text
                     Text(
                         text = stepInfo.line.toString(),

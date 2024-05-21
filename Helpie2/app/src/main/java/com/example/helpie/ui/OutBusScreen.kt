@@ -77,7 +77,7 @@ fun OutBusScreen(
                 )
 
                 Spacer(modifier = Modifier.width(28.dp))
-                Column() {
+                Column {
                     Text(
                         text = stepInfo.line.toString(),
                         color = Color.White,

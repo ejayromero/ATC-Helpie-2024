@@ -29,14 +29,12 @@ import com.example.helpie.R
 import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
-import com.example.helpie.walkInfo
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WaitingTransportScreen(
     modifier: Modifier = Modifier,
     stepInfo: transportInfo,
-    onNext: () -> Unit = {},
     time : Int
 ) {
 
@@ -80,7 +78,7 @@ fun WaitingTransportScreen(
 
                 // Spacer to create space between icon and text
                 Spacer(modifier = Modifier.width(28.dp))
-                Column() {
+                Column {
                     // Bus line text
                     Text(
                         text = stepInfo.line.toString(),
@@ -99,7 +97,7 @@ fun WaitingTransportScreen(
         }
 
         CustomTextView(
-            text = "Le ${stepInfo.mode} arrive dans ${time} minutes",
+            text = "Le ${stepInfo.mode} arrive dans $time minutes",
             color = Color.Black,
         )
     }

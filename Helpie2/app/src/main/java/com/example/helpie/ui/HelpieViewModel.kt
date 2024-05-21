@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.helpie.HelpieScreen
 import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
@@ -23,7 +22,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -55,7 +53,7 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    fun summary() {
+    private fun summary() {
 
         _uiState.update { currentState ->
             currentState.copy(
@@ -154,12 +152,6 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    fun switchEdit() {
-        _uiState.update { currentState ->
-            currentState.copy(editMode = !currentState.editMode)
-        }
-    }
-
     fun openLink(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
@@ -243,7 +235,7 @@ class HelpieViewModel : ViewModel() {
 
                 // Get the current time
                 val startTime = Clock.System.now().plus(2.hours)
-                Log.d("givetime now", "${startTime}")
+                Log.d("givetime now", "$startTime")
 
                 // Calculate elapsed minutes
                 val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
@@ -267,7 +259,7 @@ class HelpieViewModel : ViewModel() {
         timerJob?.cancel() // Cancel the timer job when ViewModel is cleared
     }
 
-    fun setTripOngoing() {
+    private fun setTripOngoing() {
         _uiState.update { currentState ->
             currentState.copy(tripOngoing = !currentState.tripOngoing)
         }

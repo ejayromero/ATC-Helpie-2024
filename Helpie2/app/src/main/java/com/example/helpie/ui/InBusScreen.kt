@@ -78,7 +78,7 @@ fun InBusScreen(
                 )
 
                 Spacer(modifier = Modifier.width(28.dp))
-                Column() {
+                Column {
                     // Bus line text
                     Text(
                         text = stepInfo.line.toString(),

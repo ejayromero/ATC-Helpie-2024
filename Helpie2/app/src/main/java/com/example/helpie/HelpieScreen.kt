@@ -27,7 +27,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -75,6 +74,7 @@ import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 import androidx.lifecycle.viewModelScope
+import com.example.helpie.ui.SettingsScreen
 import kotlinx.coroutines.launch
 
 
@@ -94,6 +94,7 @@ enum class HelpieScreen {
     OutBus,
     WaitingTransport,
     JourneyInTransport,
+    Settings
 }
 
 
@@ -164,7 +165,7 @@ fun HelpieApp(
                             //Spacer(modifier = Modifier.height(25.dp))
                             if (currentScreen == HelpieScreen.Start.name) {
                                 Button(
-                                    onClick = { viewModel.switchEdit() }
+                                    onClick = { navController.navigate(HelpieScreen.Settings.name) }
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Settings, // Replace 'YourIconName' with the desired icon name
@@ -283,14 +284,30 @@ fun HelpieApp(
                 startDestination = HelpieScreen.Start.name,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable(route = HelpieScreen.Help.name) {
-                    HelpScreen(
-                        editMode = uiState.editMode,
+                composable(route = HelpieScreen.Settings.name) {
+                    SettingsScreen(
+                        registeredLocation = uiState.registeredLocation,
+                        setLocalisationName = { index, name, _ ->
+                            viewModel.setLocalisationName(index, name, uiState.registeredLocation)
+                        },
+                        setLocalisationAddress = { index, address, _ ->
+                            viewModel.setLocalisationAddress(index, address, uiState.registeredLocation)
+                        },
                         usePhone = uiState.usePhone,
                         phoneNumber = uiState.phoneNumber,
                         outlineNumber = uiState.outlineNumber,
                         phone = { viewModel.setUsePhone(it) },
                         setPhone = { viewModel.setPhone(it) },
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+
+                composable(route = HelpieScreen.Help.name) {
+                    HelpScreen(
+                        usePhone = uiState.usePhone,
+                        phoneNumber = uiState.phoneNumber,
+                        outlineNumber = uiState.outlineNumber,
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -329,7 +346,6 @@ fun HelpieApp(
                     DestinationScreen(
                         registeredLocation = uiState.registeredLocation,
                         showDialog = uiState.showDialog,
-                        editMode = uiState.editMode,
                         onRequest = {
                             viewModel.setWait(true)
                             runBlocking {
@@ -342,9 +358,6 @@ fun HelpieApp(
                         },
                         setTarget = {
                             viewModel.setTarget(it)
-                        },
-                        setLocalisationName = { index, name, _ ->
-                            viewModel.setLocalisationName(index, name, uiState.registeredLocation)
                         },
                         setLocalisationAddress = { index, address, _ ->
                             viewModel.setLocalisationAddress(index, address, uiState.registeredLocation)

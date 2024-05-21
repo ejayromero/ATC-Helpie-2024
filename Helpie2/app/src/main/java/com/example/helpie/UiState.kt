@@ -6,12 +6,9 @@ import androidx.annotation.RequiresApi
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import com.google.android.gms.maps.model.LatLng
-import java.time.Duration
 
 
 data class UiState(
-    //The Edit mode enable the helper to configure the app
-    val editMode: Boolean  = false,
 
     //Help interface and number to call
     val phoneNumber:  String = "",  //"+33658814083"
