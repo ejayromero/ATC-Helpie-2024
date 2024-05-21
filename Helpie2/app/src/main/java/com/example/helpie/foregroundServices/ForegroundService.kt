@@ -4,17 +4,19 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.IBinder
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.net.Uri
 import android.os.Build
+import android.os.IBinder
+import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.graphics.PixelFormat
-import android.net.Uri
-import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import com.example.helpie.R
+
 //import com.example.helpie.foregroundServices.OnSwipeTouchListener
 
 
@@ -46,11 +48,13 @@ class ForegroundService: Service(){
 
         val pendingIntent = PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
 
+        val color =  Color.parseColor("#0978c6")
+
         val notification = NotificationCompat.Builder(this, "running_channel")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_stat_name)
             .setContentTitle("HELPIE")
             .setContentText("Voyage en cours")
-            .setColor(0xFF0000FF.toInt())
+            .setColor(color)
             .setColorized(true)
             .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent) // Add button
             .setPriority(NotificationCompat.PRIORITY_LOW) // Set low priority to keep it always visible
