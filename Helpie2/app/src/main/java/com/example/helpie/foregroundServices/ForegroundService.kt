@@ -9,6 +9,8 @@ import android.graphics.PixelFormat
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -65,7 +67,25 @@ class ForegroundService: Service(){
 
         startForeground(1, notification)
 
+        // Call vibrateDevice() to trigger the vibration
+        vibrateDevice()
 
+    }
+
+    private fun vibrateDevice() {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // For newer versions of Android, you can use VibrationEffect
+            val vibrationEffect = VibrationEffect.createOneShot(
+                500, // The duration of the vibration in milliseconds
+                VibrationEffect.DEFAULT_AMPLITUDE // The amplitude of the vibration. This can be any value from 1 to 255, or DEFAULT_AMPLITUDE
+            )
+            vibrator.vibrate(vibrationEffect)
+        } else {
+            // For older versions of Android, you can simply pass the vibration duration to the vibrate method
+            vibrator.vibrate(500) // The duration of the vibration in milliseconds
+        }
     }
     private fun showFloatingWindow() {
         // Check if the permission is already granted for window overlay
