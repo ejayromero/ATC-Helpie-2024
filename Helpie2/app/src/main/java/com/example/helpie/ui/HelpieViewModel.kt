@@ -107,7 +107,7 @@ class HelpieViewModel : ViewModel() {
         }
 
         Log.d("trip", "done !")
-        return HelpieScreen.Final.name
+        return HelpieScreen.StopTicket.name
     }
 
 

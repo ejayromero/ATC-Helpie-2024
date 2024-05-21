@@ -1,6 +1,5 @@
 package com.example.helpie
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -81,6 +80,7 @@ enum class HelpieScreen {
     Ticket,
     Step,
     TakeTicket,
+    StopTicket,
     Summary,
     Destination,
     Start,
@@ -378,7 +378,21 @@ fun HelpieApp(
                             }
                         },
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxSize(),
+                        take = true
+                    )
+                }
+
+                composable(route = HelpieScreen.StopTicket.name) {
+                    TakeTicketScreen(
+                        takeTicket = {
+                            viewModel.setTicket(false)
+                            viewModel.openLink(ctx,uiState.takeTicket)
+                            navController.navigate(HelpieScreen.Final.name)
+                        },
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        take = false
                     )
                 }
 
@@ -461,7 +475,7 @@ fun HelpieApp(
                         lauchMaps = {
                             viewModel.launchGoogleMaps(ctx)
                             if (uiState.currentStep == (uiState.summary?.npSteps?.minus(1)) ) {
-                                navController.navigate(HelpieScreen.Final.name)
+                                navController.navigate(HelpieScreen.StopTicket.name)
                             } else {
                                 navController.navigate(HelpieScreen.ReachStop.name)
                             }

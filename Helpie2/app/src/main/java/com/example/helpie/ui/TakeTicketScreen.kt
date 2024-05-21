@@ -2,7 +2,9 @@ package com.example.helpie.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -25,7 +27,8 @@ import com.example.helpie.ui.theme.AppTheme
 @Composable
 fun TakeTicketScreen(
     modifier: Modifier = Modifier,
-    takeTicket: () -> Unit = {}
+    takeTicket: () -> Unit = {},
+    take: Boolean = true
 
 ) {
 
@@ -38,7 +41,7 @@ fun TakeTicketScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Prendre le ticket",
+                text = if (take) {"Commencer easyride"} else {"Arrêter easyride"},
                 modifier = Modifier,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
@@ -66,15 +69,35 @@ fun TakeTicketScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
             )
             {
+
+                    Text(
+                        text = if (take) {
+                            "Aller prendre le ticket"
+                        } else {
+                            "Aller arrêter le ticket"
+                        },
+                        modifier = Modifier
+                            .padding(20.dp),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+
                 Text(
-                    text = "prendre le ticket",
+                    text = if (take) {
+                        "swap de gauche à droite"
+                    } else {
+                        "swap de droite à gauche"
+                    },
                     modifier = Modifier
                         .padding(20.dp),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
                     fontSize = 30.sp
                 )
-            }
+
         }
     }
 }
