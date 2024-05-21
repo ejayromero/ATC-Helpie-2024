@@ -17,10 +17,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -159,10 +162,16 @@ fun HelpieApp(
                     actions = {
                         Column {
                             //Spacer(modifier = Modifier.height(25.dp))
-                            Switch(
-                                checked = uiState.editMode,
-                                onCheckedChange = { viewModel.switchEdit() },
-                            )
+                            if (currentScreen == HelpieScreen.Start.name) {
+                                Button(
+                                    onClick = { viewModel.switchEdit() }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Settings, // Replace 'YourIconName' with the desired icon name
+                                        contentDescription = "Edit Mode"
+                                    )
+                                }
+                            }
                         }
                     },
                     scrollBehavior = scrollBehavior, //enable scrolling
