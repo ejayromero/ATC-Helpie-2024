@@ -37,12 +37,12 @@ class MainActivity : ComponentActivity() {
     private lateinit var viewModel: HelpieViewModel
 
 
-    private val updateIntervalMillis: Long = 5000 //Update every 5 sec
+    private val updateIntervalMillis: Long = 500 //Update every 0.5 sec
     private val handler = Handler(Looper.getMainLooper())
     private val updateRunnable = object: Runnable{
         @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
-//            updateLocation()
+            updateLocation()
             handler.postDelayed(this, updateIntervalMillis)
         }
     }
