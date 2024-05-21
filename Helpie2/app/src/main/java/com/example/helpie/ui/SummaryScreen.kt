@@ -46,6 +46,7 @@ fun SummaryScreen(
     summary : TripSummary,
     steps : List<StepInfo>,
     onNext: () -> Unit = {},
+    setTripOngoing: () -> Unit = {}
 ) {
 
     Box(
@@ -178,6 +179,7 @@ fun SummaryScreen(
                 Button(
                     onClick = {
                         onNext()
+                        setTripOngoing()
                     },
                     shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
