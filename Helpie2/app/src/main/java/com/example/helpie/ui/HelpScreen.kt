@@ -55,7 +55,9 @@ fun HelpScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 164.dp)
         ) {
             if (editMode) {
                 Row {
@@ -121,7 +123,7 @@ fun HelpScreen(
             } else {
                 Image(
                     painter = painterResource(R.drawable.phone),
-                    contentDescription = stringResource(R.string.appelle_icon),
+                    contentDescription = stringResource(R.string.appele_icon),
                     modifier = Modifier
                         .width(dimensionResource(R.dimen.button_image_width))
                         .height(dimensionResource(R.dimen.button_image_height))
@@ -130,7 +132,7 @@ fun HelpScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
                 CustomTextView(
-                    text = stringResource(R.string.appeller_le_proche_aidant),
+                    text = stringResource(R.string.appeler_le_proche_aidant),
                     color = MaterialTheme.colorScheme.onSurface
                 )
 

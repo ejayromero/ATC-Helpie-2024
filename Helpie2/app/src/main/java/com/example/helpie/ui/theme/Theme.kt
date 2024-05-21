@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -143,17 +144,36 @@ fun TemplateButton(
     textColor: Color = MaterialTheme.colorScheme.surface,
     padding: Boolean = true,
     size: TextUnit = 24.sp,
-    weigth: FontWeight = FontWeight.Bold
+    weight: FontWeight = FontWeight.Bold,
+    sizeButton: String = "normal"
 ) {
-    Button(
+    val modifier = when (sizeButton) {
+        "huge" -> {
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 36.dp)
+                .height(72.dp)
+        }
+        "normal" -> {
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 64.dp)
+                .height(52.dp)
+        }
+        else -> {
+            Modifier
+                .padding(horizontal = 4.dp)
+                .width(112.dp)
+                .height(48.dp)
+        }
+    }
+
+        Button(
         onClick = onClick,
         shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
         colors = ButtonDefaults.buttonColors(containerColor = containerColor),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp)
-            .height(72.dp)
+        modifier = modifier
     ) {
-        CustomTextView(text = text, color = textColor, padding = padding, size = size, weigth = weigth)
+        CustomTextView(text = text, color = textColor, padding = padding, size = size, weigth = weight)
     }
 }

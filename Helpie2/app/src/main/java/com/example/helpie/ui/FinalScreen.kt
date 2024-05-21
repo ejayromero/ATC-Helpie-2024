@@ -45,7 +45,8 @@ fun FinalScreen(
             TemplateButton(
                 onClick = { recommence() },
                 text = "Nouveau trajet",
-                padding = false
+                padding = false,
+                sizeButton = "huge"
             )
         }
     }

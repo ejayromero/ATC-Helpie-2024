@@ -40,7 +40,8 @@ fun StartScreen(
             TemplateButton(
                 onClick = { onTicket(true) },
                 text = stringResource(R.string.commencer_un_trajet),
-                padding = false
+                padding = false,
+                sizeButton = "huge"
             )
         }
     }

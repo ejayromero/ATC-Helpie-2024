@@ -99,6 +99,7 @@ fun WalkScreen(
                 onClick = { lauchMaps() },
                 text = "Lancer la navigation",
                 padding = false,
+                sizeButton = "huge"
                 )
         }
     }

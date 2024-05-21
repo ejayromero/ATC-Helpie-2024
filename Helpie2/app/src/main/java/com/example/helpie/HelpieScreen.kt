@@ -72,6 +72,7 @@ import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 import androidx.lifecycle.viewModelScope
+import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.ui.theme.TemplateButton
 import kotlinx.coroutines.launch
 
@@ -139,15 +140,11 @@ fun HelpieApp(
             Column(Modifier.fillMaxWidth()) {
                 TopAppBar(
                     title = {
-                        Column {
-                            //Spacer(modifier = Modifier.height(.dp)) // Adding space on the top
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
+                        Column(Modifier.padding(start = 80.dp)) {
+//                            Spacer(modifier = Modifier.height(.dp)) // Adding space on the top
+                            CustomTextView(
                                 text = stringResource(R.string.HELPIE),
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 60.sp
+                                size = 48.sp,
                             )
                         }
                     },
@@ -181,13 +178,15 @@ fun HelpieApp(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
-                    .padding(top = 16.dp)
+                    .padding(top = 28.dp)
                     .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
             ) {
-                TemplateButton(onClick = { navController.navigate(HelpieScreen.Help.name) },
+                TemplateButton(
+                    onClick = { navController.navigate(HelpieScreen.Help.name) },
                     text = stringResource(R.string.aide),
                     padding = false,
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    sizeButton = "normal"
                     )
                 }
             }
@@ -212,10 +211,14 @@ fun HelpieApp(
                                 .height(80.dp)
                                 .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
                         ) {
+                            Spacer(modifier = Modifier.height(20.dp))
                             TemplateButton(
                                 onClick = { navController.navigate(HelpieScreen.Ticket.name)},
                                 text = "BILLET",
-                                padding = false)
+                                padding = false,
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                sizeButton = "normal"
+                            )
                         }
 
                     }
@@ -480,29 +483,22 @@ fun HelpieApp(
 
                         }
                             if((currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Step.name) and (navController.previousBackStackEntry != null)){
-                            Button(
-                                onClick = {
-                                    navController.navigateUp()
-                                },
-                                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
-                            )
-                            {
-                                Text(
+                                TemplateButton(
+                                    onClick = { navController.navigate(HelpieScreen.Start.name)},
                                     text = retour,
-                                    modifier = Modifier
-                                        .padding(16.dp),
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold
+                                    size = 16.sp,
+                                    sizeButton = "small",
+                                    padding = false,
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
-                            }}
+                            }
                             else {
                                 Spacer(modifier = Modifier.width(127.dp))
                             }
                             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.button_corner_radius)))
 
                             if((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.InBus.name) or (currentScreen == HelpieScreen.OutBus.name)) {
-                                Button(
+                                TemplateButton(
                                     onClick = {
                                         if ((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.OutBus.name)) {
                                             viewModel.viewModelScope.launch {
@@ -511,22 +507,16 @@ fun HelpieApp(
                                         } else {
                                             navController.navigate(HelpieScreen.JourneyInTransport.name)
                                         }
-                                              },
-                                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+                                    },
+                                    text = next,
+                                    size = 16.sp,
+                                    sizeButton = "small",
+                                    padding = false,
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
-                                {
-                                    Text(
-                                        text = next,
-                                        modifier = Modifier
-                                            .padding(16.dp),
-                                        textAlign = TextAlign.Center,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-                            }else {
+                            } else {
                                 Spacer(modifier = Modifier.width(127.dp))
-                            } // un peu systeme D
+                            }
 
                 }
                     Spacer(modifier = Modifier.height(20.dp))

@@ -37,7 +37,8 @@ fun TicketScreen(
                 onClick = { showTicket() },
                 text = "Montrer le ticket",
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                padding = false
+                padding = false,
+                sizeButton = "huge"
             )
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
