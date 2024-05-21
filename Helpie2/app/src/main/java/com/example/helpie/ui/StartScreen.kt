@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
+import com.example.helpie.ui.theme.TemplateButton
 
 @Composable
 fun StartScreen(
@@ -36,28 +37,16 @@ fun StartScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Button(
-                onClick = {
-                    onTicket(true)
-                },
-                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            TemplateButton(
+                onClick = { onTicket(true) },
+                text = stringResource(R.string.commencer_un_trajet),
+                padding = false
             )
-            {
-                Text(
-                    text = stringResource(R.string.commencer_un_trajet),
-                    modifier = Modifier
-                        .padding(20.dp),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp
-                )
-            }
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun StartPreview() {
     AppTheme {

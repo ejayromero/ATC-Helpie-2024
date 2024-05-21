@@ -28,8 +28,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.helpie.R
+import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
+import com.example.helpie.ui.theme.TemplateButton
 import com.example.helpie.walkInfo
 
 
@@ -45,14 +47,15 @@ fun WalkScreen(
     ) {
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             CustomTextView(
                 text = "Marche jusqu'à la prochaine étape",
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onSurface
             )
             Box(
                 modifier = Modifier
@@ -80,37 +83,23 @@ fun WalkScreen(
                     )
                     // Spacer to create space between icon and text
                     Spacer(modifier = Modifier.width(28.dp))
-                    Column() {
-                        // Bus line text
-                        Text(
-                            text = stepInfo.endName.toString(),
-                            color = Color.White,
-                            fontSize = 16.sp,
 
+                    Column {
+                        CustomTextView(
+                            text = stepInfo.endName.toString(),
+                            padding = false,
+                            size = 16.sp
                             )
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Button(
-                onClick = {
-                    lauchMaps()
-                },
-                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-            )
-            {
-                Text(
-                    text = "Lancer la navigation",
-                    modifier = Modifier
-                        .padding(20.dp),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp
+            Spacer(modifier = Modifier.height(16.dp))
+            TemplateButton(
+                onClick = { lauchMaps() },
+                text = "Lancer la navigation",
+                padding = false,
                 )
-            }
         }
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +24,6 @@ import com.example.helpie.ui.theme.CustomTextView
 fun JourneyInTransportScreen(
     modifier: Modifier = Modifier,
     stepInfo: transportInfo,
-    onNext: () -> Unit = {},
     time: Int
 ) {
 
@@ -67,25 +67,24 @@ fun JourneyInTransportScreen(
                 )
 
                 Spacer(modifier = Modifier.width(28.dp))
-                Column() {
+                Column {
                     // Bus line text
-                    Text(
+                    CustomTextView(
                         text = stepInfo.line.toString(),
-                        color = Color.White,
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Bold
+                        size = 36.sp,
+                        padding = false
                     )
-                    Text(
+                    CustomTextView(
                         text = stepInfo.mode.toString(),
-                        color = Color.White,
-                        fontSize = 16.sp,
+                        size = 16.sp,
+                        padding = false
                     )
                 }
             }
         }
         CustomTextView(
             text = "Le ${stepInfo.mode.toString()} arrive à l'arrêt ${stepInfo.endName} dans $time minutes !",
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

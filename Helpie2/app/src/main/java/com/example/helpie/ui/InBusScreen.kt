@@ -42,7 +42,7 @@ fun InBusScreen(
     ) {
         CustomTextView(
             text = "Le ${stepInfo.mode.toString()} arrive bientot, prépare toi à monter !",
-            color = Color.Black
+            color = Color.Black,
         )
 
 

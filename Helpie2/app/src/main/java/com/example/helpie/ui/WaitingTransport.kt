@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,14 +30,11 @@ import com.example.helpie.R
 import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
-import com.example.helpie.walkInfo
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WaitingTransportScreen(
-    modifier: Modifier = Modifier,
     stepInfo: transportInfo,
-    onNext: () -> Unit = {},
     time : Int
 ) {
 
@@ -77,30 +75,26 @@ fun WaitingTransportScreen(
                         .fillMaxSize()
                 )
 
-
-                // Spacer to create space between icon and text
                 Spacer(modifier = Modifier.width(28.dp))
-                Column() {
-                    // Bus line text
-                    Text(
-                        text = stepInfo.line.toString(),
-                        color = Color.White,
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = stepInfo.mode.toString(),
-                        color = Color.White,
-                        fontSize = 16.sp,
 
-                        )
+                Column() {
+                    CustomTextView(
+                        text = stepInfo.line.toString(),
+                        size = 36.sp,
+                        padding = false
+                    )
+                    CustomTextView(
+                        text = if (stepInfo.mode.toString() == "rail") "train" else stepInfo.mode.toString(),
+                        size = 16.sp,
+                        padding = false
+                    )
                 }
             }
         }
 
         CustomTextView(
             text = "Le ${stepInfo.mode} arrive dans ${time} minutes",
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
@@ -111,10 +105,11 @@ fun WaitingTransportScreenPreview() {
     AppTheme {
         WaitingTransportScreen(
             stepInfo = transportInfo(
-                mode = "bus",
+                mode = "rail",
                 startName = "Morges",
                 startTime = "2022-12-12T12:00:00",
-                endTime = "2022-12-12T12:30:00"
+                endTime = "2022-12-12T12:30:00",
+                line = "31"
             ),
             time = 5
         )

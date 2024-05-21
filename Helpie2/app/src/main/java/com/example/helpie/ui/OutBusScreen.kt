@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,7 +43,7 @@ fun OutBusScreen(
     ) {
         CustomTextView(
             text = "Il est bientot l'heure de descendre.",
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Box(
@@ -78,16 +79,15 @@ fun OutBusScreen(
 
                 Spacer(modifier = Modifier.width(28.dp))
                 Column() {
-                    Text(
+                    CustomTextView(
                         text = stepInfo.line.toString(),
-                        color = Color.White,
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Bold
+                        padding = false,
+                        size = 36.sp
                     )
-                    Text(
+                    CustomTextView(
                         text = stepInfo.mode.toString(),
-                        color = Color.White,
-                        fontSize = 16.sp,
+                        padding = false,
+                        size = 16.sp
                     )
                 }
             }
@@ -95,7 +95,7 @@ fun OutBusScreen(
 
         CustomTextView(
             text = stepInfo.endName.toString(),
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

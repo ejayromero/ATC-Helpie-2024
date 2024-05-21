@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
+import com.example.helpie.ui.theme.TemplateButton
 
 @Composable
 fun FinalScreen(
@@ -39,26 +40,13 @@ fun FinalScreen(
         ) {
             CustomTextView(
                 text = "Trajet terminé !",
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onSurface
             )
-
-            Button(
-                onClick = {
-                    recommence()
-                },
-                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            TemplateButton(
+                onClick = { recommence() },
+                text = "Nouveau trajet",
+                padding = false
             )
-            {
-                Text(
-                    text = "nouveau trajet",
-                    modifier = Modifier
-                        .padding(20.dp),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp
-                )
-            }
         }
     }
 }

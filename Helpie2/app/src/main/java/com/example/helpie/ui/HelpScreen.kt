@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
+import com.example.helpie.ui.theme.CustomTextView
+import com.example.helpie.ui.theme.TemplateButton
 
 @Composable
 fun HelpScreen(
@@ -61,10 +63,9 @@ fun HelpScreen(
                         checked = usePhone,
                         onCheckedChange = { phone(true) }
                     )
-                    Text(
+                    CustomTextView(
                         text = stringResource(R.string.numero_du_proche_aidant),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 25.sp
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
@@ -127,73 +128,61 @@ fun HelpScreen(
                         .padding(dimensionResource(R.dimen.button_interior_padding))
                 )
 
-                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
-                Text(
+                Spacer(modifier = Modifier.height(16.dp))
+                CustomTextView(
                     text = stringResource(R.string.appeller_le_proche_aidant),
-                    style = MaterialTheme.typography.bodyLarge
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
-                Button(onClick = {
-                    // on below line we are opening the dialer of our
-                    // phone and passing phone number.
-                    // Use format with "tel:" and phoneNumber created is
-                    // stored in u.
-                    if (usePhone) {
-                        val u = Uri.parse("tel:$phoneNumber")
-                        // Create the intent and set the data for the
-                        // intent as the phone number.
-                        val i = Intent(Intent.ACTION_DIAL, u)
-                        try {
+                TemplateButton(
+                    onClick = {
+                        if (usePhone) {
+                            val u = Uri.parse("tel:$phoneNumber")
+                            // Create the intent and set the data for the
+                            // intent as the phone number.
+                            val i = Intent(Intent.ACTION_DIAL, u)
+                            try {
 
-                            // Launch the Phone app's dialer with a phone
-                            // number to dial a call.
-                            ctx.startActivity(i)
-                        } catch (s: SecurityException) {
+                                // Launch the Phone app's dialer with a phone
+                                // number to dial a call.
+                                ctx.startActivity(i)
+                            } catch (s: SecurityException) {
 
-                            // show() method display the toast with
-                            // exception message.
-                            Toast.makeText(ctx, "An error occurred", Toast.LENGTH_LONG)
-                                .show()
+                                // show() method display the toast with
+                                // exception message.
+                                Toast.makeText(ctx, "An error occurred", Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                        } else {
+                            val u = Uri.parse("tel:$outlineNumber")
+                            // Create the intent and set the data for the
+                            // intent as the phone number.
+                            val i = Intent(Intent.ACTION_DIAL, u)
+                            try {
+
+                                // Launch the Phone app's dialer with a phone
+                                // number to dial a call.
+                                ctx.startActivity(i)
+                            } catch (s: SecurityException) {
+
+                                // show() method display the toast with
+                                // exception message.
+                                Toast.makeText(ctx, "An error occurred", Toast.LENGTH_LONG)
+                                    .show()
+                            }
                         }
-                    } else {
-                        val u = Uri.parse("tel:$outlineNumber")
-                        // Create the intent and set the data for the
-                        // intent as the phone number.
-                        val i = Intent(Intent.ACTION_DIAL, u)
-                        try {
-
-                            // Launch the Phone app's dialer with a phone
-                            // number to dial a call.
-                            ctx.startActivity(i)
-                        } catch (s: SecurityException) {
-
-                            // show() method display the toast with
-                            // exception message.
-                            Toast.makeText(ctx, "An error occurred", Toast.LENGTH_LONG)
-                                .show()
-                        }
-                    }
-
-
-                }) {
-                    // on below line creating a text for our button.
-                    Text(
-                        // on below line adding a text ,
-                        // padding, color and font size.
-                        text = stringResource(R.string.appel),
-                        modifier = Modifier.padding(10.dp),
-                        color = Color.White,
-                        fontSize = 15.sp
+                              },
+                    text = stringResource(R.string.appel),
+                    padding = false,
+                    containerColor = MaterialTheme.colorScheme.primary
                     )
                 }
             }
-
-        }
-    }
+         }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HelpPreview() {
     AppTheme {

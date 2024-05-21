@@ -72,6 +72,7 @@ import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 import androidx.lifecycle.viewModelScope
+import com.example.helpie.ui.theme.TemplateButton
 import kotlinx.coroutines.launch
 
 
@@ -179,29 +180,16 @@ fun HelpieApp(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp)
+                    .height(100.dp)
+                    .padding(top = 16.dp)
                     .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
             ) {
-
-                Button(
-                    onClick = {
-                        navController.navigate(HelpieScreen.Help.name)
-                    },
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
-                    modifier = Modifier.align(Alignment.Center)
-                )
-                {
-                    Text(
-                        text = stringResource(R.string.aide),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
+                TemplateButton(onClick = { navController.navigate(HelpieScreen.Help.name) },
+                    text = stringResource(R.string.aide),
+                    padding = false,
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
                     )
                 }
-            }
             }
         }
     ) { innerPadding ->
@@ -224,22 +212,10 @@ fun HelpieApp(
                                 .height(80.dp)
                                 .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
                         ) {
-                            Button(
-                                onClick = {
-                                    navController.navigate(HelpieScreen.Ticket.name) },
-                                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
-                            )
-                            {
-                                Text(
-                                    text = "BILLET",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                            TemplateButton(
+                                onClick = { navController.navigate(HelpieScreen.Ticket.name)},
+                                text = "BILLET",
+                                padding = false)
                         }
 
                     }

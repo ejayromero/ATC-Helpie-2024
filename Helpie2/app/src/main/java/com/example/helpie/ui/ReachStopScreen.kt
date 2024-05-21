@@ -13,17 +13,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.helpie.R
+import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.walkInfo
@@ -31,7 +31,7 @@ import com.example.helpie.walkInfo
 @Composable
 fun ReachStopScreen(
     modifier: Modifier = Modifier,
-    stepInfo: walkInfo,
+    stepInfo: walkInfo
 ) {
 
     Column(
@@ -42,7 +42,7 @@ fun ReachStopScreen(
     ) {
         CustomTextView(
             text = "Es-tu à l'arrêt ?",
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Box(
@@ -73,34 +73,30 @@ fun ReachStopScreen(
                     alignment = Alignment.Center,
                     modifier = Modifier
                         .size(60.dp)
-                        .fillMaxSize()
                 )
-
-
                 // Spacer to create space between icon and text
                 Spacer(modifier = Modifier.width(28.dp))
                 Column() {
                     // Bus line text
-                    Text(
+                    CustomTextView(
+//                        text = nextStep.line.toString(),
                         text = "701",
-//                        text = stepInfo.line.toString(),
-                        color = Color.White,
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
+                        padding = false,
+                        size = 32.sp,
+                        )
+                    CustomTextView(
                         text = stepInfo.mode.toString(),
                         color = Color.White,
-                        fontSize = 16.sp,
-
-                        )
+                        padding = false,
+                        size = 16.sp
+                    )
                 }
             }
         }
 
         CustomTextView(
             text = stepInfo.startName.toString(),
-            color = Color.Black,
+            color = Color.Black
         )
     }
 }
@@ -111,7 +107,7 @@ fun ReachStopScreenPreview() {
         ReachStopScreen(
             stepInfo = walkInfo(
                 "rail",
-                "Saint-Sulpice, ",
+                "Saint-Sulpice",
                 endName = "Morges Gare"
             )
         )

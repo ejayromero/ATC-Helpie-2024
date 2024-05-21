@@ -9,28 +9,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.helpie.Localisation
@@ -39,7 +32,14 @@ import com.example.helpie.StepInfo
 import com.example.helpie.TripSummary
 import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
+import com.example.helpie.ui.theme.CustomTextView
+import com.example.helpie.ui.theme.TemplateButton
 import com.example.helpie.walkInfo
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Duration.Companion.hours
 
 
 @Composable
@@ -63,46 +63,35 @@ fun SummaryScreen(
         ) {
 
             item {
-                Text(
+                CustomTextView(
                     text = "Ton trajet",
-                    modifier = Modifier
-                        .padding(20.dp),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 50.sp
-                )
-            }
-            // Display destination, end time, and number of steps
-            item {
-                Text(
-                    text = "Ta destination : ${targetLocation.destinationName ?: "Unknown"}",
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(10.dp)
+                    size = 32.sp,
+                    padding = false,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
             item {
-                Text(
+                CustomTextView(
                     text = "Arrivé prévu à : ${summary.endTime}",
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(10.dp)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
 
             item {
-                Text(
-                    text = "nombre d'étapes : ${summary.npSteps}",
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(10.dp)
+                TemplateButton(
+                    onClick = { onNext() },
+                    text = "Commencer",
+                    padding = false
                 )
             }
             item {
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+
+            item{
+                CustomTextView(
+                    text = "Résumé du trajet",
+                    color = MaterialTheme.colorScheme.onSurface)
             }
 
             for (step in steps) {
@@ -177,27 +166,9 @@ fun SummaryScreen(
             item {
                 Spacer(modifier = Modifier.height(20.dp))
             }
-            item {
-                Button(
-                    onClick = {
-                        onNext()
-                    },
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-                    modifier = Modifier
-                        .height(dimensionResource(R.dimen.button_destination_height))
-                        .width(dimensionResource(R.dimen.button_destination_width) * 2 + 30.dp),
-                )
-                {
-                    Text(
-                        text = "Commencer",
-                        fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() }
-                    )
-                }
-            }
-        }
         }
     }
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -210,11 +181,13 @@ fun SummaryPreview() {
                 walkInfo(
                     startName = "Saint-Sulpice, Innovation Park",
                     endName = "Morges, Gare",
+                    endTime = "2024-05-20T17:58:00Z",
                     mode = "walk"
                 ),
                 transportInfo(
                     startName = "Saint-Sulpice, Innovation Park",
                     endName = "Morges, Gare",
+                    endTime = "2024-05-20T17:58:00Z",
                     mode = "bus"
                 )
             )
