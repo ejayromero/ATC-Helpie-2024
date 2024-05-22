@@ -125,7 +125,7 @@ fun HelpieApp(
 
     val imageArrivalShiftFraction = 0.415f
 
-    val startFractionBar = -0.95f
+    val startFractionBar = -0.5f
 
     val imageShiftFraction = remember { mutableStateOf(startFractionBar) }
 
@@ -152,18 +152,21 @@ fun HelpieApp(
 
     val transportDescription = remember { mutableStateOf(R.string.WalkBar) }
 
-    LaunchedEffect(stepInfo.mode) {
-        val (painter, description) = when (stepInfo.mode.toString()) {
-            "bus" -> Pair(R.drawable.bus_bar, R.string.BusBar)
-            "rail" -> Pair(R.drawable.train_bar, R.string.TrainBar)
-            "walk" -> Pair(R.drawable.walking_bar, R.string.WalkBar)
-            "metro" -> Pair(R.drawable.metro_bar, R.string.MetroBar)
-            "boat" -> Pair(R.drawable.boat_bar, R.string.BoatBar)
-            else -> Pair(R.drawable.train_bar, R.string.TrainBar)
+    LaunchedEffect(uiState.currentStep) {
+        if (uiState.steps.isNotEmpty() && uiState.currentStep in uiState.steps.indices) {
+            val (painter, description) = when (uiState.steps[uiState.currentStep].mode.toString()) {
+                "bus" -> Pair(R.drawable.bus_bar, R.string.BusBar)
+                "rail" -> Pair(R.drawable.train_bar, R.string.TrainBar)
+                "walk" -> Pair(R.drawable.walking_bar, R.string.WalkBar)
+                "metro" -> Pair(R.drawable.metro_bar, R.string.MetroBar)
+                "boat" -> Pair(R.drawable.boat_bar, R.string.BoatBar)
+                else -> Pair(R.drawable.train_bar, R.string.TrainBar)
+            }
+            transportPainter.value = painter
+            transportDescription.value = description
         }
-        transportPainter.value = painter
-        transportDescription.value = description
     }
+
 
     Scaffold(
         topBar = {
@@ -265,13 +268,20 @@ fun HelpieApp(
                                 .fillMaxWidth()
                                 .height(40.dp)
                         ) {
-                            Image(
-                                painter = painterResource(id = transportPainter.value),
-                                contentDescription = stringResource(id = transportDescription.value),
+                            val transportOffset = (imageShiftFraction.value * screenWidth).dp
+                            //val arrivalOffset = (imageArrivalShiftFraction * screenWidth).dp
+
+                            Box(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .offset(x = (imageShiftFraction.value * screenWidth).dp)
-                            )
+                                    .offset(x = transportOffset)
+                            ) {
+                                Image(
+                                    painter = painterResource(id = transportPainter.value),
+                                    contentDescription = stringResource(id = transportDescription.value),
+                                    modifier = Modifier.align(Alignment.Center)
+                                )
+                            }
                             // Overlay to make the right portion of the image transparent
                             Image(
                                 painter = painterResource(id = R.drawable.arrivee_panel),

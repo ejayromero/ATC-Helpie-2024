@@ -73,10 +73,10 @@ data class UiState(
         ),
         // Destination 4
         Localisation(
-            destinationName = "Parc scientifique EPFL",
-            destinationAddress = "EPFL Innovation Park, 1015 Lausanne",
-            longitude =  6.5637746049080805,
-            latitude = 46.51666499690354
+            destinationName = "EPFL",
+            destinationAddress = "Rte Cantonale, 1015 Lausanne",
+            longitude =  6.565607340176263,
+            latitude = 46.52202373864509
         ),
 
         // Destination input
