@@ -1,5 +1,6 @@
 package com.example.helpie.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -95,9 +96,9 @@ fun ReachStopScreen(
                 }
             }
         }
-
+        Log.d("stopname", nextStep.startName.toString())
         CustomTextView(
-            text = stepInfo.startName.toString(),
+            text = nextStep.startName.toString(),
             color = MaterialTheme.colorScheme.onSurface
         )
     }
