@@ -350,6 +350,7 @@ fun HelpieApp(
                 composable(route = HelpieScreen.Final.name) {
                     FinalScreen(
                         recommence = {
+                            viewModel.setFinish(false)
                             navController.navigate(HelpieScreen.Start.name)
                         },
                         modifier = Modifier
@@ -431,6 +432,7 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(false)
                             viewModel.openLink(ctx,uiState.takeTicket)
+                            viewModel.clean()
                             navController.navigate(HelpieScreen.Final.name)
                         },
                         modifier = Modifier
@@ -518,6 +520,7 @@ fun HelpieApp(
                         lauchMaps = {
                             viewModel.launchGoogleMaps(ctx)
                             if (uiState.currentStep == (uiState.summary?.npSteps?.minus(1)) ) {
+                                viewModel.setFinish(true)
                                 navController.navigate(HelpieScreen.StopTicket.name)
                             } else {
                                 navController.navigate(HelpieScreen.ReachStop.name)
@@ -548,7 +551,14 @@ fun HelpieApp(
                         }
                             if((currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Step.name) and (navController.previousBackStackEntry != null)){
                                 TemplateButton(
-                                    onClick = { navController.navigate(HelpieScreen.Start.name)},
+                                    onClick = {
+                                        viewModel.clean()
+                                        if (uiState.ticket) {
+                                            navController.navigate(HelpieScreen.StopTicket.name)
+                                        } else {
+                                            navController.navigate(HelpieScreen.Start.name)
+                                        }
+                                    },
                                     text = retour,
                                     size = 16.sp,
                                     sizeButton = "small",

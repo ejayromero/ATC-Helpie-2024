@@ -171,25 +171,6 @@ fun SummaryScreen(
             item {
                 Spacer(modifier = Modifier.height(20.dp))
             }
-            item {
-                Button(
-                    onClick = {
-                        onNext()
-                        setTripOngoing()
-                    },
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-                    modifier = Modifier
-                        .height(dimensionResource(R.dimen.button_destination_height))
-                        .width(dimensionResource(R.dimen.button_destination_width) * 2 + 30.dp),
-                )
-                {
-                    Text(
-                        text = "Commencer",
-                        fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() }
-                    )
-                }
-            }
         }
     }
 }

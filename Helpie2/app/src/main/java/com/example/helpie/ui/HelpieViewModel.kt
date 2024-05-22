@@ -36,6 +36,22 @@ class HelpieViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    fun clean() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                trip = null,
+                summary = null,
+                tripOngoing = false,
+                steps = listOf(),
+                wait = false,
+                currentStep = -1,
+                timeNeeded = "start",
+                showDialog = false,
+                targetLocation = Localisation()
+            )
+        }
+    }
+
     fun request() {
         Log.d("helpie", "ojpSdk")
         viewModelScope.launch {
@@ -105,9 +121,15 @@ class HelpieViewModel : ViewModel() {
         }
 
         Log.d("trip", "done !")
+        setFinish(true)
         return HelpieScreen.StopTicket.name
     }
 
+    fun setFinish(finish : Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(isFinish = finish)
+        }
+    }
 
 
     fun launchGoogleMaps(context: Context) {
