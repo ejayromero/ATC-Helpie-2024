@@ -106,7 +106,7 @@ fun SummaryScreen(
                     Box(
                         modifier = Modifier
                             .width(300.dp)
-                            .height(75.dp)
+                            .height(100.dp)
                             .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
                             .padding(16.dp)
 
@@ -138,30 +138,30 @@ fun SummaryScreen(
                             Column {
                                 // Bus line text
                                 if (step is walkInfo) {
-                                    Text(
-                                        text = "marche jusqu'à",
-                                        color = Color.White,
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold
+                                    CustomTextView(
+                                        text = "marcher jusqu'à",
+                                        size = 12.sp,
+                                        padding = false,
+                                        align = TextAlign.Start
                                     )
-                                    Text(
+                                    CustomTextView(
                                         text = step.endName.toString(),
-                                        color = Color.White,
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold
+                                        padding = false,
+                                        size = 16.sp,
+                                        align = TextAlign.Start
                                     )
                                 } else if (step is transportInfo) {
-                                    Text(
-                                        text = "transport jusqu'à",
-                                        color = Color.White,
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold
+                                    CustomTextView(
+                                        text = "descendre à",
+                                        size = 12.sp,
+                                        padding = false,
+                                        align = TextAlign.Start
                                     )
-                                    Text(
+                                    CustomTextView(
                                         text = step.endName.toString(),
-                                        color = Color.White,
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold
+                                        padding = false,
+                                        size = 16.sp,
+                                        align = TextAlign.Start
                                     )
                                 }
                             }
