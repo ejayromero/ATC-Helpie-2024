@@ -83,7 +83,7 @@ fun OutBusScreen(
                     CustomTextView(
                         text = stepInfo.line.toString(),
                         padding = false,
-                        size = 36.sp
+                        size = 32.sp
                     )
                     CustomTextView(
                         text = stepInfo.mode.toString(),
