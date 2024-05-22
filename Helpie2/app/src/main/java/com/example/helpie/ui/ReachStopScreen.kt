@@ -31,7 +31,8 @@ import com.example.helpie.walkInfo
 @Composable
 fun ReachStopScreen(
     modifier: Modifier = Modifier,
-    stepInfo: walkInfo
+    stepInfo: walkInfo,
+    nextStep: transportInfo
 ) {
 
     Column(
@@ -79,8 +80,8 @@ fun ReachStopScreen(
                 Column {
                     // Bus line text
                     CustomTextView(
-//                        text = nextStep.line.toString(),
-                        text = "701",
+                        text = nextStep.line.toString(),
+//                        text = "701",
                         padding = false,
                         size = 32.sp,
                         )
@@ -109,6 +110,11 @@ fun ReachStopScreenPreview() {
                 "rail",
                 "Saint-Sulpice",
                 endName = "Morges Gare"
+            ),
+            nextStep = transportInfo(
+                "bus",
+                "701",
+                "Morges Gare"
             )
         )
     }

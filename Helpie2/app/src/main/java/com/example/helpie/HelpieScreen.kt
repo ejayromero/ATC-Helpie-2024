@@ -85,7 +85,6 @@ import kotlinx.coroutines.launch
 enum class HelpieScreen {
     Help,
     Ticket,
-    Step,
     TakeTicket,
     StopTicket,
     Summary,
@@ -191,7 +190,7 @@ fun HelpieApp(
                             if (currentScreen == HelpieScreen.Start.name) {
                                 Button(
                                     onClick = { navController.navigate(HelpieScreen.Settings.name) },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                                     ) {
                                     Icon(
                                         imageVector = Icons.Default.Settings, // Replace 'YourIconName' with the desired icon name
@@ -446,7 +445,8 @@ fun HelpieApp(
                     if (uiState.steps[uiState.currentStep] is walkInfo) {
                         ReachStopScreen(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
+                            nextStep = uiState.steps[uiState.currentStep + 1] as transportInfo
                         )
                     }
                 }
@@ -541,13 +541,13 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                        if(((currentScreen == HelpieScreen.Destination.name) or (currentScreen == HelpieScreen.Summary.name) or ((currentScreen == HelpieScreen.TakeTicket.name)  and (!uiState.ticket) ) or (currentScreen == HelpieScreen.Help.name) or (currentScreen == HelpieScreen.Ticket.name)  ) and (navController.previousBackStackEntry != null)){
+                        if(((currentScreen == HelpieScreen.Destination.name) or (currentScreen == HelpieScreen.Summary.name) or (currentScreen == HelpieScreen.Help.name) or (currentScreen == HelpieScreen.Ticket.name) or ((currentScreen == HelpieScreen.TakeTicket.name) and (!uiState.ticket) )) and (navController.previousBackStackEntry != null)){
                             TemplateButton(
                                 onClick = {
                                     navController.navigateUp()
                                 },
                                 text = "retour",
-                                size = 12.sp,
+                                size = 18.sp,
                                 sizeButton = "small",
                                 padding = false,
                                 containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -562,8 +562,8 @@ fun HelpieApp(
                                             navController.navigate(HelpieScreen.Start.name)
                                         }
                                     },
-                                    text = "recommencer",
-                                    size = 12.sp,
+                                    text = "arréter",
+                                    size = 14.sp,
                                     sizeButton = "small",
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer

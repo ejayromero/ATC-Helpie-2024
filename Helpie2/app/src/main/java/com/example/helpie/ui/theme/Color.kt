@@ -15,7 +15,7 @@ val md_theme_light_secondaryContainer = Color(0xFFBA0000)
 val md_theme_light_onSecondaryContainer = Color(0xFFFFFFFF)
 
 //couleur bouton aide/suite
-val md_theme_light_tertiary = Color(0xFF416651)
+val md_theme_light_tertiary = Color(0xFFB1B1B1)
 val md_theme_light_onTertiary = Color(0xFFFFFFFF)
 val md_theme_light_tertiaryContainer = Color(0xFF444444)
 val md_theme_light_onTertiaryContainer = Color(0xFFFFFFFF)
