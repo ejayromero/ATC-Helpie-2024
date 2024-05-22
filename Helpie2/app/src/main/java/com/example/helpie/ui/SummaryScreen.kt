@@ -57,7 +57,8 @@ fun SummaryScreen(
 ) {
     val instantEndTime = Instant.parse(summary.endTime)
     val localEndTime = instantEndTime.toLocalDateTime(TimeZone.currentSystemDefault())
-    val formattedEndTime = "${localEndTime.hour}h${localEndTime.minute}"
+    val formattedEndTime = "${localEndTime.hour}h${localEndTime.minute.toString().padStart(2, '0')}"
+
     Box(
         modifier = modifier
     ) {

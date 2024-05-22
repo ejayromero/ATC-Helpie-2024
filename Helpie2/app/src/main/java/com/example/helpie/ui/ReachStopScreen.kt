@@ -87,7 +87,7 @@ fun ReachStopScreen(
                         size = 32.sp,
                         )
                     CustomTextView(
-                        text = stepInfo.mode.toString(),
+                        text = nextStep.mode.toString(),
                         color = Color.White,
                         padding = false,
                         size = 16.sp
@@ -98,7 +98,7 @@ fun ReachStopScreen(
 
         CustomTextView(
             text = stepInfo.startName.toString(),
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
