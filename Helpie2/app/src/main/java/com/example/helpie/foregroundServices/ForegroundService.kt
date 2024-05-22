@@ -117,22 +117,11 @@ class ForegroundService: Service(){
         )
 
         // Set gravity to top
-        layoutParams.gravity = Gravity.TOP or Gravity.START
+        layoutParams.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
 
         // Add the view to the WindowManager
         windowManager.addView(floatingView, layoutParams)
-        /*
-        // Set a click listener to the floating window
-        floatingView.setOnClickListener {
-            // Create an Intent to launch the main activity
-            val intent = Intent(this, com.example.helpie.MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                // Add any additional data or extras to the intent if needed
-            }
-            startActivity(intent)
-        }
 
-         */
         // Set a click listener to the floating window
         floatingView.setOnClickListener {
             // Create an Intent to launch the app
