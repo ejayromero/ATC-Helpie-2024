@@ -21,6 +21,8 @@ data class UiState(
     val takeTicket: String = "https://app.sbbmobile.ch/easyride",
 
     val isFinish: Boolean = false,
+
+    val BOUM: Boolean = false,
     //trip management
 
     val planner: OjpSdk = OjpSdk(
