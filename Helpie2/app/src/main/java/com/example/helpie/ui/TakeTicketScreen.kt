@@ -45,9 +45,9 @@ fun TakeTicketScreen(
     ) {
             CustomTextView(
                 text = if (take) {
-                    "Commencer easyride"
+                    "Activer le billet Easyride"
                 } else {
-                    "Arrêter easyride"
+                    "Arrêter Easyride"
                 },
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -57,9 +57,9 @@ fun TakeTicketScreen(
             TemplateButton(
                 onClick = { takeTicket() },
                 text = if (take) {
-                    "Aller prendre le ticket"
+                    "Prendre le ticket"
                 } else {
-                    "Aller arrêter le ticket"
+                    "Arrêter le ticket"
                 },
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 padding = false,

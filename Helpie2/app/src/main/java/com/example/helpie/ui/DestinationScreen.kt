@@ -169,7 +169,7 @@ fun DestinationScreen(
                 )
                 {
                     Text(
-                        text = "Selectionner une destination",
+                        text = stringResource(R.string.s_lectionner_une_destination),
                         fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() }
                     )
                 }
@@ -179,7 +179,7 @@ fun DestinationScreen(
                         onDismissRequest = {
                             switchDialog()
                         },
-                        title = { Text(text = "Nouvelle destination") },
+                        title = { Text(text = stringResource(R.string.nouvelle_destination)) },
                         text = {
                             TextField(
                                 value = registeredLocation[4].destinationAddress ?: "",
@@ -197,7 +197,7 @@ fun DestinationScreen(
                                 }
                             )
                             {
-                                Text("Confirm")
+                                Text(stringResource(R.string.confirmer))
                             }
                         }
                     )

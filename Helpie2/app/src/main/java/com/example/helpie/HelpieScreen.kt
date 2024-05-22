@@ -349,7 +349,7 @@ fun HelpieApp(
                     FinalScreen(
                         recommence = {
                             viewModel.setFinish(false)
-                            navController.navigate(HelpieScreen.Start.name)
+                            navController.navigate(HelpieScreen.Destination.name)
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -541,7 +541,13 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                        if(((currentScreen == HelpieScreen.Destination.name) or (currentScreen == HelpieScreen.Summary.name) or (currentScreen == HelpieScreen.Help.name) or (currentScreen == HelpieScreen.Ticket.name) or ((currentScreen == HelpieScreen.TakeTicket.name) and (!uiState.ticket) )) and (navController.previousBackStackEntry != null)){
+                        if(
+                            (currentScreen == HelpieScreen.Destination.name) or
+                            (currentScreen == HelpieScreen.Summary.name) or
+                            (currentScreen == HelpieScreen.Help.name) or
+                            (currentScreen == HelpieScreen.Ticket.name) or
+                            ((currentScreen == HelpieScreen.TakeTicket.name) and (!uiState.ticket) and (navController.previousBackStackEntry != null))
+                            ){
                             TemplateButton(
                                 onClick = {
                                     navController.navigateUp()
@@ -552,17 +558,24 @@ fun HelpieApp(
                                 padding = false,
                                 containerColor = MaterialTheme.colorScheme.tertiaryContainer
                             )
-                        } else if ( (currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Final.name)){
+                        } else if (
+                            (currentScreen == HelpieScreen.ReachStop.name) or
+                            (currentScreen == HelpieScreen.InBus.name) or
+                            (currentScreen == HelpieScreen.OutBus.name) or
+                            (currentScreen == HelpieScreen.Walk.name) or
+                            (currentScreen == HelpieScreen.WaitingTransport.name) or
+                            (currentScreen == HelpieScreen.JourneyInTransport.name)
+                            ){
                                 TemplateButton(
                                     onClick = {
-                                        viewModel.clean()
                                         if (uiState.ticket) {
                                             navController.navigate(HelpieScreen.StopTicket.name)
                                         } else {
+                                            viewModel.clean()
                                             navController.navigate(HelpieScreen.Start.name)
                                         }
                                     },
-                                    text = "arréter",
+                                    text = "Arrêter",
                                     size = 14.sp,
                                     sizeButton = "small",
                                     padding = false,

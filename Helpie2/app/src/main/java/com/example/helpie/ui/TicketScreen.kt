@@ -35,7 +35,7 @@ fun TicketScreen(
         ) {
             TemplateButton(
                 onClick = { showTicket() },
-                text = "Montrer le ticket",
+                text = stringResource(R.string.montrer_le_ticket),
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 padding = false,
                 sizeButton = "huge"
