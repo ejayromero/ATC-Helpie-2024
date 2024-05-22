@@ -122,13 +122,13 @@ open class StepInfo(
             is walkInfo -> {
                 when (point) {
                     "start" -> {
-//                                           this.startTime!!
-                        "2024-05-22T00:46:00Z"
+                                           this.startTime!!
+//                        "2024-05-22T00:46:00Z"
                     }
 
                     "end" -> {
-//                                            this.endTime!!
-                        "2024-05-22T00:49:00Z"
+                                            this.endTime!!
+//                        "2024-05-22T00:49:00Z"
                     }
 
                     else -> {
@@ -139,12 +139,12 @@ open class StepInfo(
             is transportInfo -> {
                 when (point) {
                     "start" -> {
-//                               this.startTime!!
-                        "2024-05-22T00:46:00Z"
+                               this.startTime!!
+//                        "2024-05-22T00:46:00Z"
                     }
                     "end" -> {
-//                                this.endTime!!
-                        "2024-05-22T00:49:00Z"
+                                this.endTime!!
+//                        "2024-05-22T00:49:00Z"
                     }
                     else -> {
                         "0end"

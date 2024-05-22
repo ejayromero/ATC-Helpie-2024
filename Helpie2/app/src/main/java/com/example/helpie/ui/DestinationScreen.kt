@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.helpie.Localisation
 import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
+import com.example.helpie.ui.theme.CustomTextView
 
 @Composable
 fun DestinationScreen(
@@ -51,13 +52,10 @@ fun DestinationScreen(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxSize()
         ) {
-                Text(
-                    text = stringResource(R.string.choisir_la_destination),
-                    modifier = Modifier
-                        .padding(20.dp),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 50.sp
+            CustomTextView(
+                text = stringResource(R.string.choisir_la_destination),
+                color = MaterialTheme.colorScheme.onSurface,
+                size = 32.sp
                 )
         }
 
@@ -84,11 +82,11 @@ fun DestinationScreen(
                             .width(dimensionResource(R.dimen.button_destination_width)),
                     )
                     {
-                        Text(
+                        CustomTextView(
                             text = registeredLocation[0].destinationName ?: "Default Name",
-                            fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() },
-                            textAlign = TextAlign.Center,
-                        )
+                            size = 16.sp,
+                            padding = false
+                            )
                     }
                     // Button 2
                     Button(
@@ -103,10 +101,10 @@ fun DestinationScreen(
                             .width(dimensionResource(R.dimen.button_destination_width)),
                     )
                     {
-                        Text(
+                        CustomTextView(
                             text = registeredLocation[1].destinationName ?: "Default Name",
-                            fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() },
-                            textAlign = TextAlign.Center,
+                            size = 16.sp,
+                            padding = false
                         )
                     }
                 }
@@ -129,10 +127,10 @@ fun DestinationScreen(
                             .width(dimensionResource(R.dimen.button_destination_width)),
                     )
                     {
-                        Text(
+                        CustomTextView(
                             text = registeredLocation[2].destinationName ?: "Default Name",
-                            fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() },
-                            textAlign = TextAlign.Center,
+                            size = 16.sp,
+                            padding = false
                         )
                     }
                     // Button 4
@@ -148,10 +146,10 @@ fun DestinationScreen(
                             .width(dimensionResource(R.dimen.button_destination_width)),
                     )
                     {
-                        Text(
+                        CustomTextView(
                             text = registeredLocation[3].destinationName ?: "Default Name",
-                            fontSize = with(LocalDensity.current) { dimensionResource(R.dimen.button_destination_font_size).toSp() },
-                            textAlign = TextAlign.Center,
+                            size = 16.sp,
+                            padding = false
                         )
                     }
                 }

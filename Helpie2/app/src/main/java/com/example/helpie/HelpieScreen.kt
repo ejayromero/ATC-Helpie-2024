@@ -190,8 +190,9 @@ fun HelpieApp(
                             //Spacer(modifier = Modifier.height(25.dp))
                             if (currentScreen == HelpieScreen.Start.name) {
                                 Button(
-                                    onClick = { navController.navigate(HelpieScreen.Settings.name) }
-                                ) {
+                                    onClick = { navController.navigate(HelpieScreen.Settings.name) },
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                                    ) {
                                     Icon(
                                         imageVector = Icons.Default.Settings, // Replace 'YourIconName' with the desired icon name
                                         contentDescription = "Edit Mode"

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.helpie.Localisation
 import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
+import com.example.helpie.ui.theme.CustomTextView
 
 @Composable
 fun SettingsScreen(
@@ -53,24 +54,23 @@ fun SettingsScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             item {
-                Text(
+                CustomTextView(
                     text = "Contact",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 35.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    size = 32.sp,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
             item {
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Checkbox(
                         checked = usePhone,
                         onCheckedChange = { phone(true) }
                     )
-                    Text(
+                    CustomTextView(
                         text = stringResource(R.string.numero_du_proche_aidant),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 25.sp
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -100,17 +100,19 @@ fun SettingsScreen(
                 singleLine = true,
             )}
             item {
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Checkbox(
                     checked = !usePhone,
                     onCheckedChange = { phone(false) }
                 )
-                Text(
+                CustomTextView(
                     text = stringResource(R.string.ligne_accessibilit_cff),
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 25.sp
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-            }}
+            }
+            }
             item {
                 Card {
                     Text(
@@ -127,25 +129,24 @@ fun SettingsScreen(
                 Divider(
                 color = Color.Black,
                 thickness = 1.dp,
-                modifier = Modifier.padding(20.dp).fillMaxWidth()
+                modifier = Modifier
+                    .padding(20.dp)
+                    .fillMaxWidth()
             ) }
             item {
-                Text(
-                    text = "Destination",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 35.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                CustomTextView(
+                    text = "Destinations enregistrées",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    size = 32.sp
                 )
             }
             for (i in 0..3) {
                 item {
                     // Text field for destination 1
-                    Text(
-                        text = stringResource(R.string.choisir_la_destination) +" " + (i + 1).toString(),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 25.sp
-                    )
+                    CustomTextView(
+                        text = stringResource(R.string.choisir_la_destination) + " " + (i + 1).toString(),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        )
                 }
                 item {
                     Row(
