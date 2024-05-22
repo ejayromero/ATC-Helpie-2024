@@ -2,6 +2,8 @@ package com.example.helpie.ui
 
 import android.content.Context
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.util.Log
@@ -29,6 +31,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import java.io.IOException
 import kotlin.math.max
 import kotlin.time.Duration.Companion.hours
 
@@ -202,12 +205,16 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    fun setLocalisationAddress(index: Int, address: String, registeredLocalisation: List<Localisation>) {
+    fun setLocalisationAddress(index: Int, address: String, registeredLocalisation: List<Localisation>, context: Context) {
         if (index in registeredLocalisation.indices) {
             val updatedLocalisation = registeredLocalisation.toMutableList()
-            updatedLocalisation[index] = registeredLocalisation[index].copy(destinationAddress = address)
+            val geo = getLocationFromAddress(context = context, addressStr = address)
+            if (geo != null) {
+                updatedLocalisation[index] = registeredLocalisation[index].copy(destinationAddress = address, longitude = geo.longitude, latitude = geo.latitude)
+
             _uiState.update { currentState ->
                 currentState.copy(registeredLocation = updatedLocalisation)
+            }
             }
         }
     }
@@ -300,6 +307,28 @@ class HelpieViewModel : ViewModel() {
         }
         Log.d("LOCATION", "Location has been updated")
     }
+
+    fun getLocationFromAddress(context: Context, addressStr: String): LatLng? {
+        val geocoder = Geocoder(context)
+        var latLng: LatLng? = null
+
+        try {
+            val addressList: List<Address>? = geocoder.getFromLocationName(addressStr, 1)
+            if (!addressList.isNullOrEmpty()) {
+                val address = addressList[0]
+                latLng = LatLng(address.latitude, address.longitude)
+            } else {
+                Log.d("IS_NULL", "The found loc is null")
+                throw IOException("Address not found")
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e("TEST_getName", "Error getting location from address", e)
+        }
+
+        return latLng
+    }
+
 }
 
 

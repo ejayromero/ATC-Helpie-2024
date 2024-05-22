@@ -156,7 +156,7 @@ fun DestinationScreen(
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.destination_spacer)))
                 // Button for new destination
-            if (false) {
+
                 Button(
                     onClick = {
                         switchDialog()
@@ -203,7 +203,6 @@ fun DestinationScreen(
                     )
 
                 }
-            }
             }
     }
 }
