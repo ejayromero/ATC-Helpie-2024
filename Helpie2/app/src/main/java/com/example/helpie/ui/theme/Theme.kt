@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -117,7 +118,8 @@ fun CustomTextView(
     color: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     padding: Boolean = true,
     size: TextUnit = 24.sp,
-    weigth: FontWeight = FontWeight.ExtraBold
+    weigth: FontWeight = FontWeight.ExtraBold,
+    align: TextAlign = TextAlign.Center,
 ) {
     val modifier = if (padding) {
         Modifier.padding(top = 32.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)
@@ -130,8 +132,8 @@ fun CustomTextView(
         fontSize = size,
         fontFamily = Archivo,
         fontWeight = weigth,
-        textAlign = TextAlign.Center,
-        modifier = modifier.wrapContentSize(Alignment.Center)
+        textAlign = align,
+        modifier = modifier.wrapContentSize(Alignment.Center),
     )
 }
 
@@ -145,7 +147,8 @@ fun TemplateButton(
     padding: Boolean = true,
     size: TextUnit = 24.sp,
     weight: FontWeight = FontWeight.Bold,
-    sizeButton: String = "normal"
+    sizeButton: String = "normal",
+    align: TextAlign = TextAlign.Center,
 ) {
     val modifier = when (sizeButton) {
         "huge" -> {
@@ -174,6 +177,13 @@ fun TemplateButton(
         colors = ButtonDefaults.buttonColors(containerColor = containerColor),
         modifier = modifier
     ) {
-        CustomTextView(text = text, color = textColor, padding = padding, size = size, weigth = weight)
+        CustomTextView(
+            text = text,
+            color = textColor,
+            padding = padding,
+            size = size,
+            weigth = weight,
+            align = align
+        )
     }
 }

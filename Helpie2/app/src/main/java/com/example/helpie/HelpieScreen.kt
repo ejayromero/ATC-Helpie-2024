@@ -324,8 +324,6 @@ fun HelpieApp(
                         usePhone = uiState.usePhone,
                         phoneNumber = uiState.phoneNumber,
                         outlineNumber = uiState.outlineNumber,
-                        modifier = Modifier
-                            .fillMaxSize()
                     )
                 }
                 composable(route = HelpieScreen.Ticket.name) {
@@ -543,14 +541,18 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                        var retour = "retour"
-                        var next = "suivant"
-                        if (currentScreen == HelpieScreen.ReachStop.name) {
-                            retour = "Non"
-                            next = "Oui"
-
-                        }
-                            if((currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Step.name) and (navController.previousBackStackEntry != null)){
+                        if(((currentScreen == HelpieScreen.Destination.name) or (currentScreen == HelpieScreen.Summary.name) or ((currentScreen == HelpieScreen.TakeTicket.name)  and (!uiState.ticket) )) and (navController.previousBackStackEntry != null)){
+                            TemplateButton(
+                                onClick = {
+                                    navController.navigateUp()
+                                },
+                                text = "retour",
+                                size = 18.sp,
+                                sizeButton = "small",
+                                padding = false,
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                            )
+                        } else if ( (currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Final.name)){
                                 TemplateButton(
                                     onClick = {
                                         viewModel.clean()
@@ -560,8 +562,8 @@ fun HelpieApp(
                                             navController.navigate(HelpieScreen.Start.name)
                                         }
                                     },
-                                    text = retour,
-                                    size = 16.sp,
+                                    text = "recommencer",
+                                    size = 18.sp,
                                     sizeButton = "small",
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -573,6 +575,10 @@ fun HelpieApp(
                             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.button_corner_radius)))
 
                             if((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.InBus.name) or (currentScreen == HelpieScreen.OutBus.name)) {
+                                var next = "suivant"
+                                if (currentScreen == HelpieScreen.ReachStop.name) {
+                                    next = "oui"
+                                }
                                 TemplateButton(
                                     onClick = {
                                         if ((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.OutBus.name)) {
@@ -584,7 +590,7 @@ fun HelpieApp(
                                         }
                                     },
                                     text = next,
-                                    size = 16.sp,
+                                    size = 18.sp,
                                     sizeButton = "small",
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer

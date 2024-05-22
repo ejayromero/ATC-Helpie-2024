@@ -5,6 +5,7 @@ import com.example.helpie.StepInfo
 import com.example.helpie.TripSummary
 import com.example.helpie.transportInfo
 import com.example.helpie.tripPlanificator.data.dto.OjpDto
+import com.example.helpie.tripPlanificator.data.dto.response.PlaceInfoDto
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import com.example.helpie.walkInfo
 import kotlinx.datetime.Clock
@@ -41,6 +42,21 @@ fun extractTrip(response: OjpDto): TripDto {
     }
 }
 
+fun extractLoca(response: OjpDto): List<PlaceInfoDto> {
+    try {
+        val places = response.ojpResponse?.serviceDelivery?.tripDelivery?.context?.place?.places
+        Log.d("tripHand location", "done extract loca")
+        if (places != null) {
+            return places
+        } else {
+            throw IllegalStateException("No places found in the response")
+        }
+    } catch (e: Exception) {
+        // Handle the exception or log the error
+        throw IllegalStateException("Failed to extract trip: ${e.message}")
+    }
+}
+
 fun tripSummary(trip: TripDto): TripSummary {
     try {
         val steps = trip.step
@@ -62,7 +78,7 @@ fun tripSummary(trip: TripDto): TripSummary {
 
 }
 
-fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
+fun nextStep(trip: TripDto, stepID: Int, contextLoca : List<PlaceInfoDto>) : StepInfo {
     try {
         Log.d("trip", stepID.toString())
 
@@ -70,10 +86,11 @@ fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
         val step = steps?.get(stepID)
 
         if (step!=null) {
+
             if (step.cLeg != null) {
                 Log.d("trip", "continuous leg")
 
-                return walkInfo(
+                val walk = walkInfo(
                     mode = step.cLeg.service.individualMode,
 
                     startName = step.cLeg.start.name?.name,
@@ -89,6 +106,21 @@ fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
                     duration = step.cLeg.duration,
                     length = step.cLeg.length
                 )
+                Log.d("is 0 ?","hello")
+                if ((walk.endLongitude == null) or (walk.endLatitude == null)) {
+                    Log.d("is 0","snif")
+                    var find = false
+                    var i = 0
+                    while (!find) {
+                        if (contextLoca[i].locationName?.name == walk.endName) {
+                            walk.endLongitude = contextLoca[i].position?.longitude
+                            walk.endLatitude = contextLoca[i].position?.latitude
+                            find = true
+                        }
+                        i += 1
+                    }
+                }
+                return walk
 
 
             } else if (step.tLeg != null) {
@@ -113,7 +145,7 @@ fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
             } else if (step.transLeg != null) {
                 Log.d("trip","transfer leg")
 
-                return walkInfo(
+                var walk = walkInfo(
                     mode = step.transLeg.service,
 
                     startName = step.transLeg.start.name?.name,
@@ -130,6 +162,19 @@ fun nextStep(trip: TripDto, stepID: Int) : StepInfo {
                     buffer = step.transLeg.duration
                 )
 
+                if ((walk.endLongitude == null) or (walk.endLatitude == null)) {
+                    var find = false
+                    var i = 0
+                    while (!find) {
+                        if (contextLoca[i].locationName?.name == walk.endName) {
+                            walk.endLongitude = contextLoca[i].position?.longitude
+                            walk.endLatitude = contextLoca[i].position?.latitude
+                            find = true
+                        }
+                        i += 1
+                    }
+                }
+                return  walk
 
             } else {
                 Log.d("trip","leg ?")
