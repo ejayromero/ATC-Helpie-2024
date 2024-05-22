@@ -148,11 +148,11 @@ fun HelpieApp(
         }
     }
 
-    val transportPainter = remember { mutableStateOf(R.drawable.train_bar) }
+    val transportPainter = remember { mutableStateOf(R.drawable.walking_bar) }
 
-    val transportDescription = remember { mutableStateOf(R.string.TrainBar) }
+    val transportDescription = remember { mutableStateOf(R.string.WalkBar) }
 
-    LaunchedEffect(key1 = stepInfo.mode) {
+    LaunchedEffect(stepInfo.mode) {
         val (painter, description) = when (stepInfo.mode.toString()) {
             "bus" -> Pair(R.drawable.bus_bar, R.string.BusBar)
             "rail" -> Pair(R.drawable.train_bar, R.string.TrainBar)

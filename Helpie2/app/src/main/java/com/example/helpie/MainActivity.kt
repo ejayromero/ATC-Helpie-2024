@@ -147,10 +147,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (uiState.tripOngoing) {
+        /*if (uiState.tripOngoing) {
             startForegroundService()
             Log.d("MainActivity","Foreground service started")
-        }
+        }*/
+        startForegroundService()
+        Log.d("MainActivity","Foreground service started")
     }
 
     override fun onResume() {
