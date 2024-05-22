@@ -55,7 +55,9 @@ fun SummaryScreen(
     onNext: () -> Unit = {},
     setTripOngoing: () -> Unit = {}
 ) {
-
+    val instantEndTime = Instant.parse(summary.endTime)
+    val localEndTime = instantEndTime.toLocalDateTime(TimeZone.currentSystemDefault())
+    val formattedEndTime = "${localEndTime.hour}h${localEndTime.minute}"
     Box(
         modifier = modifier
     ) {
@@ -77,7 +79,7 @@ fun SummaryScreen(
             }
             item {
                 CustomTextView(
-                    text = "Arrivé prévu à : ${summary.endTime}",
+                    text = "Arrivé prévu à : $formattedEndTime",
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
