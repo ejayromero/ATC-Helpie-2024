@@ -76,7 +76,7 @@ fun ReachStopScreen(
                 )
                 // Spacer to create space between icon and text
                 Spacer(modifier = Modifier.width(28.dp))
-                Column() {
+                Column {
                     // Bus line text
                     CustomTextView(
 //                        text = nextStep.line.toString(),
