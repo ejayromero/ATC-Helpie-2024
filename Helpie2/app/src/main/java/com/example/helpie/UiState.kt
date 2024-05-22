@@ -208,8 +208,8 @@ data class walkInfo(
     val startLatitude: Double? = 0.0,
 
     val endName: String? = null,
-    val endLongitude: Double? = 0.0,
-    val endLatitude: Double? = 0.0,
+    var endLongitude: Double? = 0.0,
+    var endLatitude: Double? = 0.0,
 
     val startTime: String? = null,
     val endTime: String? = null,

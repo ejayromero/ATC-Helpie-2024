@@ -12,6 +12,8 @@ import com.example.helpie.HelpieScreen
 import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
 import com.example.helpie.UiState
+import com.example.helpie.tripPlanificator.data.dto.response.PlaceInfoDto
+import com.example.helpie.tripPlanificator.extractLoca
 import com.example.helpie.tripPlanificator.extractTrip
 import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
@@ -60,16 +62,19 @@ class HelpieViewModel : ViewModel() {
             val response = planner.tripRequest(_uiState.value.currentLocation,_uiState.value.targetLocation)
 
             val trip = extractTrip(response)
+
+            val contextLoca = extractLoca(response)
+
             Log.d("helpie","done !")
             _uiState.update {
                     currentState -> currentState.copy(trip = trip,
                 currentStep = -1)
             }
-            summary()
+            summary(contextLoca)
         }
     }
 
-    private fun summary() {
+    private fun summary(contextLoca : List<PlaceInfoDto>) {
 
         _uiState.update { currentState ->
             currentState.copy(
@@ -89,9 +94,11 @@ class HelpieViewModel : ViewModel() {
             Log.d("summary", "Number of Steps: ${sum.npSteps}")
 
             while (i < sum.npSteps) {
-                val travel = _uiState.value.trip?.let { nextStep(it, i) }
+                val travel = _uiState.value.trip?.let { nextStep(it, i, contextLoca) }
+
                 if (travel != null) {
                     steps.add(travel)
+                    travel.logValues()
                 }
                 i += 1
             }
