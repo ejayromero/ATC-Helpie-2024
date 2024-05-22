@@ -1,5 +1,6 @@
 package com.example.helpie.foregroundServices
 
+import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
@@ -52,24 +53,24 @@ class ForegroundService: Service(){
 
         val color =  Color.parseColor("#0978c6")
 
-        val notification = NotificationCompat.Builder(this, "running_channel")
+        val notification = createNotification("Voyage en cours", pendingIntent, color)
+        startForeground(1, notification)
+        //vibrateDevice()
+
+    }
+
+    private fun createNotification(contentText: String, pendingIntent: PendingIntent, color: Int): Notification {
+        return NotificationCompat.Builder(this, "running_channel")
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentTitle("HELPIE")
-            .setContentText("Voyage en cours")
+            .setContentText(contentText)
             .setColor(color)
             .setColorized(true)
-            .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent) // Add button
-            .setPriority(NotificationCompat.PRIORITY_LOW) // Set low priority to keep it always visible
-            .setOngoing(true) // Make the notification ongoing
-            .setAutoCancel(false) // Ensure the notification is not automatically cancelled
-            .setTimeoutAfter(Long.MAX_VALUE)
+            .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setOngoing(true)
+            .setAutoCancel(false)
             .build()
-
-        startForeground(1, notification)
-
-        // Call vibrateDevice() to trigger the vibration
-        vibrateDevice()
-
     }
 
     private fun vibrateDevice() {

@@ -19,11 +19,14 @@ import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.ui.theme.AppTheme
 import android.provider.Settings
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModelProvider
 import com.example.helpie.ui.HelpieViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import androidx.compose.runtime.mutableStateOf
 
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +38,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var currentLocation: Location
     private lateinit var viewModel: HelpieViewModel
-
+    private val uiState by mutableStateOf(UiState())
 
     private val updateIntervalMillis: Long = 500 //Update every 0.5 sec
     private val handler = Handler(Looper.getMainLooper())
@@ -144,8 +147,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        startForegroundService()
-        Log.d("MainActivity","Foreground service started")
+        if (uiState.tripOngoing) {
+            startForegroundService()
+            Log.d("MainActivity","Foreground service started")
+        }
     }
 
     override fun onResume() {
