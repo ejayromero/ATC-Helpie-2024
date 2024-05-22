@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,7 @@ fun InBusScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CustomTextView(
-            text = "Le ${stepInfo.mode.toString()} arrive bientot, prépare toi à monter !",
+            text = "Le ${stepInfo.mode.toString()} arrive bientôt, prépare-toi à monter !",
             color = Color.Black,
         )
 
@@ -60,11 +61,11 @@ fun InBusScreen(
             ) {
 
                 val (iconResource, contentDescription) = when (stepInfo.mode.toString()) {
-                    "rail" -> Pair(R.drawable.rail_icon, "Train Icon")
-                    "bus" -> Pair(R.drawable.bus_icon, "Bus Icon")
-                    "walk" -> Pair(R.drawable.walking_icon, "walk Icon")
-                    "metro" -> Pair(R.drawable.metro_icon, "metro Icon")
-                    "boat" -> Pair(R.drawable.boat_icon, "metro Icon")
+                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, "Train Icon")
+                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, "Bus Icon")
+                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, "walk Icon")
+                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, "metro Icon")
+                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, "metro Icon")
                     else -> Pair(R.drawable.travel_icon, "transport Icon")
                 }
 

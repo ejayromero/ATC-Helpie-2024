@@ -16,7 +16,7 @@
     <string name="appeler_le_proche_aidant">Appeler le proche aidant</string>
     <string name="appele_icon">Appele icon</string>
     <string name="retour">retour</string>
-    <string name="numero_du_proche_aidant">Numero du proche aidant</string>
+    <string name="numero_du_proche_aidant">Numéro du proche aidant</string>
     <string name="billet_cff_qrcode">billet cff QRCODE</string>
     <string name="commencer_un_trajet">Commencer un trajet</string>
     <string name="Voyage_en_cours">Voyage en cours</string>
@@ -28,5 +28,17 @@
     <string name="choisir_la_destination">Destination </string>
     <string name="suivant">suivant</string>
     <string name="helpie_ticket">"Ce billet a été pris avec HELPIE, une application pour aider les personnes en situation de handicap à voyager "</string>
-    <string name="back_to_app">Back to App</string>
+    <string name="back_to_app">Retour à l\'app</string>
+    <string name="s_lectionner_une_destination">Sélectionner une destination</string>
+    <string name="nouvelle_destination">Nouvelle destination</string>
+    <string name="metro">metro</string>
+    <string name="walk">walk</string>
+    <string name="boat">boat</string>
+    <string name="rail">rail</string>
+    <string name="bus">bus</string>
+    <string name="at_the_stop_question">Es-tu à l\'arrêt ?</string>
+    <string name="enter_your_phone_number">Saisissez un numéro de téléphone</string>
+    <string name="destinations_enregistr_es">Destinations enregistrées</string>
+    <string name="montrer_le_ticket">Montrer le ticket</string>
+    <string name="confirmer">Confirmer</string>
 </resources>

@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +43,7 @@ fun ReachStopScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CustomTextView(
-            text = "Es-tu à l'arrêt ?",
+            text = stringResource(R.string.at_the_stop_question),
             color = MaterialTheme.colorScheme.onSurface
         )
 
@@ -60,11 +61,11 @@ fun ReachStopScreen(
             ) {
 
                 val (iconResource, contentDescription) = when (stepInfo.mode) {
-                    "bus" -> Pair(R.drawable.bus_icon, "Bus Icon")
-                    "rail" -> Pair(R.drawable.rail_icon, "Train Icon")
-                    "walk" -> Pair(R.drawable.walking_icon, "Walk Icon")
-                    "metro" -> Pair(R.drawable.metro_icon, "metro Icon")
-                    "boat" -> Pair(R.drawable.boat_icon, "metro Icon")
+                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, "Bus Icon")
+                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, "Train Icon")
+                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, "Walk Icon")
+                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, "metro Icon")
+                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, "boat Icon")
                     else -> Pair(R.drawable.travel_icon, "transport Icon")
                 }
 

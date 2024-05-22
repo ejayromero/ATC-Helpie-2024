@@ -79,7 +79,7 @@ fun SummaryScreen(
             }
             item {
                 CustomTextView(
-                    text = "Arrivé prévu à : $formattedEndTime",
+                    text = "Arrivée prévue à : $formattedEndTime",
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }

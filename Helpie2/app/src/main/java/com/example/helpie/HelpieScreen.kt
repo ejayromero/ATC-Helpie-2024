@@ -562,7 +562,7 @@ fun HelpieApp(
                                             navController.navigate(HelpieScreen.Start.name)
                                         }
                                     },
-                                    text = "arréter",
+                                    text = "Arrêter",
                                     size = 14.sp,
                                     sizeButton = "small",
                                     padding = false,

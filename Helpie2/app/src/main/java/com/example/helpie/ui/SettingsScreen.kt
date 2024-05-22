@@ -84,7 +84,7 @@ fun SettingsScreen(
                 onValueChange = { setPhone(it) },
 
                 // on below line we are adding place holder as text
-                placeholder = { Text(text = "Enter your phone number") },
+                placeholder = { Text(text = stringResource(R.string.enter_your_phone_number)) },
 
                 // on below line we are adding modifier to it
                 // and adding padding to it and filling max width
@@ -135,7 +135,7 @@ fun SettingsScreen(
             ) }
             item {
                 CustomTextView(
-                    text = "Destinations enregistrées",
+                    text = stringResource(R.string.destinations_enregistr_es),
                     color = MaterialTheme.colorScheme.onSurface,
                     size = 32.sp
                 )
