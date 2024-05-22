@@ -57,6 +57,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.helpie.StepInfo
 import com.example.helpie.ui.DestinationScreen
 import com.example.helpie.ui.FinalScreen
 import com.example.helpie.ui.HelpScreen
@@ -75,6 +76,7 @@ import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.ui.SettingsScreen
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -104,7 +106,8 @@ enum class HelpieScreen {
 @Composable
 fun HelpieApp(
     viewModel: HelpieViewModel = viewModel(),
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    stepInfo: StepInfo = StepInfo()
 ) {
 
     val ctx = LocalContext.current
@@ -121,20 +124,44 @@ fun HelpieApp(
 
     val imageArrivalShiftFraction = 0.415f
 
-    val imageShiftFraction = remember { mutableStateOf(-0.9f.toFloat()) }
+    val startFractionBar = -0.95f
+
+    val imageShiftFraction = remember { mutableStateOf(startFractionBar) }
+
+    val percentageBar = remember { mutableStateOf(0)}
+
     LaunchedEffect(uiState.currentStep) {
-        // Calculate the image shift fraction based on the current step
-        val currentStep = uiState.currentStep
-        val totalSteps = uiState.steps.size
+        val currentStep = uiState.currentStep + 1
+        val totalSteps = uiState.steps.size + 1
 
         // Calculate the fraction based on the current step and total steps
         if (currentStep == 0 || totalSteps == 0) {
-            imageShiftFraction.value = -0.95f
+            imageShiftFraction.value = startFractionBar
+            percentageBar.value = 0
         } else if (currentStep == totalSteps - 1) {
             imageShiftFraction.value = imageArrivalShiftFraction
+            percentageBar.value = 100
         } else {
-            imageShiftFraction.value = -0.95f + (currentStep.toFloat() / totalSteps.toFloat()) * 1.315f
+            imageShiftFraction.value = startFractionBar + (currentStep.toFloat() / totalSteps.toFloat()) //* 1.315f
+            percentageBar.value = ((currentStep.toFloat() / totalSteps.toFloat()) * 100).toInt()
         }
+    }
+
+    val transportPainter = remember { mutableStateOf(R.drawable.train_bar) }
+
+    val transportDescription = remember { mutableStateOf(R.string.TrainBar) }
+
+    LaunchedEffect(key1 = stepInfo.mode) {
+        val (painter, description) = when (stepInfo.mode.toString()) {
+            "bus" -> Pair(R.drawable.bus_bar, R.string.BusBar)
+            "rail" -> Pair(R.drawable.train_bar, R.string.TrainBar)
+            "walk" -> Pair(R.drawable.walking_bar, R.string.WalkBar)
+            "metro" -> Pair(R.drawable.metro_bar, R.string.MetroBar)
+            "boat" -> Pair(R.drawable.boat_bar, R.string.BoatBar)
+            else -> Pair(R.drawable.train_bar, R.string.TrainBar)
+        }
+        transportPainter.value = painter
+        transportDescription.value = description
     }
 
     Scaffold(
@@ -260,8 +287,8 @@ fun HelpieApp(
                                 .height(40.dp)
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.train_bar),
-                                contentDescription = stringResource(id = R.string.TrainBar),
+                                painter = painterResource(id = transportPainter.value),
+                                contentDescription = stringResource(id = transportDescription.value),
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .offset(x = (imageShiftFraction.value * screenWidth).dp)
@@ -277,6 +304,15 @@ fun HelpieApp(
                             )
 
                         }
+                        Text(
+                            text = percentageBar.value.toString() + "%",
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(10.dp),
+                            color = Color.Black,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
             }
             NavHost(
@@ -372,6 +408,9 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Summary.name) {
                     uiState.summary?.let { it1 ->
+                        LaunchedEffect(key1 = Unit) {
+                            viewModel.setTripOngoing(false)
+                        }
                         SummaryScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -380,6 +419,9 @@ fun HelpieApp(
                             steps = uiState.steps,
                             onNext = {
                                 navController.navigate(HelpieScreen.TakeTicket.name)
+                            },
+                            setTripOngoing = {
+                                viewModel.setTripOngoing(true)
                             }
                         )
                     }

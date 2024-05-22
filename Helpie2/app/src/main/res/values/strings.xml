@@ -5,6 +5,10 @@
     <string name="HelpScreen">HelpScreen</string>
     <string name="TicketScreen">TicketScreen</string>
     <string name="TrainBar">TrainBar</string>
+    <string name="BusBar">BusBar</string>
+    <string name="MetroBar">MetroBar</string>
+    <string name="BoatBar">BoatBar</string>
+    <string name="WalkBar">WalkBar</string>
     <string name="PanneauArrivee">PanneauArrivee</string>
 
     <string name="HELPIE">HELPIE</string>
