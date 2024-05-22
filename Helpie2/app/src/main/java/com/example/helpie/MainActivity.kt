@@ -38,7 +38,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var currentLocation: Location
     private lateinit var viewModel: HelpieViewModel
-    private val uiState by mutableStateOf(UiState())
 
     private val updateIntervalMillis: Long = 500 //Update every 0.5 sec
     private val handler = Handler(Looper.getMainLooper())
@@ -46,6 +45,9 @@ class MainActivity : ComponentActivity() {
         @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
             updateLocation()
+            if (viewModel.getNotification()) {
+                punchForegroundService()
+            }
             handler.postDelayed(this, updateIntervalMillis)
         }
     }
@@ -145,14 +147,17 @@ class MainActivity : ComponentActivity() {
         requestPermissionsIfNecessary()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onPause() {
         super.onPause()
-        /*if (uiState.tripOngoing) {
+        if (viewModel.getTripOngoing()) {
             startForegroundService()
             Log.d("MainActivity","Foreground service started")
-        }*/
-        startForegroundService()
-        Log.d("MainActivity","Foreground service started")
+        } else {
+            Log.d("MainActivity","no foreground")
+        }
+        //startForegroundService()
+
     }
 
     override fun onResume() {
@@ -167,6 +172,12 @@ class MainActivity : ComponentActivity() {
             startIntent.action = ForegroundService.Actions.START.toString()
             startService(startIntent)
         }
+    }
+
+    private fun punchForegroundService() {
+        val punchIntent = Intent(this, ForegroundService::class.java)
+        punchIntent.action = ForegroundService.Actions.PUNCH.toString()
+        startService(punchIntent)
     }
 
     private fun stopForegroundService() {

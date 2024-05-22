@@ -219,7 +219,8 @@ fun HelpieApp(
                     .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
             ) {
                 TemplateButton(
-                    onClick = { navController.navigate(HelpieScreen.Help.name) },
+                    onClick = {
+                        navController.navigate(HelpieScreen.Help.name) },
                     text = stringResource(R.string.aide),
                     padding = false,
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
@@ -336,8 +337,12 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.Start.name) {
+                    if (uiState.trip != null) {
+                        viewModel.clean()
+                    }
                     StartScreen(
                         onTicket = {
+                            viewModel.clean()
                             navController.navigate(HelpieScreen.Destination.name)
                         },
                         modifier = Modifier
@@ -346,9 +351,11 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.Final.name) {
+                    if (uiState.tripOngoing) {
+                        viewModel.clean()
+                    }
                     FinalScreen(
                         recommence = {
-                            viewModel.setFinish(false)
                             navController.navigate(HelpieScreen.Destination.name)
                         },
                         modifier = Modifier
@@ -386,9 +393,6 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Summary.name) {
                     uiState.summary?.let { it1 ->
-                        LaunchedEffect(key1 = Unit) {
-                            viewModel.setTripOngoing(false)
-                        }
                         SummaryScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -396,6 +400,7 @@ fun HelpieApp(
                             summary = it1,
                             steps = uiState.steps,
                             onNext = {
+                                viewModel.setTripOngoing(true)
                                 navController.navigate(HelpieScreen.TakeTicket.name)
                             }
                         )
@@ -406,12 +411,6 @@ fun HelpieApp(
 
 
                 composable(route = HelpieScreen.TakeTicket.name) {
-                    uiState.takeTicket?.let { it1 ->
-                        LaunchedEffect(key1 = Unit) {
-                            viewModel.setTripOngoing(true)
-                        }
-                    }
-
                     TakeTicketScreen(
                         takeTicket = {
                             viewModel.setTicket(true)
@@ -433,8 +432,11 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(false)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            viewModel.clean()
-                            navController.navigate(HelpieScreen.Final.name)
+                            if (uiState.isFinish) {
+                                navController.navigate(HelpieScreen.Final.name)
+                            } else {
+                                navController.navigate(HelpieScreen.Start.name)
+                            }
                         },
                         modifier = Modifier
                             .fillMaxSize(),
@@ -464,6 +466,7 @@ fun HelpieApp(
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
                             Log.d("JTstep", "GO")
+                            viewModel.getNotification()
                             navController.navigate(HelpieScreen.InBus.name)
                             shouldNavigate = false // This will stop the effect from running again
                         }
@@ -491,6 +494,7 @@ fun HelpieApp(
 
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
+                            viewModel.getNotification()
                             Log.d("JTstep", "GO")
                             navController.navigate(HelpieScreen.OutBus.name)
                             shouldNavigate = false // This will stop the effect from running again
@@ -574,7 +578,6 @@ fun HelpieApp(
                                         if (uiState.ticket) {
                                             navController.navigate(HelpieScreen.StopTicket.name)
                                         } else {
-                                            viewModel.clean()
                                             navController.navigate(HelpieScreen.Start.name)
                                         }
                                     },
