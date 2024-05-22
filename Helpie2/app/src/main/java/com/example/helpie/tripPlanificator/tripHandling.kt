@@ -140,6 +140,7 @@ fun nextStep(trip: TripDto, stepID: Int, contextLoca : List<PlaceInfoDto>) : Ste
                     line = step.tLeg.service.line?.name,
                     startQuay = step.tLeg.board?.quay?.name,
                     endQuay = step.tLeg.alight?.quay?.name,
+                    way = step.tLeg.service.way?.name
                 )
 
             } else if (step.transLeg != null) {

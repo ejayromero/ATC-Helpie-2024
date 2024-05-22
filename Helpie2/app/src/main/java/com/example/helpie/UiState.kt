@@ -165,6 +165,7 @@ open class StepInfo(
             Log.d("trip", "Line: $line")
             Log.d("trip", "Start Quay: $startQuay")
             Log.d("trip", "End Quay: $endQuay")
+            Log.d("trip", "Way: $way")
         } else if (this is walkInfo) {
             Log.d("trip", "Start Name: $startName")
             Log.d("trip", "Start Longitude: $startLongitude")
@@ -196,6 +197,7 @@ data class transportInfo(
     val line: String? = null,
     val startQuay: String? = null,
     val endQuay: String? = null,
+    val way: String? = null,
 
     ): StepInfo(mode
 )
