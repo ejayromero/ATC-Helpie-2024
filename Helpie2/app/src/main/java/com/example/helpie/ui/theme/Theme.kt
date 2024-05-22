@@ -166,8 +166,8 @@ fun TemplateButton(
         else -> {
             Modifier
                 .padding(horizontal = 4.dp)
-                .width(112.dp)
-                .height(48.dp)
+                .width(100.dp)
+                .height(44.dp)
         }
     }
 
