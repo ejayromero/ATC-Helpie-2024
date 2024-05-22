@@ -397,9 +397,6 @@ fun HelpieApp(
                             steps = uiState.steps,
                             onNext = {
                                 navController.navigate(HelpieScreen.TakeTicket.name)
-                            },
-                            setTripOngoing = {
-                                viewModel.setTripOngoing(true)
                             }
                         )
                     }
@@ -409,6 +406,12 @@ fun HelpieApp(
 
 
                 composable(route = HelpieScreen.TakeTicket.name) {
+                    uiState.takeTicket?.let { it1 ->
+                        LaunchedEffect(key1 = Unit) {
+                            viewModel.setTripOngoing(true)
+                        }
+                    }
+
                     TakeTicketScreen(
                         takeTicket = {
                             viewModel.setTicket(true)
