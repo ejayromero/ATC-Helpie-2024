@@ -20,9 +20,8 @@ data class UiState(
     val urlTicket: String = "https://app.sbbmobile.ch/ticketlist",
     val takeTicket: String = "https://app.sbbmobile.ch/easyride",
 
+    val isFinish: Boolean = false,
     //trip management
-
-    val request: String = "",
 
     val planner: OjpSdk = OjpSdk(
         baseUrl = "https://api.opentransportdata.swiss/",
@@ -40,8 +39,6 @@ data class UiState(
     val steps : List<StepInfo> = listOf(),
 
     val wait :Boolean = false,
-
-    val togo :String = "",
 
     val currentStep: Int = -1,
 
@@ -91,12 +88,7 @@ data class UiState(
         ),
     ),
 
-    val targetLocation: Localisation = Localisation(
-        destinationName = "EPFL plasma center",
-        destinationAddress = "Address",
-        longitude = 6.564690632302699,
-        latitude = 46.51727585320471
-    ),
+    val targetLocation: Localisation = Localisation(),
 )
 
 data class Localisation(
