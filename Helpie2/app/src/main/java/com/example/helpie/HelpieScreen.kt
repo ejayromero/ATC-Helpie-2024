@@ -324,8 +324,6 @@ fun HelpieApp(
                         usePhone = uiState.usePhone,
                         phoneNumber = uiState.phoneNumber,
                         outlineNumber = uiState.outlineNumber,
-                        modifier = Modifier
-                            .fillMaxSize()
                     )
                 }
                 composable(route = HelpieScreen.Ticket.name) {
