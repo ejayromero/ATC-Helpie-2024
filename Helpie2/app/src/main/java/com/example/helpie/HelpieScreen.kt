@@ -307,7 +307,7 @@ fun HelpieApp(
                             viewModel.setLocalisationName(index, name, uiState.registeredLocation)
                         },
                         setLocalisationAddress = { index, address, _ ->
-                            viewModel.setLocalisationAddress(index, address, uiState.registeredLocation)
+                            viewModel.setLocalisationAddress(index, address, uiState.registeredLocation, context = ctx)
                         },
                         usePhone = uiState.usePhone,
                         phoneNumber = uiState.phoneNumber,
@@ -375,7 +375,7 @@ fun HelpieApp(
                             viewModel.setTarget(it)
                         },
                         setLocalisationAddress = { index, address, _ ->
-                            viewModel.setLocalisationAddress(index, address, uiState.registeredLocation)
+                            viewModel.setLocalisationAddress(index, address, uiState.registeredLocation, context = ctx)
                         },
                         switchDialog = {
                             viewModel.switchDialog()
@@ -541,13 +541,13 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                        if(((currentScreen == HelpieScreen.Destination.name) or (currentScreen == HelpieScreen.Summary.name) or ((currentScreen == HelpieScreen.TakeTicket.name)  and (!uiState.ticket) )) and (navController.previousBackStackEntry != null)){
+                        if(((currentScreen == HelpieScreen.Destination.name) or (currentScreen == HelpieScreen.Summary.name) or ((currentScreen == HelpieScreen.TakeTicket.name)  and (!uiState.ticket) ) or (currentScreen == HelpieScreen.Help.name) or (currentScreen == HelpieScreen.Ticket.name)  ) and (navController.previousBackStackEntry != null)){
                             TemplateButton(
                                 onClick = {
                                     navController.navigateUp()
                                 },
                                 text = "retour",
-                                size = 18.sp,
+                                size = 12.sp,
                                 sizeButton = "small",
                                 padding = false,
                                 containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -563,7 +563,7 @@ fun HelpieApp(
                                         }
                                     },
                                     text = "recommencer",
-                                    size = 18.sp,
+                                    size = 12.sp,
                                     sizeButton = "small",
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
