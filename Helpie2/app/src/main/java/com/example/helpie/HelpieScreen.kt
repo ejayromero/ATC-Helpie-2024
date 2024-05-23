@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
@@ -47,7 +46,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,7 +55,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.helpie.StepInfo
 import com.example.helpie.ui.DestinationScreen
 import com.example.helpie.ui.FinalScreen
 import com.example.helpie.ui.HelpScreen
@@ -76,7 +73,6 @@ import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 import androidx.lifecycle.viewModelScope
 import com.example.helpie.ui.SettingsScreen
-import kotlinx.coroutines.flow.update
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.ui.theme.TemplateButton
 import kotlinx.coroutines.launch
@@ -301,11 +297,13 @@ fun HelpieApp(
             ) {
                 composable(route = HelpieScreen.Settings.name) {
                     SettingsScreen(
+                        _uiState = uiState,
+                        context = ctx,
                         registeredLocation = uiState.registeredLocation,
                         setLocalisationName = { index, name, _ ->
                             viewModel.setLocalisationName(index, name, uiState.registeredLocation)
                         },
-                        setLocalisationAddress = { index, address, _ ->
+                        setLocalisationAddress = { index, address, _,_ ->
                             viewModel.setLocalisationAddress(index, address, uiState.registeredLocation, context = ctx)
                         },
                         usePhone = uiState.usePhone,
@@ -358,6 +356,8 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Destination.name) {
                     DestinationScreen(
+                        _uiState = uiState,
+                        context = ctx,
                         registeredLocation = uiState.registeredLocation,
                         showDialog = uiState.showDialog,
                         onRequest = {
@@ -373,7 +373,7 @@ fun HelpieApp(
                         setTarget = {
                             viewModel.setTarget(it)
                         },
-                        setLocalisationAddress = { index, address, _ ->
+                        setLocalisationAddress = { index, address, _ ,_ ->
                             viewModel.setLocalisationAddress(index, address, uiState.registeredLocation, context = ctx)
                         },
                         switchDialog = {
@@ -546,6 +546,7 @@ fun HelpieApp(
                         ){
                         if(
                             (currentScreen == HelpieScreen.Destination.name) or
+                            (currentScreen == HelpieScreen.Settings.name) or
                             (currentScreen == HelpieScreen.Summary.name) or
                             (currentScreen == HelpieScreen.Help.name) or
                             (currentScreen == HelpieScreen.Ticket.name) or
