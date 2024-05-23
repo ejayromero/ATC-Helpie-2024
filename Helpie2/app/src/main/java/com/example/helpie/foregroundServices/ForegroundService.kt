@@ -72,7 +72,7 @@ class ForegroundService: Service(){
 
     private fun punchNotification(contentText: String, pendingIntent: PendingIntent, color: Int): Notification {
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL) // Change to desired sound URI
-
+        vibrateDevice()
         return NotificationCompat.Builder(this, "running_channel")
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentTitle("HELPIE")
@@ -87,6 +87,7 @@ class ForegroundService: Service(){
             .build()
     }
     private fun travelNotification(contentText: String, pendingIntent: PendingIntent, color: Int): Notification {
+        vibrateDevice()
         return NotificationCompat.Builder(this, "running_channel")
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentTitle("HELPIE")
@@ -145,7 +146,7 @@ class ForegroundService: Service(){
         )
 
         // Set gravity to top
-        layoutParams.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+        layoutParams.gravity = Gravity.TOP or Gravity.RIGHT
 
         // Add the view to the WindowManager
         windowManager.addView(floatingView, layoutParams)
