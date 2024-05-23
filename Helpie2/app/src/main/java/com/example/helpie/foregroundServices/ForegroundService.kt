@@ -37,63 +37,34 @@ class ForegroundService: Service(){
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when(intent?.action) {
             Actions.START.toString() -> {
-                start("voyage en cours")
+                start()
                 showFloatingWindow()
             }
-            Actions.PUNCH.toString() -> start("une étape est terminé !")
             Actions.STOP.toString() -> stopSelf()
         }
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private  fun start(contentText: String) {
+    private  fun start() {
 
         // Create an Intent to navigate back to the last activity before closing the app
         val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
         previousActivityIntent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         val pendingIntent = PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
+        val notification = travelNotification(pendingIntent)
+        startForeground(1, notification)
 
-
-
-        if (contentText == "voyage en cours") {
-            val color =  Color.parseColor("#0978c6")
-            val notification = travelNotification(contentText, pendingIntent, color)
-            startForeground(1, notification)
-        }else {
-            val color =  Color.parseColor("#FFA500")
-            val notification = punchNotification(contentText, pendingIntent, color)
-            startForeground(1, notification)
-        }
-
-        //vibrateDevice()
 
     }
 
-    private fun punchNotification(contentText: String, pendingIntent: PendingIntent, color: Int): Notification {
-        val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL) // Change to desired sound URI
+    private fun travelNotification(pendingIntent: PendingIntent): Notification {
         vibrateDevice()
         return NotificationCompat.Builder(this, "running_channel")
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentTitle("HELPIE")
-            .setContentText(contentText)
-            .setColor(color)
-            .setColorized(true)
-            .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setSound(soundUri) // Set the notification sound
-            .setTimeoutAfter(3000) // Set timeout after 3 seconds
-            .build()
-    }
-    private fun travelNotification(contentText: String, pendingIntent: PendingIntent, color: Int): Notification {
-        vibrateDevice()
-        return NotificationCompat.Builder(this, "running_channel")
-            .setSmallIcon(R.drawable.ic_stat_name)
-            .setContentTitle("HELPIE")
-            .setContentText(contentText)
-            .setColor(color)
+            .setContentText("voyage en cours")
+            .setColor(Color.parseColor("#0978c6"))
             .setColorized(true)
             .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -186,6 +157,6 @@ class ForegroundService: Service(){
         }
     }
     enum class Actions {
-                       START,STOP,PUNCH
+                       START,STOP
     }
 }

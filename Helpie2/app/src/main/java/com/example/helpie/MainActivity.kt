@@ -19,14 +19,12 @@ import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.ui.theme.AppTheme
 import android.provider.Settings
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModelProvider
 import com.example.helpie.ui.HelpieViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import androidx.compose.runtime.mutableStateOf
+import com.example.helpie.foregroundServices.PunchNotification
 
 
 class MainActivity : ComponentActivity() {
@@ -167,16 +165,18 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startForegroundService() {
-        if (!isServiceRunning(ForegroundService::class.java)) {
-            val startIntent = Intent(this, ForegroundService::class.java)
-            startIntent.action = ForegroundService.Actions.START.toString()
-            startService(startIntent)
+        if (isServiceRunning(ForegroundService::class.java)) {
+            stopForegroundService()
         }
+        val startIntent = Intent(this, ForegroundService::class.java)
+        startIntent.action = ForegroundService.Actions.START.toString()
+        startService(startIntent)
     }
 
     private fun punchForegroundService() {
+        Log.d("MainActivity","punch")
         val punchIntent = Intent(this, ForegroundService::class.java)
-        punchIntent.action = ForegroundService.Actions.PUNCH.toString()
+        punchIntent.action = PunchNotification.Actions.PUNCH.toString()
         startService(punchIntent)
     }
 

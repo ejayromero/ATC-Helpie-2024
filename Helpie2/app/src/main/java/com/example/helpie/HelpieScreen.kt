@@ -504,7 +504,7 @@ fun HelpieApp(
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
                             Log.d("JTstep", "GO")
-                            //viewModel.sendNotification()
+                            viewModel.sendNotification()
                             navController.navigate(HelpieScreen.InBus.name)
                             shouldNavigate = false // This will stop the effect from running again
                         }
@@ -532,7 +532,7 @@ fun HelpieApp(
 
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
-                            //viewModel.sendNotification()
+                            viewModel.sendNotification()
                             Log.d("JTstep", "GO")
                             navController.navigate(HelpieScreen.OutBus.name)
                             shouldNavigate = false // This will stop the effect from running again
