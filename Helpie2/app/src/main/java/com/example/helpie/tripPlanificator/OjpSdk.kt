@@ -61,7 +61,7 @@ class OjpSdk(
     }
 
     suspend fun tripRequest(here : LatLng, target: Localisation): OjpDto  {
-        val requestTime = Clock.System.now().plus(2.hours)
+        val requestTime = Clock.System.now()
         Log.d("LE TEMPS", requestTime.toString())
         Log.d("remote","create request")
         Log.d("remote", here.longitude.toString())

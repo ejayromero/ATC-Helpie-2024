@@ -82,6 +82,7 @@ class ForegroundService: Service(){
             .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setAutoCancel(false)
+            .setOngoing(true)
             .setSound(soundUri) // Set the notification sound
             .setTimeoutAfter(3000) // Set timeout after 3 seconds
             .build()
