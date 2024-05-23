@@ -55,7 +55,7 @@ class HelpieViewModel : ViewModel() {
                 currentStep = -1,
                 timeNeeded = "start",
                 showDialog = false,
-                targetLocation = Localisation()
+                targetLocation = Localisation(isValid = true)
             )
         }
     }
@@ -219,20 +219,57 @@ class HelpieViewModel : ViewModel() {
             }
         }
     }
-
+//OLD
+/*
     fun setLocalisationAddress(index: Int, address: String, registeredLocalisation: List<Localisation>, context: Context) {
         if (index in registeredLocalisation.indices) {
             val updatedLocalisation = registeredLocalisation.toMutableList()
+
             val geo = getLocationFromAddress(context = context, addressStr = address)
             if (geo != null) {
                 updatedLocalisation[index] = registeredLocalisation[index].copy(destinationAddress = address, longitude = geo.longitude, latitude = geo.latitude)
+            }
 
             _uiState.update { currentState ->
                 currentState.copy(registeredLocation = updatedLocalisation)
             }
+
+        }
+    }*/
+
+
+//NEW
+    fun setLocalisationAddress(
+    index: Int,
+    address: String,
+    context1: List<Localisation>,
+    context: Context
+) {
+        if (index in _uiState.value.registeredLocation.indices) {
+            viewModelScope.launch {
+                val geo = getLocationFromAddress(context, address)
+                val updatedLocalisation = _uiState.value.registeredLocation.toMutableList()
+                if (geo != null) {
+                    updatedLocalisation[index] = updatedLocalisation[index].copy(
+                        destinationAddress = address,
+                        longitude = geo.longitude,
+                        latitude = geo.latitude,
+                        isValid = true
+                    )
+                } else {
+                    updatedLocalisation[index] = updatedLocalisation[index].copy(
+                        destinationAddress = address,
+                        isValid = false
+                    )
+                }
+                _uiState.update { currentState ->
+                    currentState.copy(registeredLocation = updatedLocalisation)
+                }
+                //_uiState.value = _uiState.value.copy(registeredLocation = updatedLocalisation)
             }
         }
     }
+
 
     fun switchDialog() {
         _uiState.update { currentState ->
@@ -291,6 +328,7 @@ class HelpieViewModel : ViewModel() {
                 val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
                 remainingTimeInMinutes = max(0, elapsedMinutes.toInt())
             }
+
             else -> {
                 // Handle any other points if needed
                 Log.d("givetime", "Unknown point: $point")
@@ -329,7 +367,7 @@ class HelpieViewModel : ViewModel() {
         Log.d("LOCATION", "Location has been updated")
     }
 
-    fun getLocationFromAddress(context: Context, addressStr: String): LatLng? {
+    suspend fun getLocationFromAddress(context: Context, addressStr: String): LatLng? {
         val geocoder = Geocoder(context)
         var latLng: LatLng? = null
 

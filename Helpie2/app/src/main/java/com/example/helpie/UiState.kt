@@ -57,28 +57,34 @@ data class UiState(
             destinationName = "Maison",
             destinationAddress = "Rte de la Blécherette 1, 1052 Le Mont-sur-Lausanne",
             longitude =6.635555,
-            latitude = 46.558945
+            latitude = 46.558945,
+            isValid = true
         ),
         // Destination 2
         Localisation(
             destinationName = "Sport",
             destinationAddress = "Centre sportif universitaire de Dorigny",
             longitude = 6.580914360470724,
-            latitude = 46.5191049
+            latitude = 46.5191049,
+            isValid = true
         ),
         // Destination 3
         Localisation(
             destinationName = "La grange de Dorigny",
             destinationAddress = "Grange Dorigny, Quartier, 1015 Lausanne",
             longitude = 6.581891310828132,
-            latitude = 46.52425828710366
+            latitude = 46.52425828710366,
+            isValid = true
         ),
         // Destination 4
         Localisation(
-            destinationName = "EPFL",
-            destinationAddress = "Rte Cantonale, 1015 Lausanne",
-            longitude =  6.565607340176263,
-            latitude = 46.52202373864509
+
+            destinationName = "Parc scientifique EPFL",
+            destinationAddress = "EPFL Innovation Park, 1015 Lausanne",
+            longitude =  6.5637746049080805,
+            latitude = 46.51666499690354,
+            isValid = true
+
         ),
 
         // Destination input
@@ -86,18 +92,20 @@ data class UiState(
             destinationName = "Ta destination",
             destinationAddress = "Address",
             longitude = 6.564690632302699,
-            latitude = 46.51727585320471
+            latitude = 46.51727585320471,
+            isValid = true
         ),
     ),
 
-    val targetLocation: Localisation = Localisation(),
+    val targetLocation: Localisation = Localisation(isValid = true),
 )
 
 data class Localisation(
     val destinationName: String? = null,
     val destinationAddress: String? = null,
     val longitude: Double? = null,
-    val latitude: Double? = null
+    val latitude: Double? = null,
+    val isValid: Boolean
 )
 
 data class TripSummary(

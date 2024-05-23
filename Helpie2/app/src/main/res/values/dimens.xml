@@ -26,7 +26,7 @@
     <dimen name="button_destination_height">60dp</dimen>
     <dimen name="button_destination_font_size">20sp</dimen>
     <dimen name="destination_spacer">10dp</dimen>
-    <dimen name="destination_textField_height">50dp</dimen>
+    <dimen name="destination_textField_height">60dp</dimen>
     <dimen name="CFF">500dp</dimen>
 
 </resources>
