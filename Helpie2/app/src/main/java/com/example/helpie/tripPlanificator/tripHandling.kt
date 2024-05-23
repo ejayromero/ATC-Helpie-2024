@@ -16,7 +16,7 @@ fun extractTrip(response: OjpDto): TripDto {
     try {
         val tripList = response.ojpResponse?.serviceDelivery?.tripDelivery?.tripResults
 
-        val startTime = Clock.System.now().plus(2.hours)
+        val startTime = Clock.System.now()
 
         var i = 0
         if (tripList != null) {

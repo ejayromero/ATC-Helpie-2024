@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -626,7 +627,17 @@ fun HelpieApp(
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
                             } else {
-                                Spacer(modifier = Modifier.width(127.dp))
+                                TemplateButton(
+                                    onClick = {
+                                        viewModel.UpSkip()
+                                    },
+                                    text = "SKIP",
+                                    size = 18.sp,
+                                    sizeButton = "small",
+                                    padding = false,
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                                )
+                                //Spacer(modifier = Modifier.width(127.dp))
                             }
 
                 }

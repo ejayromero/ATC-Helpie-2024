@@ -15,6 +15,8 @@ data class UiState(
     val outlineNumber:  String = "0800 007 102",  //"+33658814083"
     val usePhone: Boolean = false,  //"+33658814083"
 
+    val skipper: Int = 0,
+
 //ticket management
     val ticket: Boolean = false,
     val urlTicket: String = "https://app.sbbmobile.ch/ticketlist",

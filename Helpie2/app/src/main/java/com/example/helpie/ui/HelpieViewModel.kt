@@ -60,6 +60,9 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
+    fun UpSkip() {
+        _uiState.update { currentState -> currentState.copy(skipper = _uiState.value.skipper +1 ) }
+    }
     fun sendNotification() {
         _uiState.update { currentState -> currentState.copy(BOUM = true) }
     }
@@ -311,29 +314,31 @@ class HelpieViewModel : ViewModel() {
         var remainingTimeInMinutes = 0
 
         // Log the point and call giveTime based on the point
-        when (point) {
-            "start", "end" -> {
-                val time = step.giveTime(point)
-                Log.d("givetime $point", time)
 
-                // Parse the time
-                val timeParsed = Instant.parse(time)
-                Log.d("givetime $point parsed", "$timeParsed")
+            when (point) {
+                "start", "end" -> {
+                    val time = step.giveTime(point)
+                    Log.d("givetime $point", time)
 
-                // Get the current time
-                val startTime = Clock.System.now().plus(2.hours)
-                Log.d("givetime now", "$startTime")
+                    // Parse the time
+                    val timeParsed = Instant.parse(time)
+                    Log.d("givetime $point parsed", "$timeParsed")
 
-                // Calculate elapsed minutes
-                val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
-                remainingTimeInMinutes = max(0, elapsedMinutes.toInt())
+                    // Get the current time
+                    val startTime = Clock.System.now().plus(2.hours)
+                    Log.d("givetime now", "$startTime")
+
+                    // Calculate elapsed minutes
+                    val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
+                    remainingTimeInMinutes = max(0, elapsedMinutes.toInt() - _uiState.value.skipper)
+                }
+
+                else -> {
+                    // Handle any other points if needed
+                    Log.d("givetime", "Unknown point: $point")
+                }
             }
 
-            else -> {
-                // Handle any other points if needed
-                Log.d("givetime", "Unknown point: $point")
-            }
-        }
 
         // Update the remaining time in the state
         _uiState.update { currentState ->
