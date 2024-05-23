@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,7 +46,6 @@ fun InBusScreen(
             text = "Le ${stepInfo.mode.toString()} arrive bientôt, prépare-toi à monter !",
             color = Color.Black,
         )
-
 
         Box(
             modifier = Modifier
@@ -81,24 +81,31 @@ fun InBusScreen(
                 Spacer(modifier = Modifier.width(28.dp))
                 Column {
                     // Bus line text
-                    Text(
+                    CustomTextView(
                         text = stepInfo.line.toString(),
-                        color = Color.White,
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Bold
+                        padding = false,
+                        size = 32.sp,
                     )
-                    Text(
+                    CustomTextView(
                         text = stepInfo.mode.toString(),
-                        color = Color.White,
-                        fontSize = 16.sp,
+                        padding = false,
+                        size = 16.sp,
                     )
                 }
             }
         }
+        Spacer(modifier = Modifier.height(32.dp))
 
         CustomTextView(
             text = stepInfo.startName.toString(),
             color = Color.Black,
+            padding = false
+        )
+        CustomTextView(
+            text = "Direction : ${stepInfo.way.toString()}",
+            color = MaterialTheme.colorScheme.onSurface,
+            padding = false,
+            size = 20.sp
         )
     }
 }
@@ -110,7 +117,8 @@ fun InBusScreenPreview() {
             stepInfo = transportInfo(
                 startName = "Saint-Sulpice, Innovation Park",
                 endName = "Morges, Gare",
-                mode = "bus"
+                mode = "bus",
+                way = "Morges, Gare"
             )
         )
     }

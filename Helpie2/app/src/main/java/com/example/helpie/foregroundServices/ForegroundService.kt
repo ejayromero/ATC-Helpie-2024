@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
+import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
@@ -18,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import androidx.core.app.NotificationCompat
+import androidx.core.graphics.red
 import com.example.helpie.R
 
 //import com.example.helpie.foregroundServices.OnSwipeTouchListener
@@ -35,15 +37,16 @@ class ForegroundService: Service(){
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when(intent?.action) {
             Actions.START.toString() -> {
-                start()
+                start("voyage en cours")
                 showFloatingWindow()
             }
+            Actions.PUNCH.toString() -> start("une étape est terminé !")
             Actions.STOP.toString() -> stopSelf()
         }
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private  fun start() {
+    private  fun start(contentText: String) {
 
         // Create an Intent to navigate back to the last activity before closing the app
         val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
@@ -51,15 +54,39 @@ class ForegroundService: Service(){
 
         val pendingIntent = PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        val color =  Color.parseColor("#0978c6")
 
-        val notification = createNotification("Voyage en cours", pendingIntent, color)
-        startForeground(1, notification)
+
+        if (contentText == "voyage en cours") {
+            val color =  Color.parseColor("#0978c6")
+            val notification = travelNotification(contentText, pendingIntent, color)
+            startForeground(1, notification)
+        }else {
+            val color =  Color.parseColor("#FFA500")
+            val notification = punchNotification(contentText, pendingIntent, color)
+            startForeground(1, notification)
+        }
+
         //vibrateDevice()
 
     }
 
-    private fun createNotification(contentText: String, pendingIntent: PendingIntent, color: Int): Notification {
+    private fun punchNotification(contentText: String, pendingIntent: PendingIntent, color: Int): Notification {
+        val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL) // Change to desired sound URI
+
+        return NotificationCompat.Builder(this, "running_channel")
+            .setSmallIcon(R.drawable.ic_stat_name)
+            .setContentTitle("HELPIE")
+            .setContentText(contentText)
+            .setColor(color)
+            .setColorized(true)
+            .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setAutoCancel(false)
+            .setSound(soundUri) // Set the notification sound
+            .setTimeoutAfter(3000) // Set timeout after 3 seconds
+            .build()
+    }
+    private fun travelNotification(contentText: String, pendingIntent: PendingIntent, color: Int): Notification {
         return NotificationCompat.Builder(this, "running_channel")
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentTitle("HELPIE")
@@ -157,6 +184,6 @@ class ForegroundService: Service(){
         }
     }
     enum class Actions {
-                       START,STOP
+                       START,STOP,PUNCH
     }
 }

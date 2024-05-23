@@ -54,7 +54,6 @@ fun ReachStopScreen(
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
                 .padding(16.dp)
-
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -83,22 +82,27 @@ fun ReachStopScreen(
                     // Bus line text
                     CustomTextView(
                         text = nextStep.line.toString(),
-//                        text = "701",
                         padding = false,
                         size = 32.sp,
                         )
                     CustomTextView(
                         text = nextStep.mode.toString(),
-                        color = Color.White,
                         padding = false,
                         size = 16.sp
                     )
+
                 }
             }
         }
-        Log.d("stopname", nextStep.startName.toString())
+
         CustomTextView(
             text = nextStep.startName.toString(),
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        CustomTextView(
+            text = "Diretion : ${nextStep.way.toString()}",
+            padding = false,
+            size = 20.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
     }
@@ -116,7 +120,8 @@ fun ReachStopScreenPreview() {
             nextStep = transportInfo(
                 "bus",
                 "701",
-                "Morges Gare"
+                "Morges Gare",
+                way  = "Bourdonnette"
             )
         )
     }

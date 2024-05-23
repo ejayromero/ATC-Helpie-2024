@@ -121,7 +121,7 @@ fun HelpieApp(
 
     val imageArrivalShiftFraction = 0.415f
 
-    val startFractionBar = -0.95f
+    val startFractionBar = -0.5f
 
     val imageShiftFraction = remember { mutableStateOf(startFractionBar) }
 
@@ -148,18 +148,21 @@ fun HelpieApp(
 
     val transportDescription = remember { mutableStateOf(R.string.WalkBar) }
 
-    LaunchedEffect(stepInfo.mode) {
-        val (painter, description) = when (stepInfo.mode.toString()) {
-            "bus" -> Pair(R.drawable.bus_bar, R.string.BusBar)
-            "rail" -> Pair(R.drawable.train_bar, R.string.TrainBar)
-            "walk" -> Pair(R.drawable.walking_bar, R.string.WalkBar)
-            "metro" -> Pair(R.drawable.metro_bar, R.string.MetroBar)
-            "boat" -> Pair(R.drawable.boat_bar, R.string.BoatBar)
-            else -> Pair(R.drawable.train_bar, R.string.TrainBar)
+    LaunchedEffect(uiState.currentStep) {
+        if (uiState.steps.isNotEmpty() && uiState.currentStep in uiState.steps.indices) {
+            val (painter, description) = when (uiState.steps[uiState.currentStep].mode.toString()) {
+                "bus" -> Pair(R.drawable.bus_bar, R.string.BusBar)
+                "rail" -> Pair(R.drawable.train_bar, R.string.TrainBar)
+                "walk" -> Pair(R.drawable.walking_bar, R.string.WalkBar)
+                "metro" -> Pair(R.drawable.metro_bar, R.string.MetroBar)
+                "boat" -> Pair(R.drawable.boat_bar, R.string.BoatBar)
+                else -> Pair(R.drawable.train_bar, R.string.TrainBar)
+            }
+            transportPainter.value = painter
+            transportDescription.value = description
         }
-        transportPainter.value = painter
-        transportDescription.value = description
     }
+
 
     Scaffold(
         topBar = {
@@ -215,7 +218,8 @@ fun HelpieApp(
                     .background(color = MaterialTheme.colorScheme.primaryContainer) // Change Color.Green to your desired background color
             ) {
                 TemplateButton(
-                    onClick = { navController.navigate(HelpieScreen.Help.name) },
+                    onClick = {
+                        navController.navigate(HelpieScreen.Help.name) },
                     text = stringResource(R.string.aide),
                     padding = false,
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
@@ -261,13 +265,20 @@ fun HelpieApp(
                                 .fillMaxWidth()
                                 .height(40.dp)
                         ) {
-                            Image(
-                                painter = painterResource(id = transportPainter.value),
-                                contentDescription = stringResource(id = transportDescription.value),
+                            val transportOffset = (imageShiftFraction.value * screenWidth).dp
+                            //val arrivalOffset = (imageArrivalShiftFraction * screenWidth).dp
+
+                            Box(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .offset(x = (imageShiftFraction.value * screenWidth).dp)
-                            )
+                                    .offset(x = transportOffset)
+                            ) {
+                                Image(
+                                    painter = painterResource(id = transportPainter.value),
+                                    contentDescription = stringResource(id = transportDescription.value),
+                                    modifier = Modifier.align(Alignment.Center)
+                                )
+                            }
                             // Overlay to make the right portion of the image transparent
                             Image(
                                 painter = painterResource(id = R.drawable.arrivee_panel),
@@ -334,8 +345,12 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.Start.name) {
+                    if (uiState.trip != null) {
+                        viewModel.clean()
+                    }
                     StartScreen(
                         onTicket = {
+                            viewModel.clean()
                             navController.navigate(HelpieScreen.Destination.name)
                         },
                         modifier = Modifier
@@ -344,9 +359,11 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.Final.name) {
+                    if (uiState.tripOngoing) {
+                        viewModel.clean()
+                    }
                     FinalScreen(
                         recommence = {
-                            viewModel.setFinish(false)
                             navController.navigate(HelpieScreen.Destination.name)
                         },
                         modifier = Modifier
@@ -386,9 +403,6 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Summary.name) {
                     uiState.summary?.let { it1 ->
-                        LaunchedEffect(key1 = Unit) {
-                            viewModel.setTripOngoing(false)
-                        }
                         SummaryScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -396,6 +410,7 @@ fun HelpieApp(
                             summary = it1,
                             steps = uiState.steps,
                             onNext = {
+                                viewModel.setTripOngoing(true)
                                 navController.navigate(HelpieScreen.TakeTicket.name)
                             }
                         )
@@ -406,12 +421,6 @@ fun HelpieApp(
 
 
                 composable(route = HelpieScreen.TakeTicket.name) {
-                    uiState.takeTicket?.let { it1 ->
-                        LaunchedEffect(key1 = Unit) {
-                            viewModel.setTripOngoing(true)
-                        }
-                    }
-
                     TakeTicketScreen(
                         takeTicket = {
                             viewModel.setTicket(true)
@@ -433,8 +442,11 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(false)
                             viewModel.openLink(ctx,uiState.takeTicket)
-                            viewModel.clean()
-                            navController.navigate(HelpieScreen.Final.name)
+                            if (uiState.isFinish) {
+                                navController.navigate(HelpieScreen.Final.name)
+                            } else {
+                                navController.navigate(HelpieScreen.Start.name)
+                            }
                         },
                         modifier = Modifier
                             .fillMaxSize(),
@@ -464,6 +476,7 @@ fun HelpieApp(
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
                             Log.d("JTstep", "GO")
+                            viewModel.getNotification()
                             navController.navigate(HelpieScreen.InBus.name)
                             shouldNavigate = false // This will stop the effect from running again
                         }
@@ -491,6 +504,7 @@ fun HelpieApp(
 
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
+                            viewModel.getNotification()
                             Log.d("JTstep", "GO")
                             navController.navigate(HelpieScreen.OutBus.name)
                             shouldNavigate = false // This will stop the effect from running again
@@ -575,7 +589,6 @@ fun HelpieApp(
                                         if (uiState.ticket) {
                                             navController.navigate(HelpieScreen.StopTicket.name)
                                         } else {
-                                            viewModel.clean()
                                             navController.navigate(HelpieScreen.Start.name)
                                         }
                                     },

@@ -82,7 +82,7 @@ fun JourneyInTransportScreen(
                     // Bus line text
                     CustomTextView(
                         text = stepInfo.line.toString(),
-                        size = 36.sp,
+                        size = 32.sp,
                         padding = false
                     )
                     CustomTextView(

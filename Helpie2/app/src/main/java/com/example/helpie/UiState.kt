@@ -21,6 +21,8 @@ data class UiState(
     val takeTicket: String = "https://app.sbbmobile.ch/easyride",
 
     val isFinish: Boolean = false,
+
+    val BOUM: Boolean = false,
     //trip management
 
     val planner: OjpSdk = OjpSdk(
@@ -76,11 +78,13 @@ data class UiState(
         ),
         // Destination 4
         Localisation(
+
             destinationName = "Parc scientifique EPFL",
             destinationAddress = "EPFL Innovation Park, 1015 Lausanne",
             longitude =  6.5637746049080805,
             latitude = 46.51666499690354,
             isValid = true
+
         ),
 
         // Destination input
@@ -171,6 +175,7 @@ open class StepInfo(
             Log.d("trip", "Line: $line")
             Log.d("trip", "Start Quay: $startQuay")
             Log.d("trip", "End Quay: $endQuay")
+            Log.d("trip", "Way: $way")
         } else if (this is walkInfo) {
             Log.d("trip", "Start Name: $startName")
             Log.d("trip", "Start Longitude: $startLongitude")
@@ -202,6 +207,7 @@ data class transportInfo(
     val line: String? = null,
     val startQuay: String? = null,
     val endQuay: String? = null,
+    val way: String? = null,
 
     ): StepInfo(mode
 )

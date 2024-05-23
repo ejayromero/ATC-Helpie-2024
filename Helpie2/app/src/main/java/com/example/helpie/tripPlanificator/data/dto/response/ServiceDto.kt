@@ -16,5 +16,8 @@ data class ServiceDto(
     val mode: ModeDto? = null,
 
     @Element(name = "ojp:PublishedLineName")
-    val line: LocationDto? = null
+    val line: LocationDto? = null,
+
+    @Element(name = "ojp:DestinationText")
+    val way: LocationDto? = null
 )

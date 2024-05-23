@@ -42,10 +42,13 @@ class HelpieViewModel : ViewModel() {
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     fun clean() {
+        Log.d("CLEAN", "cleaning")
+        timerJob?.cancel()
         _uiState.update { currentState ->
             currentState.copy(
                 trip = null,
                 summary = null,
+                isFinish = false,
                 tripOngoing = false,
                 steps = listOf(),
                 wait = false,
@@ -55,6 +58,18 @@ class HelpieViewModel : ViewModel() {
                 targetLocation = Localisation(isValid = true)
             )
         }
+    }
+
+    fun sendNotification() {
+        _uiState.update { currentState -> currentState.copy(BOUM = true) }
+    }
+
+    fun getNotification(): Boolean {
+        if (_uiState.value.BOUM) {
+            _uiState.update { currentState -> currentState.copy(BOUM = false) }
+            return true
+        }
+        return false
     }
 
     fun request() {
@@ -333,9 +348,15 @@ class HelpieViewModel : ViewModel() {
     }
 
     fun setTripOngoing(Ongoing: Boolean) {
+        Log.d("boolean", "changed")
         _uiState.update { currentState ->
             currentState.copy(tripOngoing = Ongoing)
         }
+    }
+
+    fun getTripOngoing(): Boolean {
+        Log.d("boolean", _uiState.value.tripOngoing.toString())
+        return _uiState.value.tripOngoing
     }
 
 
