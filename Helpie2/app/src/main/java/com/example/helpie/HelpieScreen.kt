@@ -170,12 +170,37 @@ fun HelpieApp(
             Column(Modifier.fillMaxWidth()) {
                 TopAppBar(
                     title = {
-                        Column(Modifier.padding(start = 80.dp)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            if (uiState.debugging) {
+                                TemplateButton(
+                                    onClick = {
+                                        viewModel.UpSkip()
+                                    },
+                                    text = "SKIP",
+                                    size = 18.sp,
+                                    sizeButton = "small",
+                                    padding = false,
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                                )
+
+                                Column {
 //                            Spacer(modifier = Modifier.height(.dp)) // Adding space on the top
-                            CustomTextView(
-                                text = stringResource(R.string.HELPIE),
-                                size = 48.sp,
-                            )
+                                    CustomTextView(
+                                        text = stringResource(R.string.HELPIE),
+                                        size = 48.sp,
+                                    )
+                                }
+                            } else {
+                                Column(Modifier.padding(start = 80.dp)) {
+//                            Spacer(modifier = Modifier.height(.dp)) // Adding space on the top
+                                    CustomTextView(
+                                        text = stringResource(R.string.HELPIE),
+                                        size = 48.sp,
+                                    )
+                                }}
                         }
                     },
                     colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -186,22 +211,22 @@ fun HelpieApp(
                     ),
                     actions = {
                         Column {
-                            //Spacer(modifier = Modifier.height(25.dp))
                             if (currentScreen == HelpieScreen.Start.name) {
                                 Button(
                                     onClick = { navController.navigate(HelpieScreen.Settings.name) },
                                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
-                                    ) {
+                                ) {
                                     Icon(
-                                        imageVector = Icons.Default.Settings, // Replace 'YourIconName' with the desired icon name
+                                        imageVector = Icons.Default.Settings,
                                         contentDescription = "Edit Mode"
                                     )
                                 }
                             }
                         }
                     },
-                    scrollBehavior = scrollBehavior, //enable scrolling
+                    scrollBehavior = scrollBehavior, // Enable scrolling
                 )
+
             }
         },
         bottomBar = {
@@ -323,6 +348,8 @@ fun HelpieApp(
                         outlineNumber = uiState.outlineNumber,
                         phone = { viewModel.setUsePhone(it) },
                         setPhone = { viewModel.setPhone(it) },
+                        debugging = uiState.debugging,
+                        switchDebug = {viewModel.SwitchDebug()},
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -477,7 +504,7 @@ fun HelpieApp(
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
                             Log.d("JTstep", "GO")
-                            viewModel.getNotification()
+                            //viewModel.sendNotification()
                             navController.navigate(HelpieScreen.InBus.name)
                             shouldNavigate = false // This will stop the effect from running again
                         }
@@ -505,7 +532,7 @@ fun HelpieApp(
 
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
-                            viewModel.getNotification()
+                            //viewModel.sendNotification()
                             Log.d("JTstep", "GO")
                             navController.navigate(HelpieScreen.OutBus.name)
                             shouldNavigate = false // This will stop the effect from running again
@@ -627,17 +654,7 @@ fun HelpieApp(
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
                             } else {
-                                TemplateButton(
-                                    onClick = {
-                                        viewModel.UpSkip()
-                                    },
-                                    text = "SKIP",
-                                    size = 18.sp,
-                                    sizeButton = "small",
-                                    padding = false,
-                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                                )
-                                //Spacer(modifier = Modifier.width(127.dp))
+                                Spacer(modifier = Modifier.width(127.dp))
                             }
 
                 }

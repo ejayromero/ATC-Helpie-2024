@@ -16,6 +16,7 @@ data class UiState(
     val usePhone: Boolean = false,  //"+33658814083"
 
     val skipper: Int = 0,
+    val debugging: Boolean = true,
 
 //ticket management
     val ticket: Boolean = false,

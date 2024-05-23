@@ -48,6 +48,8 @@ fun SettingsScreen(
     outlineNumber: String,
     phone: (Boolean) -> Unit = {},
     setPhone: (String) -> Unit = {},
+    debugging: Boolean,
+    switchDebug: () -> Unit = {}
 ) {
     val textWeightLeft = 0.4f
     val textWeightRight = 0.6f
@@ -60,6 +62,35 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxSize()
         ) {
+            item {
+                CustomTextView(
+                    text = "Debugging",
+                    size = 32.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(
+                        checked = debugging,
+                        onCheckedChange = { switchDebug() }
+                    )
+                    CustomTextView(
+                        text = "debugging ? ",
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+            item {
+                Divider(
+                    color = Color.Black,
+                    thickness = 1.dp,
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth()
+                ) }
             item {
                 CustomTextView(
                     text = "Contact",

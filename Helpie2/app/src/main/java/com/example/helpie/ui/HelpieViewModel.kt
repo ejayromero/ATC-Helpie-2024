@@ -46,6 +46,7 @@ class HelpieViewModel : ViewModel() {
         timerJob?.cancel()
         _uiState.update { currentState ->
             currentState.copy(
+                skipper = 0,
                 trip = null,
                 summary = null,
                 isFinish = false,
@@ -62,6 +63,10 @@ class HelpieViewModel : ViewModel() {
 
     fun UpSkip() {
         _uiState.update { currentState -> currentState.copy(skipper = _uiState.value.skipper +1 ) }
+    }
+
+    fun SwitchDebug() {
+        _uiState.update {currentState -> currentState.copy(debugging = !_uiState.value.debugging)}
     }
     fun sendNotification() {
         _uiState.update { currentState -> currentState.copy(BOUM = true) }
@@ -313,10 +318,14 @@ class HelpieViewModel : ViewModel() {
         // Initialize remainingTimeInMinutes
         var remainingTimeInMinutes = 0
 
+        Log.d("is callend", "is called")
+        Log.d("skipper", _uiState.value.skipper.toString())
+
         // Log the point and call giveTime based on the point
 
-            when (point) {
+        when (point) {
                 "start", "end" -> {
+                    Log.d("givetime $point", "is done")
                     val time = step.giveTime(point)
                     Log.d("givetime $point", time)
 
@@ -325,7 +334,7 @@ class HelpieViewModel : ViewModel() {
                     Log.d("givetime $point parsed", "$timeParsed")
 
                     // Get the current time
-                    val startTime = Clock.System.now().plus(2.hours)
+                    val startTime = Clock.System.now()
                     Log.d("givetime now", "$startTime")
 
                     // Calculate elapsed minutes
