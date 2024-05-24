@@ -41,6 +41,9 @@ class HelpieViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    fun setClean() {
+        _uiState.update { currentState -> currentState.copy(needClean = true) }
+    }
     fun clean() {
         Log.d("CLEAN", "cleaning")
         timerJob?.cancel()
@@ -78,6 +81,14 @@ class HelpieViewModel : ViewModel() {
             return true
         }
         return false
+    }
+
+    fun needToClose() {
+        if (_uiState.value.needClean) {
+            Log.d("cleaning", "cleaning go")
+            clean()
+            _uiState.update { currentState -> currentState.copy(needClean = false) }
+        }
     }
 
     fun request() {

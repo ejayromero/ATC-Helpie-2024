@@ -158,6 +158,7 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
         stopForegroundService()
@@ -165,9 +166,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startForegroundService() {
-        if (isServiceRunning(ForegroundService::class.java)) {
-            stopForegroundService()
-        }
         val startIntent = Intent(this, ForegroundService::class.java)
         startIntent.action = ForegroundService.Actions.START.toString()
         startService(startIntent)
@@ -176,16 +174,19 @@ class MainActivity : ComponentActivity() {
     private fun punchForegroundService() {
         Log.d("MainActivity","punch")
         val punchIntent = Intent(this, ForegroundService::class.java)
-        punchIntent.action = PunchNotification.Actions.PUNCH.toString()
+        punchIntent.action = ForegroundService.Actions.PUNCH.toString()
         startService(punchIntent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun stopForegroundService() {
         if (isServiceRunning(ForegroundService::class.java)) {
             val stopIntent = Intent(this, ForegroundService::class.java)
             stopIntent.action = ForegroundService.Actions.STOP.toString()
             startService(stopIntent)
+            viewModel.needToClose()
         }
+
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {

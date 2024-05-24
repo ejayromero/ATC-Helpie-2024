@@ -73,6 +73,7 @@ import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 import androidx.lifecycle.viewModelScope
+import com.example.helpie.ui.PopUpScreen
 import com.example.helpie.ui.SettingsScreen
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.ui.theme.TemplateButton
@@ -94,7 +95,8 @@ enum class HelpieScreen {
     OutBus,
     WaitingTransport,
     JourneyInTransport,
-    Settings
+    Settings,
+    PopUp
 }
 
 
@@ -373,9 +375,6 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.Start.name) {
-                    if (uiState.trip != null) {
-                        viewModel.clean()
-                    }
                     StartScreen(
                         onTicket = {
                             viewModel.clean()
@@ -387,12 +386,9 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.Final.name) {
-                    if (uiState.tripOngoing) {
-                        viewModel.clean()
-                    }
                     FinalScreen(
                         recommence = {
-                            navController.navigate(HelpieScreen.Destination.name)
+                            navController.navigate(HelpieScreen.Start.name)
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -439,10 +435,43 @@ fun HelpieApp(
                             steps = uiState.steps,
                             onNext = {
                                 viewModel.setTripOngoing(true)
-                                navController.navigate(HelpieScreen.TakeTicket.name)
+                                if (!uiState.ticket) {
+                                    navController.navigate(HelpieScreen.TakeTicket.name)
+                                } else {
+                                    viewModel.viewModelScope.launch {
+                                        val nextScreen = viewModel.launchNext()
+                                        navController.navigate(nextScreen)
+                                    }
+                                }
                             }
                         )
                     }
+
+
+                }
+
+                composable(route = HelpieScreen.PopUp.name) {
+                        PopUpScreen(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            onStop = { if (uiState.ticket) {
+                                navController.navigate(HelpieScreen.StopTicket.name)
+                            } else {
+                                viewModel.setClean()
+                                navController.navigate(HelpieScreen.Start.name)
+                            }
+                                     },
+                            onRestart = {
+                                viewModel.setWait(true)
+                                runBlocking {
+                                    viewModel.request()
+                                    Log.d("wait", uiState.wait.toString())
+                                    while (uiState.wait) { Log.d("wait", "wait")}
+                                    navController.navigate(HelpieScreen.Summary.name)
+                                }
+                            },
+                            onDismiss = {navController.navigateUp()}
+                        )
 
 
                 }
@@ -470,6 +499,7 @@ fun HelpieApp(
                         takeTicket = {
                             viewModel.setTicket(false)
                             viewModel.openLink(ctx,uiState.takeTicket)
+                            viewModel.setClean()
                             if (uiState.isFinish) {
                                 navController.navigate(HelpieScreen.Final.name)
                             } else {
@@ -614,11 +644,7 @@ fun HelpieApp(
                             ){
                                 TemplateButton(
                                     onClick = {
-                                        if (uiState.ticket) {
-                                            navController.navigate(HelpieScreen.StopTicket.name)
-                                        } else {
-                                            navController.navigate(HelpieScreen.Start.name)
-                                        }
+                                        navController.navigate(HelpieScreen.PopUp.name)
                                     },
                                     text = "Arrêter",
                                     size = 14.sp,
