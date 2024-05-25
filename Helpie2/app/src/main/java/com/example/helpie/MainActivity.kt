@@ -45,9 +45,16 @@ class MainActivity : ComponentActivity() {
             updateLocation()
             if (viewModel.getNotification()) {
                 punchForegroundService()
+                // Schedule the stopForegroundService to run after 5 seconds
+                handler.postDelayed(stopForegroundRunnable, 3000)
             }
             handler.postDelayed(this, updateIntervalMillis)
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val stopForegroundRunnable = Runnable {
+        stopForegroundService()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
