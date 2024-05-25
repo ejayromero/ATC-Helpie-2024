@@ -581,7 +581,7 @@ fun HelpieApp(
                         stepInfo = if (uiState.steps[uiState.currentStep] is transportInfo) {
                             uiState.steps[uiState.currentStep] as transportInfo
                         } else {
-                            transportInfo()
+                            uiState.steps[uiState.currentStep-1] as transportInfo
                         },
                         modifier = Modifier.fillMaxSize()
                     )
