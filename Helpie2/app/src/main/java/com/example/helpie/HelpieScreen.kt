@@ -635,12 +635,10 @@ fun HelpieApp(
                                 containerColor = MaterialTheme.colorScheme.tertiaryContainer
                             )
                         } else if (
-                            (currentScreen == HelpieScreen.ReachStop.name) or
                             (currentScreen == HelpieScreen.InBus.name) or
                             (currentScreen == HelpieScreen.OutBus.name) or
                             (currentScreen == HelpieScreen.Walk.name) or
-                            (currentScreen == HelpieScreen.WaitingTransport.name) or
-                            (currentScreen == HelpieScreen.JourneyInTransport.name)
+                            (currentScreen == HelpieScreen.WaitingTransport.name)
                             ){
                                 TemplateButton(
                                     onClick = {
@@ -652,6 +650,17 @@ fun HelpieApp(
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
+                            } else if (currentScreen == HelpieScreen.ReachStop.name) {
+                            TemplateButton(
+                                onClick = {
+                                    navController.navigate(HelpieScreen.PopUp.name)
+                                },
+                                text = "non",
+                                size = 14.sp,
+                                sizeButton = "small",
+                                padding = false,
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                            )
                             }
                             else {
                                 Spacer(modifier = Modifier.width(127.dp))
