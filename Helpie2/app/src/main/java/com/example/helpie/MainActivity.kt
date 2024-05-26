@@ -2,6 +2,7 @@ package com.example.helpie
 
 import android.Manifest
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -20,6 +21,8 @@ import com.example.helpie.ui.theme.AppTheme
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
+import com.example.helpie.foregroundServices.ForegroundService.Companion.NOTIFICATION_ID_PUNCH
+import com.example.helpie.foregroundServices.ForegroundService.Companion.NOTIFICATION_ID_TRAVEL
 import com.example.helpie.ui.HelpieViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -51,11 +54,6 @@ class MainActivity : ComponentActivity() {
             }
             handler.postDelayed(this, updateIntervalMillis)
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val stopForegroundRunnable = Runnable {
-        stopForegroundService()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -190,6 +188,15 @@ class MainActivity : ComponentActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    private val stopForegroundRunnable = Runnable {
+        if (isServiceRunning(ForegroundService::class.java) ) {
+            val stopIntent = Intent(this, ForegroundService::class.java)
+            stopIntent.action = ForegroundService.Actions.STOP_NOTIFICATION.toString()
+            startService(stopIntent)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun stopForegroundService() {
         if (isServiceRunning(ForegroundService::class.java)) {
             val stopIntent = Intent(this, ForegroundService::class.java)
@@ -208,6 +215,19 @@ class MainActivity : ComponentActivity() {
             }
         }
         return false
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getDisplayedNotificationId(): Int? {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val activeNotifications = notificationManager.activeNotifications
+        for (notification in activeNotifications) {
+            when (notification.id) {
+                NOTIFICATION_ID_TRAVEL -> return NOTIFICATION_ID_TRAVEL
+                NOTIFICATION_ID_PUNCH -> return NOTIFICATION_ID_PUNCH
+            }
+        }
+        return null
     }
 
     private fun hasWindowPermission(): Boolean {

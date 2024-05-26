@@ -1,6 +1,7 @@
 package com.example.helpie.foregroundServices
 
 import android.app.Notification
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
@@ -29,6 +30,13 @@ class ForegroundService() : Service() {
     private lateinit var windowManager: WindowManager
     private lateinit var floatingView: View
 
+    companion object {
+        const val NOTIFICATION_ID_TRAVEL = 1
+        const val NOTIFICATION_ID_PUNCH = 2
+    }
+
+    private var travelcolor : Int = Color.parseColor("#0978c6")
+    private var notifcolor : Int = Color.parseColor("#FFA500")
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -44,9 +52,15 @@ class ForegroundService() : Service() {
             Actions.Monter.toString() -> start(Actions.Monter)
             Actions.Descendre.toString() -> start(Actions.Descendre)
             Actions.STOP.toString() -> stopSelf()
+            Actions.STOP_NOTIFICATION.toString() -> stopNotification(NOTIFICATION_ID_PUNCH)
             else -> start(Actions.None)
         }
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun stopNotification(notificationId: Int) {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(notificationId)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -56,28 +70,47 @@ class ForegroundService() : Service() {
         val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
         previousActivityIntent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
+
+        if (type == Actions.START) {
+
+            val pendingIntent =
+                PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
+
+            val notification = travelNotification(pendingIntent, travelcolor)
+            startForeground(NOTIFICATION_ID_TRAVEL, notification)
+        } else {
+
+            val pendingIntent =
+                PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
+
+            val notification = punchNotification(pendingIntent, type, notifcolor)
+            updateNotification()
+            startForeground(NOTIFICATION_ID_PUNCH, notification)
+        }
+
+
+        }
+
+    private fun updateNotification() {
+        val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
+        previousActivityIntent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
         val pendingIntent =
             PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        if (type == Actions.START) {
-            val notification = travelNotification(pendingIntent)
-            startForeground(1, notification)
-        } else {
+        val updatedNotification = travelNotification(pendingIntent, notifcolor)
 
-            val notification = punchNotification(pendingIntent, type)
-            startForeground(1, notification)
-        }
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(NOTIFICATION_ID_TRAVEL, updatedNotification)
+    }
 
-
-        }
-
-        private fun travelNotification(pendingIntent: PendingIntent): Notification {
+        private fun travelNotification(pendingIntent: PendingIntent, color: Int): Notification {
             vibrateDevice()
             return NotificationCompat.Builder(this, "running_channel")
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle("HELPIE")
                 .setContentText("voyage en cours")
-                .setColor(Color.parseColor("#0978c6"))
+                .setColor(color)
                 .setColorized(true)
                 .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -87,7 +120,7 @@ class ForegroundService() : Service() {
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
-        private fun punchNotification(pendingIntent: PendingIntent, type: Actions): Notification {
+        private fun punchNotification(pendingIntent: PendingIntent, type: Actions, color: Int): Notification {
             Log.d("PUNCH", "create notif")
 
             var text = "une étape est terminé !"
@@ -120,7 +153,7 @@ class ForegroundService() : Service() {
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle("HELPIE")
                 .setContentText(text)
-                .setColor(Color.parseColor("#FFA500"))
+                .setColor(color)
                 .setColorized(true)
                 .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -223,6 +256,6 @@ class ForegroundService() : Service() {
         }
 
         enum class Actions {
-            START, STOP, WalkCloseStop,Monter,Descendre,None
+            START, STOP, WalkCloseStop,Monter,Descendre,None,STOP_NOTIFICATION
         }
     }

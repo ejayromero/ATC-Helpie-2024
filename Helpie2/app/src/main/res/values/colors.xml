@@ -10,5 +10,5 @@
     <color name="light_blue">#089cfc</color>
     <color name="primaryContainer">#0978c6</color>
     <color name="onPrimaryContainer">#FFFFFF</color>
-
+    <color name="notification">#FFA500</color>
 </resources>
