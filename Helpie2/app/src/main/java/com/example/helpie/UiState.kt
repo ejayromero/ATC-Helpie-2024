@@ -3,8 +3,10 @@ package com.example.helpie
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
+import com.example.helpie.ui.HelpieViewModel
 import com.google.android.gms.maps.model.LatLng
 
 
@@ -27,6 +29,7 @@ data class UiState(
     val needClean: Boolean = false,
 
     val BOUM: Boolean = false,
+    val type: ForegroundService.Actions = ForegroundService.Actions.None,
     //trip management
 
     val planner: OjpSdk = OjpSdk(
@@ -42,9 +45,9 @@ data class UiState(
 
     val tripOngoing: Boolean = false,
 
-    val steps : List<StepInfo> = listOf(),
+    val steps: List<StepInfo> = listOf(),
 
-    val wait :Boolean = false,
+    val wait:Boolean = false,
 
     val currentStep: Int = -1,
 

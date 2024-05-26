@@ -24,7 +24,6 @@ import com.example.helpie.ui.HelpieViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.example.helpie.foregroundServices.PunchNotification
 
 
 class MainActivity : ComponentActivity() {
@@ -43,7 +42,8 @@ class MainActivity : ComponentActivity() {
         @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
             updateLocation()
-            if (viewModel.getNotification()) {
+            if (viewModel.getNotification() != ForegroundService.Actions.None) {
+                Log.d("is diff",viewModel.getNotification().toString())
                 punchForegroundService()
                 // Schedule the stopForegroundService to run after 5 seconds
                 handler.postDelayed(stopForegroundRunnable, 3000)
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateLocation() {
-        Log.d("Test_update","location_update")
+        //Log.d("Test_update","location_update")
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -178,10 +178,12 @@ class MainActivity : ComponentActivity() {
         startService(startIntent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun punchForegroundService() {
         Log.d("MainActivity","punch")
         val punchIntent = Intent(this, ForegroundService::class.java)
-        punchIntent.action = ForegroundService.Actions.PUNCH.toString()
+        punchIntent.action = viewModel.getNotification().toString()
+        Log.d("notif update", punchIntent.action!!)
         startService(punchIntent)
     }
 

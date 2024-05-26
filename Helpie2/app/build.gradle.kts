@@ -122,6 +122,4 @@ dependencies {
     implementation(libs.places)
     implementation(libs.androidx.fragment.ktx)
 
-
-
 }

@@ -14,6 +14,7 @@ import com.example.helpie.HelpieScreen
 import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
 import com.example.helpie.UiState
+import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.tripPlanificator.data.dto.response.PlaceInfoDto
 import com.example.helpie.tripPlanificator.extractLoca
 import com.example.helpie.tripPlanificator.extractTrip
@@ -33,14 +34,13 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.io.IOException
 import kotlin.math.max
-import kotlin.time.Duration.Companion.hours
+import kotlin.math.sqrt
 
 @RequiresApi(Build.VERSION_CODES.O)
 class HelpieViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
     fun setClean() {
         _uiState.update { currentState -> currentState.copy(needClean = true) }
     }
@@ -71,17 +71,30 @@ class HelpieViewModel : ViewModel() {
     fun SwitchDebug() {
         _uiState.update {currentState -> currentState.copy(debugging = !_uiState.value.debugging)}
     }
-    fun sendNotification() {
-        _uiState.update { currentState -> currentState.copy(BOUM = true) }
+    fun sendNotification(type : ForegroundService.Actions) {
+        _uiState.update { currentState -> currentState.copy(BOUM = true,
+            type = type) }
     }
 
-    fun getNotification(): Boolean {
+    fun isClose() {
+        if (_uiState.value.steps[_uiState.value.currentStep] is walkInfo) {
+            val d1 = _uiState.value.currentLocation.latitude - (_uiState.value.steps[_uiState.value.currentStep] as walkInfo).endLatitude!!
+            val d2  = _uiState.value.currentLocation.longitude - (_uiState.value.steps[_uiState.value.currentStep] as walkInfo).endLongitude!!
+            val dist = 0.002
+            if (sqrt(d1*d1 + d2*d2) < dist) {
+                sendNotification(ForegroundService.Actions.WalkCloseStop)
+            }
+        }
+    }
+
+    fun getNotification(): ForegroundService.Actions {
         if (_uiState.value.BOUM) {
             _uiState.update { currentState -> currentState.copy(BOUM = false) }
-            return true
+            return _uiState.value.type
         }
-        return false
+        return ForegroundService.Actions.None
     }
+
 
     fun needToClose() {
         if (_uiState.value.needClean) {
@@ -238,26 +251,7 @@ class HelpieViewModel : ViewModel() {
             }
         }
     }
-//OLD
-/*
-    fun setLocalisationAddress(index: Int, address: String, registeredLocalisation: List<Localisation>, context: Context) {
-        if (index in registeredLocalisation.indices) {
-            val updatedLocalisation = registeredLocalisation.toMutableList()
 
-            val geo = getLocationFromAddress(context = context, addressStr = address)
-            if (geo != null) {
-                updatedLocalisation[index] = registeredLocalisation[index].copy(destinationAddress = address, longitude = geo.longitude, latitude = geo.latitude)
-            }
-
-            _uiState.update { currentState ->
-                currentState.copy(registeredLocation = updatedLocalisation)
-            }
-
-        }
-    }*/
-
-
-//NEW
     fun setLocalisationAddress(
     index: Int,
     address: String,
@@ -389,7 +383,7 @@ class HelpieViewModel : ViewModel() {
         _uiState.update { currentState ->
             currentState.copy(currentLocation = current)
         }
-        Log.d("LOCATION", "Location has been updated")
+        //Log.d("LOCATION", "Location has been updated")
     }
 
     suspend fun getLocationFromAddress(context: Context, addressStr: String): LatLng? {
@@ -412,6 +406,8 @@ class HelpieViewModel : ViewModel() {
 
         return latLng
     }
+
+
 
 }
 

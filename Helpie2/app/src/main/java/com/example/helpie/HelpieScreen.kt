@@ -73,6 +73,7 @@ import com.example.helpie.ui.WalkScreen
 import com.example.helpie.ui.theme.AppTheme
 import kotlinx.coroutines.runBlocking
 import androidx.lifecycle.viewModelScope
+import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.ui.PopUpScreen
 import com.example.helpie.ui.SettingsScreen
 import com.example.helpie.ui.theme.CustomTextView
@@ -495,6 +496,7 @@ fun HelpieApp(
                 }
 
                 composable(route = HelpieScreen.StopTicket.name) {
+                    viewModel.isClose()
                     TakeTicketScreen(
                         takeTicket = {
                             viewModel.setTicket(false)
@@ -534,7 +536,7 @@ fun HelpieApp(
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
                             Log.d("JTstep", "GO")
-                            viewModel.sendNotification()
+                            viewModel.sendNotification(ForegroundService.Actions.Monter)
                             navController.navigate(HelpieScreen.InBus.name)
                             shouldNavigate = false // This will stop the effect from running again
                         }
@@ -562,7 +564,7 @@ fun HelpieApp(
 
                     LaunchedEffect(uiState.remainingTime) {
                         if (uiState.remainingTime < 2 && shouldNavigate) {
-                            viewModel.sendNotification()
+                            viewModel.sendNotification(ForegroundService.Actions.Descendre)
                             Log.d("JTstep", "GO")
                             navController.navigate(HelpieScreen.OutBus.name)
                             shouldNavigate = false // This will stop the effect from running again

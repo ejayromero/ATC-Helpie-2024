@@ -19,36 +19,38 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.graphics.red
 import com.example.helpie.R
 
-//import com.example.helpie.foregroundServices.OnSwipeTouchListener
 
-
-
-class ForegroundService: Service() {
+class ForegroundService() : Service() {
 
     private lateinit var windowManager: WindowManager
     private lateinit var floatingView: View
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             Actions.START.toString() -> {
-                start(Actions.START.toString())
+                start(Actions.START)
                 showFloatingWindow()
             }
-
-            Actions.PUNCH.toString() -> start(Actions.PUNCH.toString())
+            Actions.WalkCloseStop.toString() -> start(Actions.WalkCloseStop)
+            Actions.Monter.toString() -> start(Actions.Monter)
+            Actions.Descendre.toString() -> start(Actions.Descendre)
             Actions.STOP.toString() -> stopSelf()
+            else -> start(Actions.None)
         }
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private fun start(type: String) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun start(type: Actions) {
 
         // Create an Intent to navigate back to the last activity before closing the app
         val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
@@ -57,11 +59,12 @@ class ForegroundService: Service() {
         val pendingIntent =
             PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        if (type == Actions.START.toString()) {
+        if (type == Actions.START) {
             val notification = travelNotification(pendingIntent)
             startForeground(1, notification)
-        } else if (type == Actions.PUNCH.toString()){
-            val notification = punchNotification(pendingIntent)
+        } else {
+
+            val notification = punchNotification(pendingIntent, type)
             startForeground(1, notification)
         }
 
@@ -83,14 +86,40 @@ class ForegroundService: Service() {
                 .build()
         }
 
-        private fun punchNotification(pendingIntent: PendingIntent): Notification {
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun punchNotification(pendingIntent: PendingIntent, type: Actions): Notification {
             Log.d("PUNCH", "create notif")
+
+            var text = "une étape est terminé !"
+            when (type) {
+                Actions.WalkCloseStop -> {
+                    text = "Tu es arrivé à l'arrêt !"
+                    // Do something for WalkCloseStop
+                    println("Handling WalkCloseStop")
+                }
+                Actions.Monter -> {
+                    text = "Le transport arrive bientôt"
+                    // Do something for TransportEvent
+                    println("Handling TransportEvent")
+                }
+                Actions.Descendre -> {
+                    text = "Tu dois bientôt descendre"
+                    // Do something for TransportEvent
+                    println("Handling TransportEvent")
+                }
+                else -> {
+                    // Do something for None
+                    println("Handling None")
+                }
+            }
+
             val soundUri =
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL) // Change to desired sound URI
+
             return NotificationCompat.Builder(this, "running_channel")
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle("HELPIE")
-                .setContentText("une étape est terminé !")
+                .setContentText(text)
                 .setColor(Color.parseColor("#FFA500"))
                 .setColorized(true)
                 .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
@@ -194,6 +223,6 @@ class ForegroundService: Service() {
         }
 
         enum class Actions {
-            START, STOP, PUNCH
+            START, STOP, WalkCloseStop,Monter,Descendre,None
         }
     }
