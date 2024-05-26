@@ -33,7 +33,12 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.io.IOException
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.cos
 import kotlin.math.max
+import kotlin.math.pow
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -77,14 +82,31 @@ class HelpieViewModel : ViewModel() {
 
     fun isClose() {
         if (_uiState.value.steps[_uiState.value.currentStep] is walkInfo) {
-            val d1 = _uiState.value.currentLocation.latitude - (_uiState.value.steps[_uiState.value.currentStep] as walkInfo).endLatitude!!
-            val d2  = _uiState.value.currentLocation.longitude - (_uiState.value.steps[_uiState.value.currentStep] as walkInfo).endLongitude!!
-            val dist = 0.002
-            if (sqrt(d1*d1 + d2*d2) < dist) {
+            val d1 = _uiState.value.currentLocation.latitude
+            val D1 = (_uiState.value.steps[_uiState.value.currentStep] as walkInfo).endLatitude!!
+            val d2  = _uiState.value.currentLocation.longitude
+            val D2 = (_uiState.value.steps[_uiState.value.currentStep] as walkInfo).endLongitude!!
+            val dist = 5
+            if (haversine(d1,d2,D1,D2) < dist) {
                 sendNotification(ForegroundService.Actions.WalkCloseStop)
             }
         }
     }
+
+    private fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val R = 6371e3 // Earth's radius in meters
+        val φ1 = lat1.toRadians()
+        val φ2 = lat2.toRadians()
+        val Δφ = (lat2 - lat1).toRadians()
+        val Δλ = (lon2 - lon1).toRadians()
+
+        val a = sin(Δφ / 2).pow(2) + cos(φ1) * cos(φ2) * sin(Δλ / 2).pow(2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return R * c
+    }
+
+    private fun Double.toRadians() = this * PI / 180
 
     fun getNotification(): ForegroundService.Actions {
         val sending = _uiState.value.type
