@@ -28,7 +28,6 @@ data class UiState(
     val isFinish: Boolean = false,
     val needClean: Boolean = false,
 
-    val BOUM: Boolean = false,
     val type: ForegroundService.Actions = ForegroundService.Actions.None,
     //trip management
 

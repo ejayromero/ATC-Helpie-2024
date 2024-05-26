@@ -42,9 +42,10 @@ class MainActivity : ComponentActivity() {
         @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
             updateLocation()
-            if (viewModel.getNotification() != ForegroundService.Actions.None) {
+            val notif = viewModel.getNotification()
+            if (notif != ForegroundService.Actions.None) {
                 Log.d("is diff",viewModel.getNotification().toString())
-                punchForegroundService()
+                punchForegroundService(notif)
                 // Schedule the stopForegroundService to run after 5 seconds
                 handler.postDelayed(stopForegroundRunnable, 3000)
             }
@@ -175,14 +176,15 @@ class MainActivity : ComponentActivity() {
     private fun startForegroundService() {
         val startIntent = Intent(this, ForegroundService::class.java)
         startIntent.action = ForegroundService.Actions.START.toString()
+        Log.d("notif update", startIntent.action!!)
         startService(startIntent)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun punchForegroundService() {
+    private fun punchForegroundService(notif: ForegroundService.Actions) {
         Log.d("MainActivity","punch")
         val punchIntent = Intent(this, ForegroundService::class.java)
-        punchIntent.action = viewModel.getNotification().toString()
+        punchIntent.action = notif.toString()
         Log.d("notif update", punchIntent.action!!)
         startService(punchIntent)
     }

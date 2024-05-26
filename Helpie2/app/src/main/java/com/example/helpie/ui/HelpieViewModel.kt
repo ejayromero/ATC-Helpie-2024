@@ -72,8 +72,7 @@ class HelpieViewModel : ViewModel() {
         _uiState.update {currentState -> currentState.copy(debugging = !_uiState.value.debugging)}
     }
     fun sendNotification(type : ForegroundService.Actions) {
-        _uiState.update { currentState -> currentState.copy(BOUM = true,
-            type = type) }
+        _uiState.update { currentState -> currentState.copy(type = type) }
     }
 
     fun isClose() {
@@ -88,11 +87,9 @@ class HelpieViewModel : ViewModel() {
     }
 
     fun getNotification(): ForegroundService.Actions {
-        if (_uiState.value.BOUM) {
-            _uiState.update { currentState -> currentState.copy(BOUM = false) }
-            return _uiState.value.type
-        }
-        return ForegroundService.Actions.None
+        val sending = _uiState.value.type
+        _uiState.update { currentState -> currentState.copy(type = ForegroundService.Actions.None) }
+        return sending
     }
 
 
