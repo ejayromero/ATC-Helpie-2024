@@ -428,6 +428,9 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Summary.name) {
                     uiState.summary?.let { it1 ->
+                        LaunchedEffect(key1 = Unit) {
+                            viewModel.setTripOngoing(false)
+                        }
                         SummaryScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
