@@ -695,7 +695,7 @@ fun HelpieApp(
                                         }
                                     },
                                     text = next,
-                                    size = 18.sp,
+                                    size = 14.sp,
                                     sizeButton = "small",
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer

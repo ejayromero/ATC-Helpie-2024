@@ -243,7 +243,7 @@ class ForegroundService() : Service() {
                     e.printStackTrace()
                 }
             }
-            
+
             // Handle touch events to allow dragging
             draggableCircle.setOnTouchListener(object : View.OnTouchListener {
 
