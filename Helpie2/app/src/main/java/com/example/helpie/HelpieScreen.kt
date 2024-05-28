@@ -621,6 +621,7 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
+                        var past = "retour"
                         if(
                             (currentScreen == HelpieScreen.Destination.name) or
                             (currentScreen == HelpieScreen.Settings.name) or
@@ -633,7 +634,7 @@ fun HelpieApp(
                                 onClick = {
                                     navController.navigateUp()
                                 },
-                                text = "retour",
+                                text = past,
                                 size = 18.sp,
                                 sizeButton = "small",
                                 padding = false,
@@ -643,29 +644,26 @@ fun HelpieApp(
                             (currentScreen == HelpieScreen.InBus.name) or
                             (currentScreen == HelpieScreen.OutBus.name) or
                             (currentScreen == HelpieScreen.Walk.name) or
-                            (currentScreen == HelpieScreen.WaitingTransport.name)
+                            (currentScreen == HelpieScreen.WaitingTransport.name) or
+                            (currentScreen == HelpieScreen.ReachStop.name) or
+                            (currentScreen == HelpieScreen.JourneyInTransport.name)
                             ){
+                                past = "Arrêter"
+                            if (currentScreen == HelpieScreen.ReachStop.name) {
+                                past = "Non"
+                            } else if (currentScreen == HelpieScreen.JourneyInTransport.name) {
+                                past = "probleme ?"
+                            }
                                 TemplateButton(
                                     onClick = {
                                         navController.navigate(HelpieScreen.PopUp.name)
                                     },
-                                    text = "Arrêter",
+                                    text = past,
                                     size = 14.sp,
                                     sizeButton = "small",
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
-                            } else if (currentScreen == HelpieScreen.ReachStop.name) {
-                            TemplateButton(
-                                onClick = {
-                                    navController.navigate(HelpieScreen.PopUp.name)
-                                },
-                                text = "non",
-                                size = 14.sp,
-                                sizeButton = "small",
-                                padding = false,
-                                containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                            )
                             }
                             else {
                                 Spacer(modifier = Modifier.width(127.dp))
