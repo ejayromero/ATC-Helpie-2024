@@ -182,6 +182,7 @@ class ForegroundService() : Service() {
             }
         }
 
+        @SuppressLint("RtlHardcoded")
         private fun showFloatingWindow() {
             // Check if the permission is already granted for window overlay
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
@@ -215,7 +216,7 @@ class ForegroundService() : Service() {
             )
 
             // Set gravity to top
-            layoutParams.gravity = Gravity.TOP
+            layoutParams.gravity = Gravity.RIGHT
 
             // Add the view to the WindowManager
             windowManager.addView(floatingView, layoutParams)
