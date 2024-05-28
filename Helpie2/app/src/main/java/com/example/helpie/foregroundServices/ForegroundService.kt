@@ -216,7 +216,7 @@ class ForegroundService() : Service() {
             )
 
             // Set gravity to top
-            layoutParams.gravity = Gravity.RIGHT
+            layoutParams.gravity = Gravity.TOP
 
             // Add the view to the WindowManager
             windowManager.addView(floatingView, layoutParams)
