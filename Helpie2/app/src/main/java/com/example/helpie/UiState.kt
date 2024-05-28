@@ -24,6 +24,7 @@ data class UiState(
     val ticket: Boolean = false,
     val urlTicket: String = "https://app.sbbmobile.ch/ticketlist",
     val takeTicket: String = "https://app.sbbmobile.ch/easyride",
+    val easyRide : Boolean = true,
 
     val isFinish: Boolean = false,
     val needClean: Boolean = false,

@@ -37,19 +37,19 @@ import com.example.helpie.ui.theme.CustomTextView
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    _uiState: UiState,
-    context: Context,
     modifier: Modifier = Modifier,
     registeredLocation: List<Localisation>,
     setLocalisationName: (Int, String, List<Localisation>) -> Unit = { _, _, _ -> },
-    setLocalisationAddress: (Int, String, List<Localisation>, Context) -> Unit = { _, _, _,_ -> },
+    setLocalisationAddress: (Int, String) -> Unit = { _, _ -> },
     usePhone: Boolean,
     phoneNumber: String,
     outlineNumber: String,
     phone: (Boolean) -> Unit = {},
     setPhone: (String) -> Unit = {},
     debugging: Boolean,
-    switchDebug: () -> Unit = {}
+    switchDebug: () -> Unit = {},
+    EasyRide : Boolean,
+    switchTicket: () -> Unit = {},
 ) {
     val textWeightLeft = 0.4f
     val textWeightRight = 0.6f
@@ -62,6 +62,50 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxSize()
         ) {
+            item {
+                CustomTextView(
+                    text = "Ticket",
+                    size = 32.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(
+                        checked = EasyRide,
+                        onCheckedChange = { switchTicket() }
+                    )
+                    CustomTextView(
+                        text = "EasyRide",
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                } }
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(
+                        checked = !EasyRide,
+                        onCheckedChange = { switchTicket() }
+                    )
+                    CustomTextView(
+                        text = "Reminder to take physical ticket",
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+
+            item {
+                Divider(
+                    color = Color.Black,
+                    thickness = 1.dp,
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth()
+                ) }
+
             item {
                 CustomTextView(
                     text = "Debugging",
@@ -184,7 +228,7 @@ fun SettingsScreen(
                     CustomTextView(
                         text = stringResource(R.string.choisir_la_destination) + " " + (i + 1).toString(),
                         color = MaterialTheme.colorScheme.onSurface,
-                        )
+                    )
                 }
                 /*TEST LENA
                 item {TextField(
@@ -236,12 +280,14 @@ fun SettingsScreen(
                         TextField(
                             value = registeredLocation[i].destinationAddress ?: "",
                             onValueChange = { address ->
-                                setLocalisationAddress(i, address, registeredLocation, context)
+                                setLocalisationAddress(i, address)
                             },
                             //label = { Text(stringResource(R.string.adresse)) },
                             placeholder = { Text(text = "Adresse") },
                             colors = TextFieldDefaults.textFieldColors(
-                                focusedTextColor = if (_uiState.registeredLocation[i].isValid) Color(0xFF006400) else Color.Red
+                                focusedTextColor = if (registeredLocation[i].isValid) Color(
+                                    0xFF006400
+                                ) else Color.Red
                             ),
                             modifier = Modifier
                                 .padding(16.dp)
@@ -250,16 +296,16 @@ fun SettingsScreen(
                         )
                     }
                 }
-                // Bu
-            }
+            } // Bu
+
             }
         }
     }
 
 
-//@Preview(showBackground = true)
-//@Composable
-/*
+@Preview(showBackground = true)
+@Composable
+
 fun SettingsPreview() {
     AppTheme {
         SettingsScreen(
@@ -268,32 +314,35 @@ fun SettingsPreview() {
                     destinationName = "EPFL plasma center",
                     destinationAddress = "Address",
                     longitude = 6.564690632302699,
-                    latitude = 46.51727585320471
+                    latitude = 46.51727585320471,
+                    isValid = true
             ),
                 Localisation(
                     destinationName = "EPFL plasma center",
                     destinationAddress = "Address",
                     longitude = 6.564690632302699,
-                    latitude = 46.51727585320471
+                    latitude = 46.51727585320471,
+                    isValid = true
                 ),
                 Localisation(
                     destinationName = "EPFL plasma center",
                     destinationAddress = "Address",
                     longitude = 6.564690632302699,
-                    latitude = 46.51727585320471
+                    latitude = 46.51727585320471,
+                    isValid = true
                 ),
                 Localisation(
                     destinationName = "EPFL plasma center",
                     destinationAddress = "Address",
                     longitude = 6.564690632302699,
-                    latitude = 46.51727585320471
+                    latitude = 46.51727585320471,
+                    isValid = true
                 )),
             usePhone = true,
             phoneNumber = "",
             outlineNumber = "",
-            context =
+            debugging = false,
+            EasyRide = true
         )
     }
 }
-
- */

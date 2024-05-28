@@ -1,5 +1,6 @@
 package com.example.helpie.foregroundServices
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -11,13 +12,16 @@ import android.graphics.PixelFormat
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
@@ -84,7 +88,7 @@ class ForegroundService() : Service() {
                 PendingIntent.getActivity(this, 0, previousActivityIntent, PendingIntent.FLAG_IMMUTABLE)
 
             val notification = punchNotification(pendingIntent, type, notifcolor)
-            updateNotification()
+            //updateNotification()
             startForeground(NOTIFICATION_ID_PUNCH, notification)
         }
 
@@ -216,8 +220,13 @@ class ForegroundService() : Service() {
             // Add the view to the WindowManager
             windowManager.addView(floatingView, layoutParams)
 
+            // Get references to the draggable circle and main layout
+            val draggableCircle: View = floatingView.findViewById(R.id.draggableCircle)
+            val mainLayout: View = floatingView.findViewById(R.id.floatingWindowLayout)
+
+
             // Set a click listener to the floating window
-            floatingView.setOnClickListener {
+            mainLayout.setOnClickListener {
                 // Create an Intent to launch the app
                 val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
                 previousActivityIntent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -234,11 +243,47 @@ class ForegroundService() : Service() {
                 }
             }
             // Set a long click listener to the floating window to remove it
-            floatingView.setOnLongClickListener {
+            mainLayout.setOnLongClickListener {
                 // Remove the floating window from the screen
                 windowManager.removeView(floatingView)
                 true // Indicate that the long click event has been consumed
             }
+
+            // Handle touch events to allow dragging
+            draggableCircle.setOnTouchListener(object : View.OnTouchListener {
+
+                private var initialX = 0
+                private var initialTouchX = 0f
+                @SuppressLint("ClickableViewAccessibility")
+                override fun onTouch(v: View?, event: MotionEvent): Boolean {
+                    Log.d("window", "touch")
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            Log.d("window", "first")
+                            // Remember the initial position
+                            initialX = layoutParams.x
+                            initialTouchX = event.rawX
+                            Log.d("FloatingWindow", "ACTION_DOWN: initialX=$initialX, initialTouchX=$initialTouchX")
+                            return true
+                        }
+                        MotionEvent.ACTION_MOVE -> {
+                            Log.d("window", "move")
+                            // Calculate the X coordinate for the new position
+                            layoutParams.x = initialX + (event.rawX - initialTouchX).toInt()
+                            Log.d("FloatingWindow", "ACTION_MOVE: newX=${layoutParams.x}")
+                            // Update the window position
+                            // Use a Handler to ensure the update is run on the UI thread
+                            val handler = Handler(Looper.getMainLooper())
+                            handler.post {
+                                windowManager.updateViewLayout(floatingView, layoutParams)
+                                floatingView.requestLayout()
+                            }
+                            return true
+                        }
+                    }
+                    return false
+                }
+            })
         }
 
         override fun onTaskRemoved(rootIntent: Intent?) {
