@@ -120,6 +120,7 @@ class ForegroundService() : Service() {
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setOngoing(true)
                 .setAutoCancel(false)
+                .setSound(null)
                 .build()
         }
 
