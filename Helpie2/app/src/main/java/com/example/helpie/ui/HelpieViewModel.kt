@@ -76,6 +76,10 @@ class HelpieViewModel : ViewModel() {
     fun SwitchDebug() {
         _uiState.update {currentState -> currentState.copy(debugging = !_uiState.value.debugging)}
     }
+
+    fun SwitchTicket() {
+        _uiState.update {currentState -> currentState.copy(easyRide = !_uiState.value.easyRide)}
+    }
     fun sendNotification(type : ForegroundService.Actions) {
         _uiState.update { currentState -> currentState.copy(type = type) }
     }

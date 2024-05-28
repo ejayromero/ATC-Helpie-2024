@@ -1,5 +1,4 @@
 package com.example.helpie.tripPlanificator.data.dto.response
-import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceRefDto
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.Xml
 
@@ -9,5 +8,5 @@ import com.tickaroo.tikxml.annotation.Xml
 @Xml(name = "ojp:TripResponseContext")
 data class TripContextDto(
     @Element(name = "ojp:Places")
-    val place: PlaceDto,
+    val place: PlaceDto? = null,
 )

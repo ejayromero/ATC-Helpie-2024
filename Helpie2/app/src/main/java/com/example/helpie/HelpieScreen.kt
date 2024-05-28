@@ -337,13 +337,11 @@ fun HelpieApp(
             ) {
                 composable(route = HelpieScreen.Settings.name) {
                     SettingsScreen(
-                        _uiState = uiState,
-                        context = ctx,
                         registeredLocation = uiState.registeredLocation,
                         setLocalisationName = { index, name, _ ->
                             viewModel.setLocalisationName(index, name, uiState.registeredLocation)
                         },
-                        setLocalisationAddress = { index, address, _,_ ->
+                        setLocalisationAddress = { index, address ->
                             viewModel.setLocalisationAddress(index, address, uiState.registeredLocation, context = ctx)
                         },
                         usePhone = uiState.usePhone,
@@ -353,6 +351,8 @@ fun HelpieApp(
                         setPhone = { viewModel.setPhone(it) },
                         debugging = uiState.debugging,
                         switchDebug = {viewModel.SwitchDebug()},
+                        EasyRide = uiState.easyRide,
+                        switchTicket = {viewModel.SwitchTicket()},
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -370,6 +370,7 @@ fun HelpieApp(
                         showTicket = {
                             viewModel.openLink(ctx,uiState.urlTicket)
                         },
+                        easyRide = uiState.easyRide,
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -455,7 +456,7 @@ fun HelpieApp(
                         PopUpScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            onStop = { if (uiState.ticket) {
+                            onStop = { if (uiState.ticket and uiState.easyRide) {
                                 navController.navigate(HelpieScreen.StopTicket.name)
                             } else {
                                 viewModel.setClean()
@@ -491,6 +492,7 @@ fun HelpieApp(
                         },
                         modifier = Modifier
                             .fillMaxSize(),
+                        easyRide = uiState.easyRide,
                         take = true
                     )
                 }
@@ -510,6 +512,7 @@ fun HelpieApp(
                         },
                         modifier = Modifier
                             .fillMaxSize(),
+                        easyRide = uiState.easyRide,
                         take = false
                     )
                 }
@@ -669,10 +672,12 @@ fun HelpieApp(
                             }
                             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.button_corner_radius)))
 
-                            if((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.InBus.name) or (currentScreen == HelpieScreen.OutBus.name)) {
+                            if((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.InBus.name) or (currentScreen == HelpieScreen.OutBus.name) or ((currentScreen == HelpieScreen.TakeTicket.name) and (!uiState.easyRide) )) {
                                 var next = "suivant"
                                 if (currentScreen == HelpieScreen.ReachStop.name) {
                                     next = "oui"
+                                } else if (currentScreen == HelpieScreen.TakeTicket.name) {
+                                    next = "C'est bon !"
                                 }
                                 TemplateButton(
                                     onClick = {
@@ -680,7 +685,14 @@ fun HelpieApp(
                                             viewModel.viewModelScope.launch {
                                                 navController.navigate(viewModel.launchNext())
                                             }
-                                        } else {
+                                        } else if (currentScreen == HelpieScreen.TakeTicket.name) {
+                                            viewModel.setTicket(true)
+                                            viewModel.viewModelScope.launch {
+                                                val nextScreen = viewModel.launchNext()
+                                                navController.navigate(nextScreen)
+                                            }
+                                        }
+                                        else {
                                             navController.navigate(HelpieScreen.JourneyInTransport.name)
                                         }
                                     },
