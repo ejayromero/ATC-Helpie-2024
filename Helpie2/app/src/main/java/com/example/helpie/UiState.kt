@@ -76,10 +76,10 @@ data class UiState(
         ),
         // Destination 3
         Localisation(
-            destinationName = "La grange de Dorigny",
-            destinationAddress = "Grange Dorigny, Quartier, 1015 Lausanne",
-            longitude = 6.581891310828132,
-            latitude = 46.52425828710366,
+            destinationName = "Biotech",
+            destinationAddress = "Chem. des Mines 9, 1202 Genève",
+            longitude = 6.1482750577995295,
+            latitude = 46.22212491537171,
             isValid = true
         ),
         // Destination 4

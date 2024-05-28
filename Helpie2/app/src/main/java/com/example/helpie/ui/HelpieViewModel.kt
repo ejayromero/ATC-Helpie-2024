@@ -385,10 +385,10 @@ class HelpieViewModel : ViewModel() {
         timerJob?.cancel() // Cancel the timer job when ViewModel is cleared
     }
 
-    fun setTripOngoing(Ongoing: Boolean) {
+    fun setTripOngoing(ongoing: Boolean) {
         Log.d("boolean", "changed")
         _uiState.update { currentState ->
-            currentState.copy(tripOngoing = Ongoing)
+            currentState.copy(tripOngoing = ongoing)
         }
     }
 
