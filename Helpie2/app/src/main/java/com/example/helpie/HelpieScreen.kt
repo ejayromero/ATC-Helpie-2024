@@ -288,7 +288,7 @@ fun HelpieApp(
                         }
 
                     }
-                    if ((currentScreen != HelpieScreen.Summary.name) and (currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Destination.name)) {
+                    if ((currentScreen != HelpieScreen.Summary.name) and (currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Destination.name) and (currentScreen != HelpieScreen.Final.name)) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()

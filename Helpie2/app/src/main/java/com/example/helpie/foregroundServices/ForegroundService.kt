@@ -215,7 +215,7 @@ class ForegroundService() : Service() {
             )
 
             // Set gravity to top
-            layoutParams.gravity = Gravity.TOP or Gravity.RIGHT
+            layoutParams.gravity = Gravity.TOP
 
             // Add the view to the WindowManager
             windowManager.addView(floatingView, layoutParams)
@@ -248,6 +248,7 @@ class ForegroundService() : Service() {
                 windowManager.removeView(floatingView)
                 true // Indicate that the long click event has been consumed
             }
+
 
             // Handle touch events to allow dragging
             draggableCircle.setOnTouchListener(object : View.OnTouchListener {
