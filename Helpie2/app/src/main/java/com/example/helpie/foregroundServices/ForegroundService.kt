@@ -243,14 +243,7 @@ class ForegroundService() : Service() {
                     e.printStackTrace()
                 }
             }
-            // Set a long click listener to the floating window to remove it
-            mainLayout.setOnLongClickListener {
-                // Remove the floating window from the screen
-                windowManager.removeView(floatingView)
-                true // Indicate that the long click event has been consumed
-            }
-
-
+            
             // Handle touch events to allow dragging
             draggableCircle.setOnTouchListener(object : View.OnTouchListener {
 
