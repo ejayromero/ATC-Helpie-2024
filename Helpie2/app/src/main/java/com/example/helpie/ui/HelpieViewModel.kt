@@ -58,13 +58,13 @@ class HelpieViewModel : ViewModel() {
                 trip = null,
                 summary = null,
                 isFinish = false,
-                tripOngoing = false,
                 steps = listOf(),
                 wait = false,
                 currentStep = -1,
                 timeNeeded = "start",
                 showDialog = false,
-                targetLocation = Localisation(isValid = true)
+                targetLocation = Localisation(isValid = true),
+                tripIsGoing = false,
             )
         }
     }
@@ -389,16 +389,15 @@ class HelpieViewModel : ViewModel() {
         timerJob?.cancel() // Cancel the timer job when ViewModel is cleared
     }
 
-    fun setTripOngoing(Ongoing: Boolean) {
-        Log.d("boolean", "changed")
-        _uiState.update { currentState ->
-            currentState.copy(tripOngoing = Ongoing)
-        }
+    fun haveATrip(): Boolean {
+        return _uiState.value.tripIsGoing
     }
 
-    fun getTripOngoing(): Boolean {
-        Log.d("boolean", _uiState.value.tripOngoing.toString())
-        return _uiState.value.tripOngoing
+    fun lauchTrip(haveATrip: Boolean) {
+        Log.d("boolean", "changed")
+        _uiState.update { currentState ->
+            currentState.copy(tripIsGoing = haveATrip)
+        }
     }
 
 

@@ -288,7 +288,7 @@ fun HelpieApp(
                         }
 
                     }
-                    if (uiState.tripOngoing) {
+                    if ((currentScreen != HelpieScreen.Summary.name)) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -429,9 +429,6 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Summary.name) {
                     uiState.summary?.let { it1 ->
-                        LaunchedEffect(key1 = Unit) {
-                            viewModel.setTripOngoing(false)
-                        }
                         SummaryScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -439,7 +436,7 @@ fun HelpieApp(
                             summary = it1,
                             steps = uiState.steps,
                             onNext = {
-                                viewModel.setTripOngoing(true)
+                                viewModel.lauchTrip(true)
                                 if (!uiState.ticket) {
                                     navController.navigate(HelpieScreen.TakeTicket.name)
                                 } else {

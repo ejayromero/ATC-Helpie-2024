@@ -153,7 +153,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onPause() {
         super.onPause()
-        if (viewModel.getTripOngoing()) {
+        if (viewModel.haveATrip()) {
             startForegroundService()
             Log.d("MainActivity","Foreground service started")
         } else {
