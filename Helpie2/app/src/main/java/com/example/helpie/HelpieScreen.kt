@@ -288,7 +288,7 @@ fun HelpieApp(
                         }
 
                     }
-                    if (uiState.tripOngoing) {
+                    if ((currentScreen != HelpieScreen.Summary.name) and (currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Destination.name) and (currentScreen != HelpieScreen.Final.name)) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -337,13 +337,11 @@ fun HelpieApp(
             ) {
                 composable(route = HelpieScreen.Settings.name) {
                     SettingsScreen(
-                        _uiState = uiState,
-                        context = ctx,
                         registeredLocation = uiState.registeredLocation,
                         setLocalisationName = { index, name, _ ->
                             viewModel.setLocalisationName(index, name, uiState.registeredLocation)
                         },
-                        setLocalisationAddress = { index, address, _,_ ->
+                        setLocalisationAddress = { index, address ->
                             viewModel.setLocalisationAddress(index, address, uiState.registeredLocation, context = ctx)
                         },
                         usePhone = uiState.usePhone,
@@ -353,6 +351,8 @@ fun HelpieApp(
                         setPhone = { viewModel.setPhone(it) },
                         debugging = uiState.debugging,
                         switchDebug = {viewModel.SwitchDebug()},
+                        EasyRide = uiState.easyRide,
+                        switchTicket = {viewModel.SwitchTicket()},
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -370,6 +370,7 @@ fun HelpieApp(
                         showTicket = {
                             viewModel.openLink(ctx,uiState.urlTicket)
                         },
+                        easyRide = uiState.easyRide,
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -428,9 +429,6 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.Summary.name) {
                     uiState.summary?.let { it1 ->
-                        LaunchedEffect(key1 = Unit) {
-                            viewModel.setTripOngoing(false)
-                        }
                         SummaryScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -438,7 +436,7 @@ fun HelpieApp(
                             summary = it1,
                             steps = uiState.steps,
                             onNext = {
-                                viewModel.setTripOngoing(true)
+                                viewModel.lauchTrip(true)
                                 if (!uiState.ticket) {
                                     navController.navigate(HelpieScreen.TakeTicket.name)
                                 } else {
@@ -458,7 +456,7 @@ fun HelpieApp(
                         PopUpScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            onStop = { if (uiState.ticket) {
+                            onStop = { if (uiState.ticket and uiState.easyRide) {
                                 navController.navigate(HelpieScreen.StopTicket.name)
                             } else {
                                 viewModel.setClean()
@@ -494,6 +492,7 @@ fun HelpieApp(
                         },
                         modifier = Modifier
                             .fillMaxSize(),
+                        easyRide = uiState.easyRide,
                         take = true
                     )
                 }
@@ -513,6 +512,7 @@ fun HelpieApp(
                         },
                         modifier = Modifier
                             .fillMaxSize(),
+                        easyRide = uiState.easyRide,
                         take = false
                     )
                 }
@@ -621,6 +621,7 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
+                        var past = "retour"
                         if(
                             (currentScreen == HelpieScreen.Destination.name) or
                             (currentScreen == HelpieScreen.Settings.name) or
@@ -633,7 +634,7 @@ fun HelpieApp(
                                 onClick = {
                                     navController.navigateUp()
                                 },
-                                text = "retour",
+                                text = past,
                                 size = 18.sp,
                                 sizeButton = "small",
                                 padding = false,
@@ -643,39 +644,38 @@ fun HelpieApp(
                             (currentScreen == HelpieScreen.InBus.name) or
                             (currentScreen == HelpieScreen.OutBus.name) or
                             (currentScreen == HelpieScreen.Walk.name) or
-                            (currentScreen == HelpieScreen.WaitingTransport.name)
+                            (currentScreen == HelpieScreen.WaitingTransport.name) or
+                            (currentScreen == HelpieScreen.ReachStop.name) or
+                            (currentScreen == HelpieScreen.JourneyInTransport.name)
                             ){
+                                past = "Arrêter"
+                            if (currentScreen == HelpieScreen.ReachStop.name) {
+                                past = "Non"
+                            } else if (currentScreen == HelpieScreen.JourneyInTransport.name) {
+                                past = "probleme ?"
+                            }
                                 TemplateButton(
                                     onClick = {
                                         navController.navigate(HelpieScreen.PopUp.name)
                                     },
-                                    text = "Arrêter",
+                                    text = past,
                                     size = 14.sp,
                                     sizeButton = "small",
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
-                            } else if (currentScreen == HelpieScreen.ReachStop.name) {
-                            TemplateButton(
-                                onClick = {
-                                    navController.navigate(HelpieScreen.PopUp.name)
-                                },
-                                text = "non",
-                                size = 14.sp,
-                                sizeButton = "small",
-                                padding = false,
-                                containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                            )
                             }
                             else {
                                 Spacer(modifier = Modifier.width(127.dp))
                             }
                             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.button_corner_radius)))
 
-                            if((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.InBus.name) or (currentScreen == HelpieScreen.OutBus.name)) {
+                            if((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.InBus.name) or (currentScreen == HelpieScreen.OutBus.name) or ((currentScreen == HelpieScreen.TakeTicket.name) and (!uiState.easyRide) )) {
                                 var next = "suivant"
                                 if (currentScreen == HelpieScreen.ReachStop.name) {
                                     next = "oui"
+                                } else if (currentScreen == HelpieScreen.TakeTicket.name) {
+                                    next = "C'est bon !"
                                 }
                                 TemplateButton(
                                     onClick = {
@@ -683,12 +683,19 @@ fun HelpieApp(
                                             viewModel.viewModelScope.launch {
                                                 navController.navigate(viewModel.launchNext())
                                             }
-                                        } else {
+                                        } else if (currentScreen == HelpieScreen.TakeTicket.name) {
+                                            viewModel.setTicket(true)
+                                            viewModel.viewModelScope.launch {
+                                                val nextScreen = viewModel.launchNext()
+                                                navController.navigate(nextScreen)
+                                            }
+                                        }
+                                        else {
                                             navController.navigate(HelpieScreen.JourneyInTransport.name)
                                         }
                                     },
                                     text = next,
-                                    size = 18.sp,
+                                    size = 14.sp,
                                     sizeButton = "small",
                                     padding = false,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer

@@ -1,4 +1,5 @@
 package com.example.helpie.ui
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -6,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -14,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +34,8 @@ import com.example.helpie.ui.theme.TemplateButton
 fun TakeTicketScreen(
     modifier: Modifier = Modifier,
     takeTicket: () -> Unit = {},
-    take: Boolean = true
+    take: Boolean,
+    easyRide: Boolean
 
 ) {
     Box(
@@ -43,39 +47,62 @@ fun TakeTicketScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-            CustomTextView(
-                text = if (take) {
-                    "Activer le billet Easyride"
-                } else {
-                    "Arrêter Easyride"
-                },
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+            if(easyRide) {
+                CustomTextView(
+                    text = if (take) {
+                        "Activer le billet Easyride"
+                    } else {
+                        "Arrêter Easyride"
+                    },
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
 
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
 
-            TemplateButton(
-                onClick = { takeTicket() },
-                text = if (take) {
-                    "Prendre le ticket"
-                } else {
-                    "Arrêter le ticket"
-                },
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                padding = false,
-                sizeButton = "huge"
-            )
+                TemplateButton(
+                    onClick = { takeTicket() },
+                    text = if (take) {
+                        "Prendre le ticket"
+                    } else {
+                        "Arrêter le ticket"
+                    },
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    padding = false,
+                    sizeButton = "huge"
+                )
 
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
 
-            CustomTextView(
-                text = if (take) {
-                    "Fais glisser de gauche à droite"
-                } else {
-                    "Fais glisser de droite à gauche"
-                },
-                color = MaterialTheme.colorScheme.onSurface
-            )
+                CustomTextView(
+                    text = if (take) {
+                        "Fais glisser de gauche à droite"
+                    } else {
+                        "Fais glisser de droite à gauche"
+                    },
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .width(250.dp)
+                        .height(100.dp)
+                        .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
+                        .padding(16.dp)
+                ) {
+                    CustomTextView(
+                        text = "Prend le ticket !",
+                        size = 30.sp,
+                        padding = false,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
+
+                CustomTextView(
+                    text ="Utilise la machine à l'arrêt",
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }
@@ -85,6 +112,8 @@ fun TakeTicketScreen(
 fun TakeTicketScreenPreview() {
     AppTheme {
         TakeTicketScreen(
+            easyRide = false,
+            take = true
         )
     }
 }

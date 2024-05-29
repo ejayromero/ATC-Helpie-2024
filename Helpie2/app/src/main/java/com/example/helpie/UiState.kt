@@ -24,6 +24,7 @@ data class UiState(
     val ticket: Boolean = false,
     val urlTicket: String = "https://app.sbbmobile.ch/ticketlist",
     val takeTicket: String = "https://app.sbbmobile.ch/easyride",
+    val easyRide : Boolean = false,
 
     val isFinish: Boolean = false,
     val needClean: Boolean = false,
@@ -42,7 +43,7 @@ data class UiState(
 
     val summary: TripSummary? = null,
 
-    val tripOngoing: Boolean = false,
+    val tripIsGoing: Boolean = false,
 
     val steps: List<StepInfo> = listOf(),
 
@@ -68,10 +69,10 @@ data class UiState(
         ),
         // Destination 2
         Localisation(
-            destinationName = "Sport",
-            destinationAddress = "Centre sportif universitaire de Dorigny",
-            longitude = 6.580914360470724,
-            latitude = 46.5191049,
+            destinationName = "Bel-Air",
+            destinationAddress = "Bel-Air, Lausanne",
+            longitude = 6.629292449529679,
+            latitude = 46.52220677770554,
             isValid = true
         ),
         // Destination 3

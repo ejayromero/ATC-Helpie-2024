@@ -58,13 +58,13 @@ class HelpieViewModel : ViewModel() {
                 trip = null,
                 summary = null,
                 isFinish = false,
-                tripOngoing = false,
                 steps = listOf(),
                 wait = false,
                 currentStep = -1,
                 timeNeeded = "start",
                 showDialog = false,
-                targetLocation = Localisation(isValid = true)
+                targetLocation = Localisation(isValid = true),
+                tripIsGoing = false,
             )
         }
     }
@@ -75,6 +75,10 @@ class HelpieViewModel : ViewModel() {
 
     fun SwitchDebug() {
         _uiState.update {currentState -> currentState.copy(debugging = !_uiState.value.debugging)}
+    }
+
+    fun SwitchTicket() {
+        _uiState.update {currentState -> currentState.copy(easyRide = !_uiState.value.easyRide)}
     }
     fun sendNotification(type : ForegroundService.Actions) {
         _uiState.update { currentState -> currentState.copy(type = type) }
@@ -385,16 +389,15 @@ class HelpieViewModel : ViewModel() {
         timerJob?.cancel() // Cancel the timer job when ViewModel is cleared
     }
 
-    fun setTripOngoing(ongoing: Boolean) {
-        Log.d("boolean", "changed")
-        _uiState.update { currentState ->
-            currentState.copy(tripOngoing = ongoing)
-        }
+    fun haveATrip(): Boolean {
+        return _uiState.value.tripIsGoing
     }
 
-    fun getTripOngoing(): Boolean {
-        Log.d("boolean", _uiState.value.tripOngoing.toString())
-        return _uiState.value.tripOngoing
+    fun lauchTrip(haveATrip: Boolean) {
+        Log.d("boolean", "changed")
+        _uiState.update { currentState ->
+            currentState.copy(tripIsGoing = haveATrip)
+        }
     }
 
 
