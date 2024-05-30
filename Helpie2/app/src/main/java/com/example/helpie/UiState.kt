@@ -6,32 +6,34 @@ import androidx.annotation.RequiresApi
 import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
-import com.example.helpie.ui.HelpieViewModel
 import com.google.android.gms.maps.model.LatLng
 
 
 data class UiState(
 
     //Help interface and number to call
-    val phoneNumber:  String = "",  //"+33658814083"
-    val outlineNumber:  String = "0800 007 102",  //"+33658814083"
-    val usePhone: Boolean = false,  //"+33658814083"
+    val phoneNumber:  String = "",
+    val outlineNumber: Boolean = "0800 007 102",
+    val usePhone: Boolean = false,
 
-    val skipper: Int = 0,
-    val debugging: Boolean = true,
+    //debugging
+    val skipper: Boolean = 0,
+    val debugging: Localisation = false,
 
-//ticket management
+    //ticket management
     val ticket: Boolean = false,
     val urlTicket: String = "https://app.sbbmobile.ch/ticketlist",
     val takeTicket: String = "https://app.sbbmobile.ch/easyride",
-    val easyRide : Boolean = true,
+    val easyRide: Boolean = true,
 
+    // end of travel management
     val isFinish: Boolean = false,
     val needClean: Boolean = false,
 
+    // notification management
     val type: ForegroundService.Actions = ForegroundService.Actions.None,
-    //trip management
 
+    //trip management
     val planner: OjpSdk = OjpSdk(
         baseUrl = "https://api.opentransportdata.swiss/",
         endpoint = "https://api.opentransportdata.swiss/ojp2020",
@@ -85,7 +87,6 @@ data class UiState(
         ),
         // Destination 4
         Localisation(
-
             destinationName = "EPFL",
             destinationAddress = "Rte Cantonale, 1015 Lausanne",
             longitude =  6.566047222595748,
@@ -93,7 +94,6 @@ data class UiState(
             isValid = true
 
         ),
-        
         // Destination input
         Localisation(
             destinationName = "Ta destination",
@@ -112,7 +112,7 @@ data class Localisation(
     val destinationAddress: String? = null,
     val longitude: Double? = null,
     val latitude: Double? = null,
-    val isValid: Boolean
+    val isValid: Boolean? = false
 )
 
 data class TripSummary(

@@ -22,6 +22,7 @@ import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
 import com.example.helpie.walkInfo
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,6 +47,28 @@ class HelpieViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    private fun restoreUiState() {
+
+        val phoneNumber = sharedPrefs.getString("phoneNumber","")
+        val usePhone = sharedPrefs.getBoolean("usePhone",false)
+
+        val debugging = sharedPrefs.getBoolean("debugging",false)
+
+        val easyRide = sharedPrefs.getBoolean("easyRide",true)
+
+        val registeredLocationJson = sharedPrefs.getString("registeredLocation", null)
+        val registeredLocation = if (registeredLocationJson != null) Gson().fromJson(registeredLocationJson, Localisation::class.java) else Localisation()
+
+        viewModel.restoreUI(phoneNumber,usePhone,debugging,easyRide,registeredLocation)
+    }
+
+    fun restoreUI(uiState: UiState): {
+        _uiState.update { currentState -> currentState.copy(needClean = true) }
+    }
+    fun getUIstate(): UiState {
+        return _uiState.value
+    }
     fun setClean() {
         _uiState.update { currentState -> currentState.copy(needClean = true) }
     }

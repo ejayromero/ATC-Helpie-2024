@@ -27,12 +27,17 @@ import com.example.helpie.ui.HelpieViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 
 
 class MainActivity : ComponentActivity() {
     companion object {
         private const val PERMISSION_REQUEST_CODE = 101
 
+    }
+
+    private val sharedPrefs by lazy {
+        getSharedPreferences("ui_state", Context.MODE_PRIVATE)
     }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -164,6 +169,13 @@ class MainActivity : ComponentActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStop() {
+        super.onStop()
+        saveUiState()
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
         stopForegroundService()
@@ -235,6 +247,38 @@ class MainActivity : ComponentActivity() {
             return Settings.canDrawOverlays(this)
         }
         return true // For pre-Marshmallow devices, assume permission is granted
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveUiState() {
+        val uiState = viewModel.getUIstate()
+        with(sharedPrefs.edit()) {
+            putString("phoneNumber", uiState.phoneNumber)
+            putBoolean("usePhone", uiState.usePhone)
+
+            putBoolean("debugging", uiState.debugging)
+
+            putBoolean("easyRide", uiState.easyRide)
+
+            putString("registeredLocation", Gson().toJson(uiState.registeredLocation))
+            apply() // Apply changes asynchronously
+        }
+    }
+
+    private fun restoreUiState(): UiState? {
+
+        val phoneNumber = sharedPrefs.getString("phoneNumber","")
+        val usePhone = sharedPrefs.getBoolean("usePhone",false)
+
+        val debugging = sharedPrefs.getBoolean("debugging",false)
+
+        val easyRide = sharedPrefs.getBoolean("easyRide",true)
+
+        val registeredLocationJson = sharedPrefs.getString("registeredLocation", null)
+        val registeredLocation = if (registeredLocationJson != null) Gson().fromJson(registeredLocationJson, Localisation::class.java) else Localisation()
+
+
+        phoneNumber?.let { UiState(it,usePhone,debugging,easyRide,registeredLocation) }
     }
 
 
