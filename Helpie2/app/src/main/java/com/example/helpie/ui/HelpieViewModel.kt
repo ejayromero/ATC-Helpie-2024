@@ -113,7 +113,7 @@ class HelpieViewModel : ViewModel() {
             val D1 = (_uiState.value.steps[_uiState.value.currentStep] as walkInfo).endLatitude!!
             val d2  = _uiState.value.currentLocation.longitude
             val D2 = (_uiState.value.steps[_uiState.value.currentStep] as walkInfo).endLongitude!!
-            val dist = 10
+            val dist = 5
             if (haversine(d1,d2,D1,D2) < dist) {
                 sendNotification(ForegroundService.Actions.WalkCloseStop)
             }
