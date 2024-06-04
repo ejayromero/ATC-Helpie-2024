@@ -22,6 +22,7 @@
     <string name="Voyage_en_cours">Voyage en cours</string>
     <string name="appel">Appel</string>
     <string name="ligne_accessibilit_cff">Ligne accessibilité CFF</string>
+
     \\ destination
     <string name="adresse">Adresse</string>
     <string name="nom">Nom</string>
@@ -41,4 +42,9 @@
     <string name="destinations_enregistr_es">Destinations enregistrées</string>
     <string name="montrer_le_ticket">Montrer le ticket</string>
     <string name="confirmer">Confirmer</string>
+
+    <string name="skip">SKIPr</string>
+    <string name="edit">Edit mode</string>
+
+    <string name="ticket">TICKET</string>
 </resources>

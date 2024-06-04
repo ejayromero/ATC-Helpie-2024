@@ -62,7 +62,6 @@ class MainActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateLocation() {
-        //Log.d("Test_update","location_update")
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -89,7 +88,6 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("main activity","try")
         requestPermissionsIfNecessary()
 
         // Initialize ViewModel
@@ -98,7 +96,6 @@ class MainActivity : ComponentActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         handler.postDelayed(updateRunnable, updateIntervalMillis)
-        //à voir si il faut gérer le OnCleared? Unclear...
         setContent {
             AppTheme {
                 HelpieApp()
@@ -166,7 +163,6 @@ class MainActivity : ComponentActivity() {
         } else {
             Log.d("MainActivity","no foreground")
         }
-        //startForegroundService()
 
     }
 
@@ -195,7 +191,6 @@ class MainActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun punchForegroundService(notif: ForegroundService.Actions) {
-        Log.d("MainActivity","punch")
         val punchIntent = Intent(this, ForegroundService::class.java)
         punchIntent.action = notif.toString()
         Log.d("notif update", punchIntent.action!!)
@@ -232,7 +227,6 @@ class MainActivity : ComponentActivity() {
         return false
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun getDisplayedNotificationId(): Int? {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val activeNotifications = notificationManager.activeNotifications
@@ -246,10 +240,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun hasWindowPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return Settings.canDrawOverlays(this)
-        }
-        return true // For pre-Marshmallow devices, assume permission is granted
+        return Settings.canDrawOverlays(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -268,7 +259,7 @@ class MainActivity : ComponentActivity() {
             putString("registeredLocation3", Gson().toJson(uiState.registeredLocation[2]))
             putString("registeredLocation4", Gson().toJson(uiState.registeredLocation[3]))
 
-            apply() // Apply changes asynchronously
+            apply()
         }
         Log.d("uistate", "uistate saved")
     }

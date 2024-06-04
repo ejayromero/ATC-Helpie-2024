@@ -49,7 +49,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -108,7 +107,6 @@ enum class HelpieScreen {
 fun HelpieApp(
     viewModel: HelpieViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
-    stepInfo: StepInfo = StepInfo()
 ) {
 
     val ctx = LocalContext.current
@@ -182,7 +180,7 @@ fun HelpieApp(
                                     onClick = {
                                         viewModel.UpSkip()
                                     },
-                                    text = "SKIP",
+                                    text = stringResource(R.string.skip),
                                     size = 18.sp,
                                     sizeButton = "small",
                                     padding = false,
@@ -190,7 +188,6 @@ fun HelpieApp(
                                 )
 
                                 Column {
-//                            Spacer(modifier = Modifier.height(.dp)) // Adding space on the top
                                     CustomTextView(
                                         text = stringResource(R.string.HELPIE),
                                         size = 48.sp,
@@ -198,7 +195,6 @@ fun HelpieApp(
                                 }
                             } else {
                                 Column(Modifier.padding(start = 80.dp)) {
-//                            Spacer(modifier = Modifier.height(.dp)) // Adding space on the top
                                     CustomTextView(
                                         text = stringResource(R.string.HELPIE),
                                         size = 48.sp,
@@ -221,7 +217,7 @@ fun HelpieApp(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Settings,
-                                        contentDescription = "Edit Mode"
+                                        contentDescription = stringResource(R.string.edit)
                                     )
                                 }
                             }
@@ -280,7 +276,7 @@ fun HelpieApp(
                             Spacer(modifier = Modifier.height(20.dp))
                             TemplateButton(
                                 onClick = { navController.navigate(HelpieScreen.Ticket.name)},
-                                text = "BILLET",
+                                text = stringResource(R.string.ticket),
                                 padding = false,
                                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                 sizeButton = "normal"
@@ -295,7 +291,6 @@ fun HelpieApp(
                                 .height(40.dp)
                         ) {
                             val transportOffset = (imageShiftFraction.value * screenWidth).dp
-                            //val arrivalOffset = (imageArrivalShiftFraction * screenWidth).dp
 
                             Box(
                                 modifier = Modifier
@@ -407,7 +402,6 @@ fun HelpieApp(
                             viewModel.setWait(true)
                             runBlocking {
                                 viewModel.request()
-                                Log.d("wait", uiState.wait.toString())
                                 while (uiState.wait) { Log.d("wait", "wait")}
                                 navController.navigate(HelpieScreen.Summary.name)
                             }
@@ -467,7 +461,6 @@ fun HelpieApp(
                                 viewModel.setWait(true)
                                 runBlocking {
                                     viewModel.request()
-                                    Log.d("wait", uiState.wait.toString())
                                     while (uiState.wait) { Log.d("wait", "wait")}
                                     navController.navigate(HelpieScreen.Summary.name)
                                 }
