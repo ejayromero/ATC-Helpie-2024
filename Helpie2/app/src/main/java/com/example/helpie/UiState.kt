@@ -13,12 +13,12 @@ data class UiState(
 
     //Help interface and number to call
     val phoneNumber:  String = "",
-    val outlineNumber: Boolean = "0800 007 102",
+    val outlineNumber: String = "0800 007 102",
     val usePhone: Boolean = false,
 
     //debugging
-    val skipper: Boolean = 0,
-    val debugging: Localisation = false,
+    val skipper: Int = 0,
+    val debugging: Boolean = false,
 
     //ticket management
     val ticket: Boolean = false,
@@ -113,7 +113,7 @@ data class Localisation(
     val destinationAddress: String? = null,
     val longitude: Double? = null,
     val latitude: Double? = null,
-    val isValid: Boolean? = false
+    val isValid: Boolean = false
 )
 
 data class TripSummary(

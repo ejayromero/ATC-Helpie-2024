@@ -48,23 +48,14 @@ class HelpieViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private fun restoreUiState() {
-
-        val phoneNumber = sharedPrefs.getString("phoneNumber","")
-        val usePhone = sharedPrefs.getBoolean("usePhone",false)
-
-        val debugging = sharedPrefs.getBoolean("debugging",false)
-
-        val easyRide = sharedPrefs.getBoolean("easyRide",true)
-
-        val registeredLocationJson = sharedPrefs.getString("registeredLocation", null)
-        val registeredLocation = if (registeredLocationJson != null) Gson().fromJson(registeredLocationJson, Localisation::class.java) else Localisation()
-
-        viewModel.restoreUI(phoneNumber,usePhone,debugging,easyRide,registeredLocation)
-    }
-
-    fun restoreUI(uiState: UiState): {
-        _uiState.update { currentState -> currentState.copy(needClean = true) }
+    fun restoreUI(newState: UiState) {
+        _uiState.update { currentState -> currentState.copy(
+            phoneNumber = newState.phoneNumber,
+            usePhone = newState.usePhone,
+            debugging = newState.debugging,
+            easyRide = newState.easyRide,
+            ) }
+        Log.d("uistate", "uistate restored")
     }
     fun getUIstate(): UiState {
         return _uiState.value

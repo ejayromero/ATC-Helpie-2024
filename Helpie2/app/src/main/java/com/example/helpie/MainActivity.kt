@@ -150,8 +150,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
         super.onStart()
+        restoreUiState()
         requestPermissionsIfNecessary()
     }
 
@@ -171,6 +173,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStop() {
         super.onStop()
+        Log.d("uistate", "saving")
         saveUiState()
     }
 
@@ -263,9 +266,11 @@ class MainActivity : ComponentActivity() {
             putString("registeredLocation", Gson().toJson(uiState.registeredLocation))
             apply() // Apply changes asynchronously
         }
+        Log.d("uistate", "uistate saved")
     }
 
-    private fun restoreUiState(): UiState? {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun restoreUiState() {
 
         val phoneNumber = sharedPrefs.getString("phoneNumber","")
         val usePhone = sharedPrefs.getBoolean("usePhone",false)
@@ -275,10 +280,13 @@ class MainActivity : ComponentActivity() {
         val easyRide = sharedPrefs.getBoolean("easyRide",true)
 
         val registeredLocationJson = sharedPrefs.getString("registeredLocation", null)
-        val registeredLocation = if (registeredLocationJson != null) Gson().fromJson(registeredLocationJson, Localisation::class.java) else Localisation()
+        //val registeredLocation = if (registeredLocationJson != null) Gson().fromJson(registeredLocationJson, Localisation::class.java) else Localisation()
 
 
-        phoneNumber?.let { UiState(it,usePhone,debugging,easyRide,registeredLocation) }
+        val newState = phoneNumber?.let { UiState(it,usePhone = usePhone,debugging = debugging, easyRide = easyRide) }
+        if (newState != null) {
+            viewModel.restoreUI(newState)
+        }
     }
 
 
