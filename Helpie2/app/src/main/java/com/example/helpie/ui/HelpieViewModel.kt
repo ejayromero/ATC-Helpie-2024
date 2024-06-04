@@ -54,7 +54,8 @@ class HelpieViewModel : ViewModel() {
             usePhone = newState.usePhone,
             debugging = newState.debugging,
             easyRide = newState.easyRide,
-            ) }
+            registeredLocation = newState.registeredLocation
+        ) }
         Log.d("uistate", "uistate restored")
     }
     fun getUIstate(): UiState {
@@ -292,7 +293,6 @@ class HelpieViewModel : ViewModel() {
     fun setLocalisationAddress(
     index: Int,
     address: String,
-    context1: List<Localisation>,
     context: Context
 ) {
         if (index in _uiState.value.registeredLocation.indices) {

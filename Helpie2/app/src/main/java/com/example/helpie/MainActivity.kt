@@ -263,7 +263,11 @@ class MainActivity : ComponentActivity() {
 
             putBoolean("easyRide", uiState.easyRide)
 
-            putString("registeredLocation", Gson().toJson(uiState.registeredLocation))
+            putString("registeredLocation1", Gson().toJson(uiState.registeredLocation[0]))
+            putString("registeredLocation2", Gson().toJson(uiState.registeredLocation[1]))
+            putString("registeredLocation3", Gson().toJson(uiState.registeredLocation[2]))
+            putString("registeredLocation4", Gson().toJson(uiState.registeredLocation[3]))
+
             apply() // Apply changes asynchronously
         }
         Log.d("uistate", "uistate saved")
@@ -279,11 +283,21 @@ class MainActivity : ComponentActivity() {
 
         val easyRide = sharedPrefs.getBoolean("easyRide",true)
 
-        val registeredLocationJson = sharedPrefs.getString("registeredLocation", null)
-        //val registeredLocation = if (registeredLocationJson != null) Gson().fromJson(registeredLocationJson, Localisation::class.java) else Localisation()
+        val registeredLocationJson1 = sharedPrefs.getString("registeredLocation1", null)
+        val registeredLocation1 = if (registeredLocationJson1 != null) Gson().fromJson(registeredLocationJson1, Localisation::class.java) else Localisation()
 
+        val registeredLocationJson2 = sharedPrefs.getString("registeredLocation2", null)
+        val registeredLocation2 = if (registeredLocationJson1 != null) Gson().fromJson(registeredLocationJson2, Localisation::class.java) else Localisation()
 
-        val newState = phoneNumber?.let { UiState(it,usePhone = usePhone,debugging = debugging, easyRide = easyRide) }
+        val registeredLocationJson3 = sharedPrefs.getString("registeredLocation1", null)
+        val registeredLocation3 = if (registeredLocationJson3 != null) Gson().fromJson(registeredLocationJson3, Localisation::class.java) else Localisation()
+
+        val registeredLocationJson4 = sharedPrefs.getString("registeredLocation1", null)
+        val registeredLocation4 = if (registeredLocationJson4 != null) Gson().fromJson(registeredLocationJson4, Localisation::class.java) else Localisation()
+
+        val registeredLocation = listOf(registeredLocation1,registeredLocation2,registeredLocation3,registeredLocation4)
+
+        val newState = phoneNumber?.let { UiState(it,usePhone = usePhone,debugging = debugging, easyRide = easyRide, registeredLocation = registeredLocation) }
         if (newState != null) {
             viewModel.restoreUI(newState)
         }
