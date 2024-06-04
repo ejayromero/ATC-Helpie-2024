@@ -342,7 +342,7 @@ fun HelpieApp(
                             viewModel.setLocalisationName(index, name, uiState.registeredLocation)
                         },
                         setLocalisationAddress = { index, address ->
-                            viewModel.setLocalisationAddress(index, address, uiState.registeredLocation, context = ctx)
+                            viewModel.setLocalisationAddress(index, address, context = ctx)
                         },
                         usePhone = uiState.usePhone,
                         phoneNumber = uiState.phoneNumber,
@@ -417,7 +417,7 @@ fun HelpieApp(
                             viewModel.setTarget(it)
                         },
                         setLocalisationAddress = { index, address, _ ,_ ->
-                            viewModel.setLocalisationAddress(index, address, uiState.registeredLocation, context = ctx)
+                            viewModel.setLocalisationAddress(index, address, context = ctx)
                         },
                         switchDialog = {
                             viewModel.switchDialog()

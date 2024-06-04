@@ -289,10 +289,10 @@ class MainActivity : ComponentActivity() {
         val registeredLocationJson2 = sharedPrefs.getString("registeredLocation2", null)
         val registeredLocation2 = if (registeredLocationJson1 != null) Gson().fromJson(registeredLocationJson2, Localisation::class.java) else Localisation()
 
-        val registeredLocationJson3 = sharedPrefs.getString("registeredLocation1", null)
+        val registeredLocationJson3 = sharedPrefs.getString("registeredLocation3", null)
         val registeredLocation3 = if (registeredLocationJson3 != null) Gson().fromJson(registeredLocationJson3, Localisation::class.java) else Localisation()
 
-        val registeredLocationJson4 = sharedPrefs.getString("registeredLocation1", null)
+        val registeredLocationJson4 = sharedPrefs.getString("registeredLocation4", null)
         val registeredLocation4 = if (registeredLocationJson4 != null) Gson().fromJson(registeredLocationJson4, Localisation::class.java) else Localisation()
 
         val registeredLocation = listOf(registeredLocation1,registeredLocation2,registeredLocation3,registeredLocation4)
