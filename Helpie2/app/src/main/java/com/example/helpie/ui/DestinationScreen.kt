@@ -38,8 +38,8 @@ import com.example.helpie.ui.theme.CustomTextView
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DestinationScreen(
-    // _uiState: UiState,
-    // context: Context,
+     _uiState: UiState,
+     context: Context,
     registeredLocation: List<Localisation>,
     modifier: Modifier = Modifier,
     showDialog: Boolean,
@@ -75,6 +75,7 @@ fun DestinationScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+
                     // Button 1
                     Button(
                         onClick = {
@@ -163,7 +164,7 @@ fun DestinationScreen(
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.destination_spacer)))
                 // Button for new destination
 
-            /*
+
                 Button(
                     onClick = {
                         switchDialog()
@@ -212,13 +213,13 @@ fun DestinationScreen(
                         }
                     )
 
-                }*/
+                }
             }
     }
 }
 
 
-
+/*
 @Preview
 @Composable
 fun DestinationPreview() {
@@ -257,4 +258,4 @@ fun DestinationPreview() {
             showDialog = false
         )
     }
-}
+}*/
