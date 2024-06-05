@@ -18,27 +18,65 @@ A list of features and functionalities in your project.
 
 ## Structure
 ```
-ATC-Helpie-2024
+ATC-Helpie-2024/Helpie2/app/src/main/java/com/example/helpie
 │
-└───README.md
+└───foregroundServices (Notification and window)
+│   │
+│   └───ForegroundService (Notification and window)
 │
-└───Helpie2[Helpie]
+└───tripPlanificator (Trip Planification API)
 │   │
-│   └───gradle
-│   │   │
-│   │   ...
+│   └───OjpSdk
 │   │
-│   └───app
-│   │   │
-│   │   └───build
-│   │   │
-│   │   └───src
-│   │   │   │
-│   │   │   └───main
-│   │   │   │   │
-│   │   │   │   └───java
-│   │   │   │   │   │
-│   │   │   │   │   └───
+│   └───tripHandling.kt (Trip Planification API)
+│   │
+│   └───...
+│
+└───ui
+│   │
+│   └───DestinationScreen.kt 
+│   │
+│   └───FinalScreen.kt
+│   │
+│   └───HelpieViewModel 
+│   │
+│   └───HelpScreen.kt
+│   │
+│   └───InBusScreen.kt 
+│   │
+│   └───JourneyInTransportScreen.kt
+│   │
+│   └───OutBusScreen.kt
+│   │
+│   └───PopUpStop.kt
+│   │
+│   └───ReachStopScreen.kt
+│   │
+│   └───SettingsScreen.kt
+│   │
+│   └───StartScreen.kt
+│   │
+│   └───StepScreen.kt
+│   │
+│   └───TakeTicketScreen.kt
+│   │
+│   └───TicketScreen.kt
+│   │
+│   └───WaitingTransport.kt
+│   │
+│   └───WalkScreen.kt
+│   │
+│   └───...
+│
+└───HelpieScreen.kt
+│
+└───MainActivity.kt
+│
+└───RunninApp
+│
+└───UiState.kt
+│
+└───...
 ``` 
 
 
