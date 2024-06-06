@@ -20,11 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.helpie.Localisation
 import com.example.helpie.R
 import com.example.helpie.StepInfo
 import com.example.helpie.TripSummary
@@ -41,11 +41,9 @@ import kotlinx.datetime.toLocalDateTime
 @Composable
 fun SummaryScreen(
     modifier: Modifier = Modifier,
-    targetLocation: Localisation,
     summary : TripSummary,
     steps : List<StepInfo>,
-    onNext: () -> Unit = {},
-    setTripOngoing: () -> Unit = {}
+    onNext: () -> Unit = {}
 ) {
     val instantEndTime = Instant.parse(summary.endTime)
     val localEndTime = instantEndTime.toLocalDateTime(TimeZone.currentSystemDefault())
@@ -64,7 +62,7 @@ fun SummaryScreen(
 
             item {
                 CustomTextView(
-                    text = "Ton trajet",
+                    text = stringResource(R.string.ton_trajet),
                     size = 32.sp,
                     padding = false,
                     color = MaterialTheme.colorScheme.onSurface
@@ -72,7 +70,7 @@ fun SummaryScreen(
             }
             item {
                 CustomTextView(
-                    text = "Arrivée prévue à : $formattedEndTime",
+                    text = stringResource(R.string.arriv_e_pr_vue) + formattedEndTime,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -80,7 +78,7 @@ fun SummaryScreen(
             item {
                 TemplateButton(
                     onClick = { onNext() },
-                    text = "Commencer",
+                    text = stringResource(R.string.commencer),
                     padding = false
                 )
             }
@@ -90,7 +88,7 @@ fun SummaryScreen(
 
             item{
                 CustomTextView(
-                    text = "Résumé du trajet",
+                    text = stringResource(R.string.r_sum_du_trajet),
                     color = MaterialTheme.colorScheme.onSurface)
             }
 
@@ -110,12 +108,12 @@ fun SummaryScreen(
                         ) {
 
                             val (iconResource, contentDescription) = when (step.mode.toString()) {
-                                "rail" -> Pair(R.drawable.rail_icon, "Train Icon")
-                                "bus" -> Pair(R.drawable.bus_icon, "Bus Icon")
-                                "walk" -> Pair(R.drawable.walking_icon, "walk Icon")
-                                "metro" -> Pair(R.drawable.metro_icon, "metro Icon")
-                                "boat" -> Pair(R.drawable.boat_icon, "metro Icon")
-                                else -> Pair(R.drawable.travel_icon, "transport Icon")
+                                stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, stringResource(R.string.bus))
+                                stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, stringResource(R.string.rail))
+                                stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, stringResource(R.string.walk))
+                                stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, stringResource(R.string.metro))
+                                stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, stringResource(R.string.boat))
+                                else -> Pair(R.drawable.travel_icon, stringResource(id = R.string.transport))
                             }
 
                             Image(
@@ -132,7 +130,7 @@ fun SummaryScreen(
                                 // Bus line text
                                 if (step is walkInfo) {
                                     CustomTextView(
-                                        text = "marcher jusqu'à",
+                                        text = stringResource(R.string.marcher_jusqu),
                                         size = 12.sp,
                                         padding = false,
                                         align = TextAlign.Start
@@ -145,7 +143,7 @@ fun SummaryScreen(
                                     )
                                 } else if (step is transportInfo) {
                                     CustomTextView(
-                                        text = "descendre à",
+                                        text = stringResource(R.string.descendre),
                                         size = 12.sp,
                                         padding = false,
                                         align = TextAlign.Start
@@ -175,7 +173,6 @@ fun SummaryScreen(
 fun SummaryPreview() {
     AppTheme {
         SummaryScreen(
-            targetLocation = Localisation(isValid = true),
             summary = TripSummary(),
             steps = listOf(
                 walkInfo(

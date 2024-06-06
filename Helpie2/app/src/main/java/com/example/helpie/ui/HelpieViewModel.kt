@@ -15,6 +15,7 @@ import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
 import com.example.helpie.UiState
 import com.example.helpie.foregroundServices.ForegroundService
+import com.example.helpie.langage.LocaleHelper
 import com.example.helpie.tripPlanificator.data.dto.response.PlaceInfoDto
 import com.example.helpie.tripPlanificator.extractLoca
 import com.example.helpie.tripPlanificator.extractTrip
@@ -22,7 +23,6 @@ import com.example.helpie.tripPlanificator.nextStep
 import com.example.helpie.tripPlanificator.tripSummary
 import com.example.helpie.walkInfo
 import com.google.android.gms.maps.model.LatLng
-import com.google.gson.Gson
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -114,12 +114,12 @@ class HelpieViewModel : ViewModel() {
 
     private fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val R = 6371e3 // Earth's radius in meters
-        val φ1 = lat1.toRadians()
-        val φ2 = lat2.toRadians()
-        val Δφ = (lat2 - lat1).toRadians()
-        val Δλ = (lon2 - lon1).toRadians()
+        val phi1 = lat1.toRadians()
+        val phi2 = lat2.toRadians()
+        val dphi = (lat2 - lat1).toRadians()
+        val dlambda = (lon2 - lon1).toRadians()
 
-        val a = sin(Δφ / 2).pow(2) + cos(φ1) * cos(φ2) * sin(Δλ / 2).pow(2)
+        val a = sin(dphi / 2).pow(2) + cos(phi1) * cos(phi2) * sin(dlambda / 2).pow(2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
         return R * c
@@ -414,6 +414,20 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
+    fun getlangswitch() : String {
+        if (_uiState.value.langageSwitch) {
+            _uiState.update { currentState -> currentState.copy(
+                langageSwitch = false) }
+            return _uiState.value.langage
+        }
+        return ""
+    }
+
+    fun setLangage(langage : String) {
+        _uiState.update { currentState -> currentState.copy(langage = langage,
+            langageSwitch = true) }
+    }
+
 
     fun updateCurrentLocation(current: LatLng) {
         _uiState.update { currentState ->
@@ -422,7 +436,7 @@ class HelpieViewModel : ViewModel() {
         //Log.d("LOCATION", "Location has been updated")
     }
 
-    suspend fun getLocationFromAddress(context: Context, addressStr: String): LatLng? {
+    private suspend fun getLocationFromAddress(context: Context, addressStr: String): LatLng? {
         val geocoder = Geocoder(context)
         var latLng: LatLng? = null
 

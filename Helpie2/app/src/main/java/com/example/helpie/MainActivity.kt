@@ -11,19 +11,20 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.helpie.foregroundServices.ForegroundService
-import com.example.helpie.ui.theme.AppTheme
-import android.provider.Settings
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
+import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.foregroundServices.ForegroundService.Companion.NOTIFICATION_ID_PUNCH
 import com.example.helpie.foregroundServices.ForegroundService.Companion.NOTIFICATION_ID_TRAVEL
+import com.example.helpie.langage.LocaleHelper
 import com.example.helpie.ui.HelpieViewModel
+import com.example.helpie.ui.theme.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -56,6 +57,11 @@ class MainActivity : ComponentActivity() {
                 // Schedule the stopForegroundService to run after 5 seconds
                 handler.postDelayed(stopForegroundRunnable, 3000)
             }
+            val langswitch = viewModel.getlangswitch()
+            if (langswitch != "") {
+                switchLangage(langswitch)
+            }
+
             handler.postDelayed(this, updateIntervalMillis)
         }
     }
@@ -96,6 +102,12 @@ class MainActivity : ComponentActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         handler.postDelayed(updateRunnable, updateIntervalMillis)
+
+        val langswitch = viewModel.getlangswitch()
+        if (langswitch != "") {
+            switchLangage(langswitch)
+        }
+
         setContent {
             AppTheme {
                 HelpieApp()
@@ -275,16 +287,41 @@ class MainActivity : ComponentActivity() {
         val easyRide = sharedPrefs.getBoolean("easyRide",true)
 
         val registeredLocationJson1 = sharedPrefs.getString("registeredLocation1", null)
-        val registeredLocation1 = if (registeredLocationJson1 != null) Gson().fromJson(registeredLocationJson1, Localisation::class.java) else Localisation()
+        val registeredLocation1 = if (registeredLocationJson1 != null) Gson().fromJson(registeredLocationJson1, Localisation::class.java) else Localisation(
+            destinationName = "Maison",
+            destinationAddress = "Rte de la Blécherette 1, 1052 Le Mont-sur-Lausanne",
+            longitude =6.635555,
+            latitude = 46.558945,
+            isValid = true
+        )
 
         val registeredLocationJson2 = sharedPrefs.getString("registeredLocation2", null)
-        val registeredLocation2 = if (registeredLocationJson1 != null) Gson().fromJson(registeredLocationJson2, Localisation::class.java) else Localisation()
+        val registeredLocation2 = if (registeredLocationJson1 != null) Gson().fromJson(registeredLocationJson2, Localisation::class.java) else Localisation(
+            destinationName = "Bel-Air",
+            destinationAddress = "Bel-Air, Lausanne",
+            longitude = 6.629292449529679,
+            latitude = 46.52220677770554,
+            isValid = true
+        )
 
         val registeredLocationJson3 = sharedPrefs.getString("registeredLocation3", null)
-        val registeredLocation3 = if (registeredLocationJson3 != null) Gson().fromJson(registeredLocationJson3, Localisation::class.java) else Localisation()
+        val registeredLocation3 = if (registeredLocationJson3 != null) Gson().fromJson(registeredLocationJson3, Localisation::class.java) else Localisation(
+            destinationName = "Biotech",
+            destinationAddress = "Chem. des Mines 9, 1202 Genève",
+            longitude = 6.1482750577995295,
+            latitude = 46.22212491537171,
+            isValid = true
+        )
 
         val registeredLocationJson4 = sharedPrefs.getString("registeredLocation4", null)
-        val registeredLocation4 = if (registeredLocationJson4 != null) Gson().fromJson(registeredLocationJson4, Localisation::class.java) else Localisation()
+        val registeredLocation4 = if (registeredLocationJson4 != null) Gson().fromJson(registeredLocationJson4, Localisation::class.java) else Localisation(
+            destinationName = "EPFL",
+            destinationAddress = "Rte Cantonale, 1015 Lausanne",
+            longitude =  6.566047222595748,
+            latitude = 46.52219353016205,
+            isValid = true
+
+        )
 
         val registeredLocation = listOf(registeredLocation1,registeredLocation2,registeredLocation3,registeredLocation4)
 
@@ -292,6 +329,12 @@ class MainActivity : ComponentActivity() {
         if (newState != null) {
             viewModel.restoreUI(newState)
         }
+    }
+
+    private fun switchLangage(langage : String) {
+        Log.d("langage", "switch langage to $langage ")
+        LocaleHelper.setLocale(this, langage)
+        recreate()  // Recreate the activity to apply the new locale
     }
 
 

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="aide">HELP</string>
+    <string name="appeler_le_proche_aidant">Call the caregiver</string>
+    <string name="retour">back</string>
+    <string name="numero_du_proche_aidant">Caregiver\'s number</string>
+    <string name="billet_cff_qrcode">CFF ticket QRCODE</string>
+    <string name="commencer_un_trajet">Start a journey</string>
+    <string name="Voyage_en_cours">Journey in progress</string>
+    <string name="appel">Call</string>
+    <string name="ligne_accessibilit_cff">CFF Accessibility Line</string>
+
+    <!-- destination -->
+    <string name="adresse">Address</string>
+    <string name="nom">Name</string>
+    <string name="choisir_la_destination">Destination</string>
+    <string name="suivant">next</string>
+    <string name="helpie_ticket">"This ticket was taken with HELPIE, an application to help people with disabilities travel"</string>
+    <string name="back_to_app">Back to the app</string>
+    <string name="s_lectionner_une_destination">Select a destination</string>
+    <string name="nouvelle_destination">New destination</string>
+    <string name="metro">metro</string>
+    <string name="walk">walk</string>
+    <string name="boat">boat</string>
+    <string name="rail">rail</string>
+    <string name="bus">bus</string>
+    <string name="train">train</string>
+    <string name="transport">transport</string>
+    <string name="at_the_stop_question">Are you at the stop?</string>
+    <string name="enter_your_phone_number">Enter a phone number</string>
+    <string name="destinations_enregistr_es">Saved destinations</string>
+    <string name="montrer_le_ticket">Show the ticket</string>
+    <string name="confirmer">Confirm</string>
+
+    <string name="edit">Edit mode</string>
+
+    <string name="ticket">TICKET</string>
+    <string name="arr_ter">Stop</string>
+    <string name="probl_me">problem?</string>
+    <string name="non">no</string>
+    <string name="oui">yes</string>
+
+    <string name="ok">OK!</string>
+    <string name="marche_jusqu_la_prochaine_tape">Walk to the next step</string>
+    <string name="nave">Start navigation</string>
+
+    <string name="le">The </string>
+    <string name="arrive"> arrives in </string>
+    <string name="min"> minutes</string>
+    <string name="montre_le_ticket">Show the ticket</string>
+    <string name="activer_le_billet">Activate the ticket</string>
+    <string name="arr_ter_le_ticker">Stop the ticker</string>
+    <string name="prendre_le_ticket">Take the ticket</string>
+    <string name="arr_ter_le_ticket">Stop the ticket</string>
+    <string name="fais_glisser_de_gauche_droite">Swipe from left to right</string>
+    <string name="fais_glisser_de_droite_gauche">Swipe from right to left</string>
+    <string name="prend_un_ticket">Take a ticket!</string>
+    <string name="utilise_la_machine_l_arr_t">Use the machine at the stop</string>
+    <string name="ton_trajet">Your journey</string>
+    <string name="arriv_e_pr_vue">"Estimated arrival at: "</string>
+    <string name="commencer">Start</string>
+    <string name="r_sum_du_trajet">Journey summary</string>
+    <string name="marcher_jusqu">walk to</string>
+    <string name="descendre">get off at</string>
+    <string name="etape">Step</string>
+
+    <string name="rappel_de_prendre_le_ticket">Reminder to take the ticket</string>
+
+    <string name="Debugging">Demo mode</string>
+
+    <string name="contact">Contact</string>
+    <string name="diretion">Direction:</string>
+    <string name="veux_tu_arr_ter_le_trajet_ou_trouver_un_nouveau_chemin">Do you want to stop the journey or find a new route?</string>
+
+    <string name="nouveau">new</string>
+    <string name="il_est_bientot_l_heure_de_descendre">It\'s almost time to get off.</string>
+    <string name="arrive_l_arr_t"> arrives at the stop</string>
+
+    <string name="dans"> in </string>
+    <string name="arrive_bient_t_pr_pare_toi_monter">" arrives soon, get ready to board!"</string>
+    <string name="trajet_termin">Journey finished!</string>
+    <string name="nouveau_trajet">New journey</string>
+
+    <string name="voyage_en_cours">journey in progress</string>
+    <string name="revenir_au_trajet">Return to the journey</string>
+    <string name="une_tape_est_termin">a step is finished!</string>
+    <string name="tu_es_arriv_l_arr_t">You have arrived at the stop!</string>
+    <string name="le_transport_arrive_bient_t">The transport is arriving soon</string>
+    <string name="tu_dois_bient_t_descendre">You have to get off soon</string>
+
+    <string name="langue">Langage</string>
+    <string name="anglais">English</string>
+    <string name="francais">French</string>
+</resources>

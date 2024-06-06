@@ -37,18 +37,18 @@ fun InBusScreen(
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CustomTextView(
-            text = "Le ${stepInfo.mode.toString()} arrive bientôt, prépare-toi à monter !",
+            text = stringResource(id = R.string.le) + stepInfo.mode.toString() + stringResource(R.string.arrive_bient_t_pr_pare_toi_monter),
             color = Color.Black,
         )
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .width(250.dp)
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
@@ -61,12 +61,12 @@ fun InBusScreen(
             ) {
 
                 val (iconResource, contentDescription) = when (stepInfo.mode.toString()) {
-                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, "Train Icon")
-                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, "Bus Icon")
-                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, "walk Icon")
-                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, "metro Icon")
-                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, "metro Icon")
-                    else -> Pair(R.drawable.travel_icon, "transport Icon")
+                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, stringResource(R.string.bus))
+                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, stringResource(R.string.rail))
+                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, stringResource(R.string.walk))
+                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, stringResource(R.string.metro))
+                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, stringResource(R.string.boat))
+                    else -> Pair(R.drawable.travel_icon, stringResource(id = R.string.transport))
                 }
 
                 Image(
@@ -102,7 +102,7 @@ fun InBusScreen(
             padding = false
         )
         CustomTextView(
-            text = "Direction : ${stepInfo.way.toString()}",
+            text = stringResource(id = R.string.diretion) + stepInfo.way.toString(),
             color = MaterialTheme.colorScheme.onSurface,
             padding = false,
             size = 20.sp

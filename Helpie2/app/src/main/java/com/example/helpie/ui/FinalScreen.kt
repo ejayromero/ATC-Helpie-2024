@@ -8,7 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.ui.theme.TemplateButton
@@ -27,12 +29,12 @@ fun FinalScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             CustomTextView(
-                text = "Trajet terminé !",
+                text = stringResource(R.string.trajet_termin),
                 color = MaterialTheme.colorScheme.onSurface
             )
             TemplateButton(
                 onClick = { recommence() },
-                text = "Nouveau trajet",
+                text = stringResource(R.string.nouveau_trajet),
                 padding = false,
                 sizeButton = "huge"
             )

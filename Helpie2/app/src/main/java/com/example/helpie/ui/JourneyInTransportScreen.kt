@@ -29,14 +29,14 @@ fun JourneyInTransportScreen(
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .width(250.dp)
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
@@ -48,23 +48,13 @@ fun JourneyInTransportScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
 
-                /*
                 val (iconResource, contentDescription) = when (stepInfo.mode.toString()) {
-                    "bus" -> Pair(R.drawable.bus_icon, "Bus Icon")
-                    "rail" -> Pair(R.drawable.rail_icon, "Train Icon")
-                    "walk" -> Pair(R.drawable.walking_icon, "Walk Icon")
-                    "metro" -> Pair(R.drawable.metro_icon, "metro Icon")
-                    "boat" -> Pair(R.drawable.boat_icon, "boat Icon")
-                    else -> Pair(R.drawable.travel_icon, "transport Icon")
-                }*/
-
-                val (iconResource, contentDescription) = when (stepInfo.mode.toString()) {
-                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, "Bus Icon")
-                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, "Train Icon")
-                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, "walk Icon")
-                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, "metro Icon")
-                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, "metro Icon")
-                    else -> Pair(R.drawable.travel_icon, "transport Icon")
+                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, stringResource(R.string.bus))
+                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, stringResource(R.string.rail))
+                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, stringResource(R.string.walk))
+                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, stringResource(R.string.metro))
+                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, stringResource(R.string.boat))
+                    else -> Pair(R.drawable.travel_icon, stringResource(id = R.string.transport))
                 }
 
 
@@ -94,7 +84,8 @@ fun JourneyInTransportScreen(
             }
         }
         CustomTextView(
-            text = "Le ${stepInfo.mode.toString()} arrive à l'arrêt ${stepInfo.endName} dans $time minutes !",
+            text = stringResource(id = R.string.le)+ stepInfo.mode.toString() + stringResource(R.string.arrive_l_arr_t) + stepInfo.endName + stringResource(
+                id = R.string.dans) + time + stringResource(id = R.string.min),
             color = MaterialTheme.colorScheme.onSurface
         )
     }

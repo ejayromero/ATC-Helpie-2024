@@ -112,11 +112,12 @@ class ForegroundService() : Service() {
             vibrateDevice()
             return NotificationCompat.Builder(this, "running_channel")
                 .setSmallIcon(R.drawable.ic_stat_name)
-                .setContentTitle("HELPIE")
-                .setContentText("voyage en cours")
+                .setContentTitle(getString(R.string.helpie))
+                .setContentText(getString(R.string.voyage_en_cours))
                 .setColor(color)
                 .setColorized(true)
-                .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
+                .addAction(android.R.drawable.ic_media_previous,
+                    getString(R.string.revenir_au_trajet), pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setOngoing(true)
                 .setAutoCancel(false)
@@ -128,20 +129,20 @@ class ForegroundService() : Service() {
         private fun punchNotification(pendingIntent: PendingIntent, type: Actions, color: Int): Notification {
             Log.d("PUNCH", "create notif")
 
-            var text = "une étape est terminé !"
+            var text = getString(R.string.une_tape_est_termin)
             when (type) {
                 Actions.WalkCloseStop -> {
-                    text = "Tu es arrivé à l'arrêt !"
+                    text = getString(R.string.tu_es_arriv_l_arr_t)
                     // Do something for WalkCloseStop
                     println("Handling WalkCloseStop")
                 }
                 Actions.Monter -> {
-                    text = "Le transport arrive bientôt"
+                    text = getString(R.string.le_transport_arrive_bient_t)
                     // Do something for TransportEvent
                     println("Handling TransportEvent")
                 }
                 Actions.Descendre -> {
-                    text = "Tu dois bientôt descendre"
+                    text = getString(R.string.tu_dois_bient_t_descendre)
                     // Do something for TransportEvent
                     println("Handling TransportEvent")
                 }
@@ -156,11 +157,11 @@ class ForegroundService() : Service() {
 
             return NotificationCompat.Builder(this, "running_channel")
                 .setSmallIcon(R.drawable.ic_stat_name)
-                .setContentTitle("HELPIE")
+                .setContentTitle(getString(R.string.helpie))
                 .setContentText(text)
                 .setColor(color)
                 .setColorized(true)
-                .addAction(android.R.drawable.ic_media_previous, "Revenir au trajet", pendingIntent)
+                .addAction(android.R.drawable.ic_media_previous, getString(R.string.revenir_au_trajet), pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setSound(soundUri) // Set the notification sound
                 .setTimeoutAfter(3000) // Set timeout after 3 seconds

@@ -45,7 +45,6 @@ fun DestinationScreen(
     showDialog: Boolean,
     onRequest: () -> Unit = {},
     setTarget: (Localisation) -> Unit = {},
-    //setLocalisationAddress: (Int, String, List<Localisation>) -> Unit = { _, _, _ -> },
     setLocalisationAddress: (Int, String, List<Localisation>, Context) -> Unit = { _, _, _,_ -> },
     switchDialog: () -> Unit = {}
 ) {
@@ -90,7 +89,7 @@ fun DestinationScreen(
                     )
                     {
                         CustomTextView(
-                            text = registeredLocation[0].destinationName ?: "Default Name",
+                            text = registeredLocation[0].destinationName ?: stringResource(id = R.string.defN),
                             size = 16.sp,
                             padding = false
                             )
@@ -109,7 +108,7 @@ fun DestinationScreen(
                     )
                     {
                         CustomTextView(
-                            text = registeredLocation[1].destinationName ?: "Default Name",
+                            text = registeredLocation[1].destinationName ?: stringResource(id = R.string.defN),
                             size = 16.sp,
                             padding = false
                         )
@@ -135,7 +134,7 @@ fun DestinationScreen(
                     )
                     {
                         CustomTextView(
-                            text = registeredLocation[2].destinationName ?: "Default Name",
+                            text = registeredLocation[2].destinationName ?: stringResource(id = R.string.defN),
                             size = 16.sp,
                             padding = false
                         )
@@ -154,7 +153,7 @@ fun DestinationScreen(
                     )
                     {
                         CustomTextView(
-                            text = registeredLocation[3].destinationName ?: "Default Name",
+                            text = registeredLocation[3].destinationName ?: stringResource(id = R.string.defN),
                             size = 16.sp,
                             padding = false
                         )

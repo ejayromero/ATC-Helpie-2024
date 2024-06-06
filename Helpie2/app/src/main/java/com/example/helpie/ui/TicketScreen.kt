@@ -57,7 +57,7 @@ fun TicketScreen(
                         .padding(16.dp)
                 ) {
                     CustomTextView(
-                        text = "Montre le ticket",
+                        text = stringResource(R.string.montre_le_ticket),
                         size = 30.sp,
                         padding = false
                     )

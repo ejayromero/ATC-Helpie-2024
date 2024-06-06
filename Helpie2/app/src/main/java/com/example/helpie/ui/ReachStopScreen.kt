@@ -38,7 +38,7 @@ fun ReachStopScreen(
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -61,12 +61,12 @@ fun ReachStopScreen(
             ) {
 
                 val (iconResource, contentDescription) = when (stepInfo.mode) {
-                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, "Bus Icon")
-                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, "Train Icon")
-                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, "Walk Icon")
-                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, "metro Icon")
-                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, "boat Icon")
-                    else -> Pair(R.drawable.travel_icon, "transport Icon")
+                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, stringResource(R.string.bus))
+                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, stringResource(R.string.rail))
+                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, stringResource(R.string.walk))
+                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, stringResource(R.string.metro))
+                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, stringResource(R.string.boat))
+                    else -> Pair(R.drawable.travel_icon, stringResource(id = R.string.transport))
                 }
 
                 Image(
@@ -100,7 +100,7 @@ fun ReachStopScreen(
             color = MaterialTheme.colorScheme.onSurface,
         )
         CustomTextView(
-            text = "Diretion : ${nextStep.way.toString()}",
+            text = stringResource(R.string.diretion) + nextStep.way.toString(),
             padding = false,
             size = 20.sp,
             color = MaterialTheme.colorScheme.onSurface

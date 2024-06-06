@@ -1,19 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="startScreen" translatable="false">startScreen</string>
-    <string name="HelpScreen" translatable="false">HelpScreen</string>
-    <string name="TicketScreen" translatable="false">TicketScreen</string>
-    <string name="TrainBar" translatable="false">TrainBar</string>
-    <string name="BusBar" translatable="false">BusBar</string>
-    <string name="MetroBar" translatable="false">MetroBar</string>
-    <string name="BoatBar" translatable="false">BoatBar</string>
-    <string name="WalkBar" translatable="false">WalkBar</string>
-    <string name="PanneauArrivee" translatable="false">PanneauArrivee</string>
 
-    <string name="HELPIE" translatable="false">HELPIE</string>
     <string name="aide">AIDE</string>
     <string name="appeler_le_proche_aidant">Appeler le proche aidant</string>
-    <string name="appele_icon" translatable="false">Appele icon</string>
     <string name="retour">retour</string>
     <string name="numero_du_proche_aidant">Numéro du proche aidant</string>
     <string name="billet_cff_qrcode">billet cff QRCODE</string>
@@ -44,7 +34,6 @@
     <string name="montrer_le_ticket">Montrer le ticket</string>
     <string name="confirmer">Confirmer</string>
 
-    <string name="skip" translatable="false">SKIP</string>
     <string name="edit">Edit mode</string>
 
     <string name="ticket">TICKET</string>
@@ -77,7 +66,7 @@
     <string name="descendre">descendre à</string>
     <string name="etape">Etape</string>
 
-    <string name="easyride" translatable="false">EasyRide</string>
+
     <string name="rappel_de_prendre_le_ticket">Rappel de prendre le ticket</string>
 
     <string name="Debugging">Mode demo</string>
@@ -95,10 +84,8 @@
     <string name="trajet_termin">Trajet terminé !</string>
     <string name="nouveau_trajet">Nouveau trajet</string>
 
-    <string name="defN" translatable="false">Default Name</string>
     <string name="voyage_en_cours">voyage en cours</string>
     <string name="revenir_au_trajet">Revenir au trajet</string>
-    <string name="helpie" translatable="false">HELPIE</string>
     <string name="une_tape_est_termin">une étape est terminé !</string>
     <string name="tu_es_arriv_l_arr_t">Tu es arrivé à l\'arrêt !</string>
     <string name="le_transport_arrive_bient_t">Le transport arrive bientôt</string>
