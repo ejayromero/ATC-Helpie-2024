@@ -21,8 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.TemplateButton
 
@@ -37,7 +39,7 @@ fun PopUpScreen(
     Dialog(onDismissRequest = { }) {
         // Draw a rectangle shape with rounded corners inside the dialog
         Card(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(375.dp)
                 .padding(16.dp),
@@ -45,7 +47,7 @@ fun PopUpScreen(
         ) {
 
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .padding(8.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.Right,
@@ -54,7 +56,7 @@ fun PopUpScreen(
                     onClick = {
                         onDismiss()
                     },
-                    text = "Retour",
+                    text = stringResource(id = R.string.retour),
                     size = 13.sp,
                     sizeButton = "small",
                     padding = false,
@@ -63,32 +65,32 @@ fun PopUpScreen(
                     )
             }
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "veux tu arrêter le trajet ou trouver un nouveau chemin ?",
-                    modifier = Modifier.padding(16.dp),
+                    text = stringResource(R.string.veux_tu_arr_ter_le_trajet_ou_trouver_un_nouveau_chemin),
+                    modifier = modifier.padding(16.dp),
                 )
-                Spacer(modifier = Modifier.height(25.dp))
+                Spacer(modifier = modifier.height(25.dp))
 
                 Row(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     Column {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Edit Mode",
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            contentDescription = stringResource(id = R.string.edit),
+                            modifier = modifier.align(Alignment.CenterHorizontally),
                         )
                         TemplateButton(
                             onClick = {
                                 onStop() },
-                            text = "Arrêter",
+                            text = stringResource(id = R.string.arr_ter),
                             size = 13.sp,
                             sizeButton = "small",
                             padding = false,
@@ -99,13 +101,13 @@ fun PopUpScreen(
                     Column {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Edit Mode",
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                            contentDescription = stringResource(id = R.string.edit),
+                            modifier = modifier.align(Alignment.CenterHorizontally)
                         )
                         TemplateButton(
                             onClick = {
                                 onRestart() },
-                            text = "nouveau",
+                            text = stringResource(id = R.string.nouveau),
                             size = 13.sp,
                             sizeButton = "small",
                             padding = false,

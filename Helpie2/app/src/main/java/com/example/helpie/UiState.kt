@@ -3,6 +3,7 @@ package com.example.helpie
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.res.stringResource
 import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
@@ -15,6 +16,9 @@ data class UiState(
     val phoneNumber:  String = "",
     val outlineNumber: String = "0800 007 102",
     val usePhone: Boolean = false,
+
+    val langage : String = "fr",
+    val langageSwitch : Boolean = true,
 
     //debugging
     val skipper: Int = 0,

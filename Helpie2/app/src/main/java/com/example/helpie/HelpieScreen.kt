@@ -346,8 +346,10 @@ fun HelpieApp(
                         setPhone = { viewModel.setPhone(it) },
                         debugging = uiState.debugging,
                         switchDebug = {viewModel.SwitchDebug()},
-                        EasyRide = uiState.easyRide,
+                        easyRide = uiState.easyRide,
                         switchTicket = {viewModel.SwitchTicket()},
+                        setLangage = {viewModel.setLangage(it)},
+                        currentLangage = uiState.langage,
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -426,7 +428,6 @@ fun HelpieApp(
                         SummaryScreen(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            targetLocation = uiState.targetLocation,
                             summary = it1,
                             steps = uiState.steps,
                             onNext = {
@@ -614,7 +615,7 @@ fun HelpieApp(
                     Row( horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                        var past = "retour"
+                        var past = stringResource(R.string.retour)
                         if(
                             (currentScreen == HelpieScreen.Destination.name) or
                             (currentScreen == HelpieScreen.Settings.name) or
@@ -641,11 +642,11 @@ fun HelpieApp(
                             (currentScreen == HelpieScreen.ReachStop.name) or
                             (currentScreen == HelpieScreen.JourneyInTransport.name)
                             ){
-                                past = "Arrêter"
+                                past = stringResource(R.string.arr_ter)
                             if (currentScreen == HelpieScreen.ReachStop.name) {
-                                past = "Non"
+                                past = stringResource(R.string.non)
                             } else if (currentScreen == HelpieScreen.JourneyInTransport.name) {
-                                past = "probleme ?"
+                                past = stringResource(R.string.probl_me)
                             }
                                 TemplateButton(
                                     onClick = {
@@ -664,11 +665,11 @@ fun HelpieApp(
                             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.button_corner_radius)))
 
                             if((currentScreen == HelpieScreen.ReachStop.name) or (currentScreen == HelpieScreen.InBus.name) or (currentScreen == HelpieScreen.OutBus.name) or ((currentScreen == HelpieScreen.TakeTicket.name) and (!uiState.easyRide) )) {
-                                var next = "suivant"
+                                var next = stringResource(R.string.suivant)
                                 if (currentScreen == HelpieScreen.ReachStop.name) {
-                                    next = "oui"
+                                    next = stringResource(R.string.oui)
                                 } else if (currentScreen == HelpieScreen.TakeTicket.name) {
-                                    next = "C'est bon !"
+                                    next = stringResource(R.string.ok)
                                 }
                                 TemplateButton(
                                     onClick = {

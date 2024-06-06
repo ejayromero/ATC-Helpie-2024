@@ -41,26 +41,26 @@ fun HelpScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(bottom = 48.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.phone),
                 contentDescription = stringResource(R.string.appele_icon),
-                modifier = Modifier
+                modifier = modifier
                     .width(dimensionResource(R.dimen.button_image_width))
                     .height(dimensionResource(R.dimen.button_image_height))
                     .padding(dimensionResource(R.dimen.button_interior_padding))
             )
 
-            Spacer(modifier = Modifier.height(0.dp))
+            Spacer(modifier = modifier.height(0.dp))
             CustomTextView(
                 text = stringResource(R.string.appeler_le_proche_aidant),
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            Spacer(modifier = Modifier.height(0.dp))
+            Spacer(modifier = modifier.height(0.dp))
             TemplateButton(
                 onClick = {
                     if (usePhone) {

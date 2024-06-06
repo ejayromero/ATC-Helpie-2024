@@ -37,18 +37,18 @@ fun OutBusScreen(
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CustomTextView(
-            text = "Il est bientot l'heure de descendre.",
+            text = stringResource(R.string.il_est_bientot_l_heure_de_descendre),
             color = MaterialTheme.colorScheme.onSurface
         )
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .width(250.dp)
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
@@ -61,24 +61,24 @@ fun OutBusScreen(
             ) {
 
                 val (iconResource, contentDescription) = when (stepInfo.mode) {
-                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, "Bus Icon")
-                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, "Train Icon")
-                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, "walk Icon")
-                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, "metro Icon")
-                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, "metro Icon")
-                    else -> Pair(R.drawable.travel_icon, "transport Icon")
+                    stringResource(R.string.bus) -> Pair(R.drawable.bus_icon, stringResource(R.string.bus))
+                    stringResource(R.string.rail) -> Pair(R.drawable.rail_icon, stringResource(R.string.rail))
+                    stringResource(R.string.walk) -> Pair(R.drawable.walking_icon, stringResource(R.string.walk))
+                    stringResource(R.string.metro) -> Pair(R.drawable.metro_icon, stringResource(R.string.metro))
+                    stringResource(R.string.boat) -> Pair(R.drawable.boat_icon, stringResource(R.string.boat))
+                    else -> Pair(R.drawable.travel_icon, stringResource(id = R.string.transport))
                 }
 
                 Image(
                     painter = painterResource(id = iconResource),
                     contentDescription = contentDescription,
                     alignment = Alignment.Center,
-                    modifier = Modifier
+                    modifier = modifier
                         .size(60.dp)
                         .fillMaxSize()
                 )
 
-                Spacer(modifier = Modifier.width(28.dp))
+                Spacer(modifier = modifier.width(28.dp))
                 Column() {
                     CustomTextView(
                         text = stepInfo.line.toString(),
