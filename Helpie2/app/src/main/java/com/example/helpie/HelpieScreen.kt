@@ -1,3 +1,8 @@
+/**
+ * This file contains the main composable function for the Helpie App, along with related
+ * composable functions and necessary imports.
+ */
+
 package com.example.helpie
 
 import android.os.Build
@@ -80,27 +85,39 @@ import com.example.helpie.ui.theme.TemplateButton
 import kotlinx.coroutines.launch
 
 
+/**
+ * Enum representing different screens or destinations within the Helpie App.
+ * Each enum value corresponds to a specific screen or destination.
+ */
 enum class HelpieScreen {
-    Help,
-    Ticket,
-    TakeTicket,
-    StopTicket,
-    Summary,
-    Destination,
-    Start,
-    Final,
-    ReachStop,
-    InBus,
-    Walk,
-    OutBus,
-    WaitingTransport,
-    JourneyInTransport,
-    Settings,
-    PopUp
+    Help, // Screen for getting help or assistance
+    Ticket, // Ticket information screen
+    TakeTicket, // Screen for taking a ticket
+    StopTicket, // Screen for stopping ticket services
+    Summary, // Summary screen
+    Destination, // Destination screen
+    Start, // Start screen
+    Final, // Final screen
+    ReachStop, // Screen for reaching a stop
+    InBus, // Screen for being inside a transport
+    Walk, // Walking screen
+    OutBus, // Screen for being outside a transport
+    WaitingTransport, // Screen for waiting for transport
+    JourneyInTransport, // Screen for journeying in transport
+    Settings, // Settings screen
+    PopUp // Pop-up screen
 }
 
 
-
+/**
+ * Composable function representing the main UI of the Helpie App.
+ * This function is responsible for rendering the entire application UI,
+ * including navigation, state management, and content display.
+ * The scaffold contains the main element and will add each screen on top of it.
+ *
+ * @param viewModel The view model instance for managing application state.
+ * @param navController The navigation controller for managing navigation within the app.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -109,26 +126,33 @@ fun HelpieApp(
     navController: NavHostController = rememberNavController(),
 ) {
 
+    // Retrieve the current context
     val ctx = LocalContext.current
 
+    // Retrieve the UI state from the view model
     val uiState by viewModel.uiState.collectAsState()
 
+    // Define the scroll behavior for the top app bar
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
+    // Retrieve the current back stack entry from the navigation controller
     val backStackEntry by navController.currentBackStackEntryAsState()
 
+    // Determine the current screen based on the back stack entry
     val currentScreen = backStackEntry?.destination?.route
 
+    // Retrieve the screen width from the current configuration
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
+    // Constants for image fraction calculation
     val imageArrivalShiftFraction = 0.415f
-
     val startFractionBar = -0.5f
 
+    // State variables for image shift fraction and percentage bar
     val imageShiftFraction = remember { mutableStateOf(startFractionBar) }
+    val percentageBar = remember { mutableStateOf(0) }
 
-    val percentageBar = remember { mutableStateOf(0)}
-
+    // Calculate image shift fraction and percentage bar based on current UI state
     LaunchedEffect(uiState.currentStep) {
         val currentStep = uiState.currentStep + 1
         val totalSteps = uiState.steps.size + 1
@@ -146,10 +170,11 @@ fun HelpieApp(
         }
     }
 
+    // State variables for transport painter and description
     val transportPainter = remember { mutableStateOf(R.drawable.walking_bar) }
-
     val transportDescription = remember { mutableStateOf(R.string.WalkBar) }
 
+    // Update transport painter and description based on UI state
     LaunchedEffect(uiState.currentStep) {
         if (uiState.steps.isNotEmpty() && uiState.currentStep in uiState.steps.indices) {
             val (painter, description) = when (uiState.steps[uiState.currentStep].mode.toString()) {
@@ -166,16 +191,20 @@ fun HelpieApp(
     }
 
 
+    // Scaffold for the entire app layout
     Scaffold(
         topBar = {
             Column(Modifier.fillMaxWidth()) {
                 TopAppBar(
+                    // Top app bar containing title and settings button
                     title = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
+                            // Render title and settings button
                             if (uiState.debugging) {
+                                // Render debug mode elements
                                 TemplateButton(
                                     onClick = {
                                         viewModel.UpSkip()
@@ -193,7 +222,7 @@ fun HelpieApp(
                                         size = 48.sp,
                                     )
                                 }
-                            } else {
+                            } else {// Render normal mode title
                                 Column(Modifier.padding(start = 80.dp)) {
                                     CustomTextView(
                                         text = stringResource(R.string.HELPIE),
@@ -208,6 +237,7 @@ fun HelpieApp(
                         navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
+                    // Add settings button
                     actions = {
                         Column {
                             if (currentScreen == HelpieScreen.Start.name) {
@@ -234,6 +264,7 @@ fun HelpieApp(
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ) {
             }
+            // Add help button
             if (currentScreen != HelpieScreen.Help.name) {
             Box(
                 modifier = Modifier
@@ -254,6 +285,7 @@ fun HelpieApp(
             }
         }
     ) { innerPadding ->
+        // Main content area of the app
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -266,6 +298,7 @@ fun HelpieApp(
                 verticalArrangement = Arrangement.Top,
                 modifier = Modifier.fillMaxSize()
             ) {
+                // Render ticket button if required
                     if (uiState.ticket and (currentScreen != HelpieScreen.Ticket.name)) {
                         Box(
                             modifier = Modifier
@@ -284,6 +317,7 @@ fun HelpieApp(
                         }
 
                     }
+                // Render progress bar and transport image
                     if ((currentScreen != HelpieScreen.Summary.name) and (currentScreen != HelpieScreen.Start.name) and (currentScreen != HelpieScreen.Destination.name) and (currentScreen != HelpieScreen.Final.name)) {
                         Box(
                             modifier = Modifier
@@ -325,11 +359,14 @@ fun HelpieApp(
                         )
                     }
             }
+            // Navigation host for handling different screens
             NavHost(
                 navController = navController,
                 startDestination = HelpieScreen.Start.name,
                 modifier = Modifier.padding(innerPadding)
             ) {
+                // Define composable destinations for different screens
+
                 composable(route = HelpieScreen.Settings.name) {
                     SettingsScreen(
                         registeredLocation = uiState.registeredLocation,
@@ -349,9 +386,7 @@ fun HelpieApp(
                         easyRide = uiState.easyRide,
                         switchTicket = {viewModel.SwitchTicket()},
                         setLangage = {viewModel.setLangage(it)},
-                        currentLangage = uiState.langage,
-                        modifier = Modifier
-                            .fillMaxSize()
+                        currentLangage = uiState.langage
                     )
                 }
 
@@ -449,8 +484,6 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.PopUp.name) {
                         PopUpScreen(
-                            modifier = Modifier
-                                .fillMaxSize(),
                             onStop = { if (uiState.ticket and uiState.easyRide) {
                                 navController.navigate(HelpieScreen.StopTicket.name)
                             } else {
@@ -517,7 +550,6 @@ fun HelpieApp(
                     if (uiState.steps[uiState.currentStep] is walkInfo) {
                         ReachStopScreen(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
-                            modifier = Modifier.fillMaxSize(),
                             nextStep = uiState.steps[uiState.currentStep + 1] as transportInfo
                         )
                     }
@@ -569,7 +601,6 @@ fun HelpieApp(
                     }
                     JourneyInTransportScreen(
                         stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
-                        modifier = Modifier.fillMaxSize(),
                         time = uiState.remainingTime
                     )
                 }
@@ -581,8 +612,7 @@ fun HelpieApp(
                             uiState.steps[uiState.currentStep] as transportInfo
                         } else {
                             uiState.steps[uiState.currentStep-1] as transportInfo
-                        },
-                        modifier = Modifier.fillMaxSize()
+                        }
                     )
                 }
 
@@ -604,6 +634,7 @@ fun HelpieApp(
                 }
             }
 
+            // Render navigation buttons
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Bottom,
@@ -706,6 +737,13 @@ fun HelpieApp(
 }
 
 
+/**
+ * A preview composable function for the HelpieApp.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays the HelpieApp wrapped inside the AppTheme.
+ *
+ * @see HelpieApp
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable

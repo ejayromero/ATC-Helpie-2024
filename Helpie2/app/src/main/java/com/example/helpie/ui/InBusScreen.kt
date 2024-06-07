@@ -30,6 +30,12 @@ import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 
+/**
+ * Composable function for displaying information while on a bus.
+ *
+ * @param modifier The modifier to be applied to the composable.
+ * @param stepInfo Information about the current step of the journey, including mode of transport, line, and destination.
+ */
 @Composable
 fun InBusScreen(
     modifier: Modifier = Modifier,
@@ -37,18 +43,18 @@ fun InBusScreen(
 ) {
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CustomTextView(
-            text = stringResource(id = R.string.le) + stepInfo.mode.toString() + stringResource(R.string.arrive_bient_t_pr_pare_toi_monter),
+            text = stringResource(id = R.string.le) + " "+ stepInfo.mode.toString() + stringResource(R.string.arrive_bient_t_pr_pare_toi_monter),
             color = Color.Black,
         )
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .width(250.dp)
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
@@ -101,6 +107,7 @@ fun InBusScreen(
             color = Color.Black,
             padding = false
         )
+
         CustomTextView(
             text = stringResource(id = R.string.diretion) + stepInfo.way.toString(),
             color = MaterialTheme.colorScheme.onSurface,
@@ -109,6 +116,15 @@ fun InBusScreen(
         )
     }
 }
+
+/**
+ * A preview composable function for the InBusScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the screen with mock data.
+ *
+ * @see InBusScreen
+ */
+
 @Preview(showBackground = true)
 @Composable
 fun InBusScreenPreview() {

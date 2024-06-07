@@ -30,14 +30,18 @@ import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 
+/**
+ * Composable function for displaying information when the user is about to exit a bus.
+ *
+ * @param stepInfo Information about the next step of the journey, including mode of transport, line, and destination.
+ */
 @Composable
 fun OutBusScreen(
-    modifier: Modifier = Modifier,
     stepInfo: transportInfo,
 ) {
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -48,7 +52,7 @@ fun OutBusScreen(
         )
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .width(250.dp)
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
@@ -73,12 +77,12 @@ fun OutBusScreen(
                     painter = painterResource(id = iconResource),
                     contentDescription = contentDescription,
                     alignment = Alignment.Center,
-                    modifier = modifier
+                    modifier = Modifier
                         .size(60.dp)
                         .fillMaxSize()
                 )
 
-                Spacer(modifier = modifier.width(28.dp))
+                Spacer(modifier = Modifier.width(28.dp))
                 Column() {
                     CustomTextView(
                         text = stepInfo.line.toString(),
@@ -100,6 +104,14 @@ fun OutBusScreen(
         )
     }
 }
+
+/**
+ * A preview composable function for the OutBusScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the screen with mock data.
+ *
+ * @see OutBusScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun OutBusScreenPreview() {

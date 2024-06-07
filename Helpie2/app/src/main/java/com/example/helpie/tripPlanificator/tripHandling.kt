@@ -12,6 +12,13 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.hours
 
+/**
+ * Extracts trip information from the provided OJP response.
+ *
+ * @param response The OJP response containing trip information.
+ * @return The extracted [TripDto].
+ * @throws IllegalStateException if no trip is found in the response.
+ */
 fun extractTrip(response: OjpDto): TripDto {
     try {
         val tripList = response.ojpResponse?.serviceDelivery?.tripDelivery?.tripResults
@@ -42,6 +49,13 @@ fun extractTrip(response: OjpDto): TripDto {
     }
 }
 
+/**
+ * Extracts location information from the provided OJP response.
+ *
+ * @param response The OJP response containing location information.
+ * @return The list of extracted [PlaceInfoDto] objects.
+ * @throws IllegalStateException if no places are found in the response.
+ */
 fun extractLoca(response: OjpDto): List<PlaceInfoDto> {
     try {
         val places = response.ojpResponse?.serviceDelivery?.tripDelivery?.context?.place?.places
@@ -57,6 +71,13 @@ fun extractLoca(response: OjpDto): List<PlaceInfoDto> {
     }
 }
 
+/**
+ * Generates a summary of the provided trip.
+ *
+ * @param trip The trip for which to generate the summary.
+ * @return The generated [TripSummary].
+ * @throws IllegalStateException if no steps are found in the trip.
+ */
 fun tripSummary(trip: TripDto): TripSummary {
     try {
         val steps = trip.step
@@ -78,6 +99,15 @@ fun tripSummary(trip: TripDto): TripSummary {
 
 }
 
+/**
+ * Retrieves information about the next step in the trip.
+ *
+ * @param trip The trip for which to retrieve the next step.
+ * @param stepID The ID of the current step.
+ * @param contextLoca The list of location information used for context.
+ * @return The [StepInfo] object representing the next step.
+ * @throws IllegalStateException if no steps are found in the trip.
+ */
 fun nextStep(trip: TripDto, stepID: Int, contextLoca : List<PlaceInfoDto>) : StepInfo {
     try {
         Log.d("trip", stepID.toString())

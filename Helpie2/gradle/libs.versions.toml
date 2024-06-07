@@ -138,4 +138,4 @@ ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", versio
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+dokka = { id = "org.jetbrains.dokka", version = "1.9.20" }

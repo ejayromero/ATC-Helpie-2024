@@ -1,0 +1,6 @@
+//[app](../../../index.md)/[com.example.helpie](../index.md)/[walkInfo](index.md)/[walkInfo](walk-info.md)
+
+# walkInfo
+
+[androidJvm]\
+constructor(mode: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, startName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, startLongitude: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)? = 0.0, startLatitude: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)? = 0.0, endName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, endLongitude: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)? = 0.0, endLatitude: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)? = 0.0, startTime: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, endTime: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, duration: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, length: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)? = 0.0, buffer: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null)

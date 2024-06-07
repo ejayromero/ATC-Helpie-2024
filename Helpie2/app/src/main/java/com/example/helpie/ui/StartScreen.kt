@@ -13,6 +13,13 @@ import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.TemplateButton
 
+/**
+ * A composable function representing the StartScreen.
+ * This screen displays the start button to initiate a trip.
+ *
+ * @param modifier The modifier for the StartScreen layout.
+ * @param onTicket Callback function invoked when the start button is clicked.
+ */
 @Composable
 fun StartScreen(
     modifier: Modifier = Modifier,
@@ -36,6 +43,13 @@ fun StartScreen(
     }
 }
 
+/**
+ * A preview composable function for the StartScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a preview of the StartScreen wrapped inside the AppTheme.
+ *
+ * @see StartScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun StartPreview() {

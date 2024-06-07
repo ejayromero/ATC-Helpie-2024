@@ -15,6 +15,12 @@ import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.ui.theme.TemplateButton
 
+/**
+ * Composable function for displaying the final screen.
+ *
+ * @param modifier The modifier to be applied to the composable.
+ * @param recommence The action to be performed when the "Nouveau trajet" button is clicked.
+ */
 @Composable
 fun FinalScreen(
     modifier: Modifier = Modifier,
@@ -42,6 +48,13 @@ fun FinalScreen(
     }
 }
 
+/**
+ * A preview composable function for the FinalScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the screen with mock data.
+ *
+ * @see FinalScreen
+ */
 @Preview(showBackground = true )
 @Composable
 fun FinalPreview() {

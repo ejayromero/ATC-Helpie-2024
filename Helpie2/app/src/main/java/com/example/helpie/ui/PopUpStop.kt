@@ -28,9 +28,16 @@ import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.TemplateButton
 
+/**
+ * Composable function for displaying a popup screen.
+ * This popup screen asks the user whether they want to stop the current journey or find a new path.
+ *
+ * @param onDismiss Callback function to be called when the popup is dismissed.
+ * @param onStop Callback function to be called when the user chooses to stop the journey.
+ * @param onRestart Callback function to be called when the user chooses to find a new path.
+ */
 @Composable
 fun PopUpScreen(
-    modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
     onStop : () -> Unit,
     onRestart : () -> Unit
@@ -39,7 +46,7 @@ fun PopUpScreen(
     Dialog(onDismissRequest = { }) {
         // Draw a rectangle shape with rounded corners inside the dialog
         Card(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(375.dp)
                 .padding(16.dp),
@@ -47,7 +54,7 @@ fun PopUpScreen(
         ) {
 
             Row(
-                modifier = modifier
+                modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.Right,
@@ -65,19 +72,19 @@ fun PopUpScreen(
                     )
             }
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = stringResource(R.string.veux_tu_arr_ter_le_trajet_ou_trouver_un_nouveau_chemin),
-                    modifier = modifier.padding(16.dp),
+                    modifier = Modifier.padding(16.dp),
                 )
-                Spacer(modifier = modifier.height(25.dp))
+                Spacer(modifier = Modifier.height(25.dp))
 
                 Row(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
@@ -85,7 +92,7 @@ fun PopUpScreen(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(id = R.string.edit),
-                            modifier = modifier.align(Alignment.CenterHorizontally),
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
                         )
                         TemplateButton(
                             onClick = {
@@ -102,7 +109,7 @@ fun PopUpScreen(
                         Icon(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = stringResource(id = R.string.edit),
-                            modifier = modifier.align(Alignment.CenterHorizontally)
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                         TemplateButton(
                             onClick = {
@@ -121,6 +128,13 @@ fun PopUpScreen(
     }
 }
 
+/**
+ * A preview composable function for the PopUpScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the popup screen with mock data.
+ *
+ * @see PopUpScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun PopUpScreenPreview() {

@@ -28,7 +28,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.helpie.R
 
-
+/**
+ * A foreground service responsible for managing notifications and a floating window.
+ */
 class ForegroundService() : Service() {
 
     private lateinit var windowManager: WindowManager
@@ -39,12 +41,31 @@ class ForegroundService() : Service() {
         const val NOTIFICATION_ID_PUNCH = 2
     }
 
+    /**
+     * Enumeration for service actions.
+     */
+    enum class Actions {
+        START, STOP, WalkCloseStop,Monter,Descendre,None,STOP_NOTIFICATION
+    }
+
     private var travelcolor : Int = Color.parseColor("#0978c6")
     private var notifcolor : Int = Color.parseColor("#FFA500")
+
+    /**
+     * Binds the service to the given intent.
+     */
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
+    /**
+     * Handles the start command for the service.
+     *
+     * @param intent The intent containing the action to be performed.
+     * @param flags Additional data about this start request.
+     * @param startId A unique identifier for the start request.
+     * @return The service type code.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
@@ -62,11 +83,21 @@ class ForegroundService() : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    /**
+     * Stops the specified notification.
+     *
+     * @param notificationId The ID of the notification to be stopped.
+     */
     private fun stopNotification(notificationId: Int) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(notificationId)
     }
 
+    /**
+     * Starts the service with the given action type.
+     *
+     * @param type The action type to be performed.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun start(type: Actions) {
 
@@ -95,6 +126,9 @@ class ForegroundService() : Service() {
 
         }
 
+    /**
+     * Updates the existing notification.
+     */
     private fun updateNotification() {
         val previousActivityIntent = packageManager.getLaunchIntentForPackage(packageName)
         previousActivityIntent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -108,6 +142,13 @@ class ForegroundService() : Service() {
         notificationManager.notify(NOTIFICATION_ID_TRAVEL, updatedNotification)
     }
 
+    /**
+     * Creates a travel notification.
+     *
+     * @param pendingIntent The PendingIntent to be triggered on notification action.
+     * @param color The color of the notification.
+     * @return The created travel notification.
+     */
         private fun travelNotification(pendingIntent: PendingIntent, color: Int): Notification {
             vibrateDevice()
             return NotificationCompat.Builder(this, "running_channel")
@@ -125,6 +166,14 @@ class ForegroundService() : Service() {
                 .build()
         }
 
+    /**
+     * Creates a punch notification.
+     *
+     * @param pendingIntent The PendingIntent to be triggered on notification action.
+     * @param type The type of punch action.
+     * @param color The color of the notification.
+     * @return The created punch notification.
+     */
         @RequiresApi(Build.VERSION_CODES.O)
         private fun punchNotification(pendingIntent: PendingIntent, type: Actions, color: Int): Notification {
             Log.d("PUNCH", "create notif")
@@ -168,6 +217,10 @@ class ForegroundService() : Service() {
                 .build()
         }
 
+
+    /**
+     * Make the device vibrate
+     */
         private fun vibrateDevice() {
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
@@ -184,6 +237,12 @@ class ForegroundService() : Service() {
             }
         }
 
+    /**
+     * Shows the floating window on the screen.
+     *
+     * @param windowManager The WindowManager instance.
+     * @param floatingView The View to be displayed as the floating window.
+     */
         @SuppressLint("RtlHardcoded")
         private fun showFloatingWindow() {
             // Check if the permission is already granted for window overlay
@@ -283,12 +342,19 @@ class ForegroundService() : Service() {
             })
         }
 
+    /**
+     * Called when the app's task is removed.
+     *
+     * @param rootIntent The root intent of the app.
+     */
         override fun onTaskRemoved(rootIntent: Intent?) {
             super.onTaskRemoved(rootIntent)
             stopSelf() // Stop the service when the app's task is removed
         }
 
-
+    /**
+    * Called when the service is destroyed.
+    */
         override fun onDestroy() {
             super.onDestroy()
             // Remove the floating view when the service is destroyed but check if window exists first
@@ -297,7 +363,4 @@ class ForegroundService() : Service() {
             }
         }
 
-        enum class Actions {
-            START, STOP, WalkCloseStop,Monter,Descendre,None,STOP_NOTIFICATION
-        }
     }

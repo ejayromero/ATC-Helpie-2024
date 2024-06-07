@@ -12,7 +12,6 @@ import com.example.helpie.tripPlanificator.data.dto.request.tr.OriginDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.ParamsDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.PlaceRefDto
 import com.example.helpie.tripPlanificator.data.dto.request.tr.TripRequestDto
-import com.example.helpie.tripPlanificator.utils.toInstantString
 import com.google.android.gms.maps.model.LatLng
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
@@ -31,6 +30,14 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.hours
 
 
+/**
+ * SDK for making trip requests using the Open Journey Planner (OJP) service.
+ *
+ * @property baseUrl The base URL of the OJP service.
+ * @property endpoint The specific endpoint for trip requests.
+ * @property requesterReference The reference string used for identifying the requester.
+ * @property token The authentication token for accessing the OJP service.
+ */
 class OjpSdk(
     baseUrl: String,
     endpoint: String,
@@ -60,6 +67,13 @@ class OjpSdk(
         private const val ANDROID_SDK = "ANDROID_SDK"
     }
 
+    /**
+     * Asynchronously requests trip information from the OJP service.
+     *
+     * @param here The current location represented by latitude and longitude coordinates.
+     * @param target The target location for the trip.
+     * @return The OJP response containing trip information.
+     */
     suspend fun tripRequest(here : LatLng, target: Localisation): OjpDto  {
         val requestTime = Clock.System.now()
         Log.d("LE TEMPS", requestTime.toString())
@@ -75,8 +89,8 @@ class OjpSdk(
                         requestTimestamp = requestTime.toString(),
                         origin = OriginDto(
                             placeRef = PlaceRefDto(
-                                position = GeoPositionDto(here.longitude,here.latitude),
-                                //position = GeoPositionDto(6.537035659108079,46.515441573339686),
+                                //position = GeoPositionDto(here.longitude,here.latitude),
+                                position = GeoPositionDto(6.537035659108079,46.515441573339686),
                                 locationName = LocationNameDto("You")
                             ),
                             depArrTime = requestTime.toString() //"2024-05-02T10:43:02"
@@ -103,6 +117,14 @@ class OjpSdk(
         return result
     }
 
+    /**
+     * Sends an HTTP request to the OJP service and returns the response.
+     *
+     * @param url The URL to which the request is sent.
+     * @param token The authentication token for accessing the service.
+     * @param request The request object to be sent.
+     * @return The response received from the service.
+     */
     private suspend fun sendRequest(
         url: String,
         token: String,
@@ -135,6 +157,12 @@ class OjpSdk(
         }
     }
 
+    /**
+     * Interprets the response received from the OJP service. (XML to kotlin class)
+     *
+     * @param response The response string received from the service.
+     * @return The interpreted OJP response object.
+     */
     private fun interpretResponse(
         response: String
     ): OjpDto {

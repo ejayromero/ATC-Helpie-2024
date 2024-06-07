@@ -25,6 +25,14 @@ import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.ui.theme.TemplateButton
 
+/**
+ * A composable function representing the TicketScreen.
+ * This screen displays the ticket information and a button to show the ticket.
+ *
+ * @param modifier The modifier for the TicketScreen layout.
+ * @param showTicket Callback function to show the ticket.
+ * @param easyRide Boolean indicating whether the user is using Easyride.
+ */
 @Composable
 fun TicketScreen(
     modifier: Modifier = Modifier,
@@ -77,6 +85,13 @@ fun TicketScreen(
 
 }
 
+/**
+ * A preview composable function for the TicketScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a preview of the TicketScreen wrapped inside the AppTheme.
+ *
+ * @see TicketScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun TicketPreview() {
