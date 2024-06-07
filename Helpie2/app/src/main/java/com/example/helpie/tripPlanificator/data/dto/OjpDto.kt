@@ -7,7 +7,10 @@ import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.Xml
 
 /**
- * Created by Michael Ruppen on 08.04.2024
+ * Main XML management.
+ *
+ * This management method have been inspirated by the one created by Michael Ruppen on 08.04.2024
+ * for the OJP SDK for android
  */
 @Xml(
     name = "OJP",

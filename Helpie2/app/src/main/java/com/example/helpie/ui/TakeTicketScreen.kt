@@ -24,7 +24,15 @@ import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.ui.theme.TemplateButton
 
-
+/**
+ * A composable function representing the TakeTicketScreen.
+ * This screen displays instructions for taking or activating a ticket and a button to perform the action.
+ *
+ * @param modifier The modifier for the TakeTicketScreen layout.
+ * @param takeTicket Callback function to take/activate the ticket.
+ * @param take Boolean indicating whether we are activating or destroying a ticket.
+ * @param easyRide Boolean indicating if the user use EasyRide.
+ */
 @Composable
 fun TakeTicketScreen(
     modifier: Modifier = Modifier,
@@ -102,6 +110,13 @@ fun TakeTicketScreen(
     }
 }
 
+/**
+ * A preview composable function for the TakeTicketScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a preview of the TakeTicketScreen wrapped inside the AppTheme.
+ *
+ * @see TakeTicketScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun TakeTicketScreenPreview() {

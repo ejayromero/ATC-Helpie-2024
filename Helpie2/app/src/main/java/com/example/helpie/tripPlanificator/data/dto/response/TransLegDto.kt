@@ -4,9 +4,7 @@ import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
 
-/**
- * Created by Michael Ruppen on 08.04.2024
- */
+
 @Xml(name = "ojp:TransferLeg")
 data class TransLegDto(
     @Element(name = "ojp:LegStart")

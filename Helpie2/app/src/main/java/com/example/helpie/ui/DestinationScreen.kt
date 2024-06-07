@@ -35,6 +35,19 @@ import com.example.helpie.UiState
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 
+/**
+ * Composable function for displaying the destination screen.
+ *
+ * @param _uiState The current UI state.
+ * @param context The context.
+ * @param registeredLocation The list of registered locations.
+ * @param modifier The modifier to be applied to the composable.
+ * @param showDialog Flag indicating whether to show the dialog.
+ * @param onRequest The action to be performed when requesting.
+ * @param setTarget The action to be performed when setting the target.
+ * @param setLocalisationAddress The action to be performed when setting the localisation address.
+ * @param switchDialog The action to be performed when switching the dialog.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DestinationScreen(

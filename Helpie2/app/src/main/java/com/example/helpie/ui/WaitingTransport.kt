@@ -32,6 +32,13 @@ import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 
+/**
+ * A composable function representing the WaitingTransportScreen.
+ * This screen displays information about the waiting time for the next transport.
+ *
+ * @param stepInfo The information about the current transport step.
+ * @param time The remaining time until the next transport arrives.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WaitingTransportScreen(
@@ -45,6 +52,7 @@ fun WaitingTransportScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Box containing the transport icon and information
         Box(
             modifier = Modifier
                 .width(250.dp)
@@ -98,6 +106,14 @@ fun WaitingTransportScreen(
         )
     }
 }
+
+/**
+ * A preview composable function for the WaitingTransportScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a preview of the WaitingTransportScreen wrapped inside the AppTheme.
+ *
+ * @see WaitingTransportScreen
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable

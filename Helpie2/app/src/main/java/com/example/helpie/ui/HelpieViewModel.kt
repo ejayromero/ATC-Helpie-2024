@@ -42,12 +42,20 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
+/**
+ * ViewModel class for managing the UI state and logic of the Helpie application.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 class HelpieViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    /**
+     * Restores the UI state. Memory management
+     *
+     * @param newState The UI state to restore.
+     */
     fun restoreUI(newState: UiState) {
         _uiState.update { currentState -> currentState.copy(
             phoneNumber = newState.phoneNumber,
@@ -58,12 +66,251 @@ class HelpieViewModel : ViewModel() {
         ) }
         Log.d("uistate", "uistate restored")
     }
-    fun getUIstate(): UiState {
-        return _uiState.value
-    }
+
+    // Setter
+
+    /**
+     * Sets the flag indicating the UI needs to be cleaned up.
+     */
     fun setClean() {
         _uiState.update { currentState -> currentState.copy(needClean = true) }
     }
+
+    /**
+     * Sets the flag indicating if the trip has finished.
+     *
+     * @param finish Boolean flag indicating if the trip has finished.
+     */
+    fun setFinish(finish : Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(isFinish = finish)
+        }
+    }
+
+    /**
+     * Sets the flag indicating if a ticket is being used.
+     *
+     * @param isTicket Boolean flag indicating if a ticket is being used.
+     */
+    fun setTicket(isTicket: Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(ticket = isTicket)
+        }
+    }
+
+    /**
+     * Sets the flag indicating if the app is waiting.
+     *
+     * @param wait Boolean flag indicating if the app is waiting.
+     */
+    fun setWait(wait: Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(wait = wait)
+        }
+    }
+
+    /**
+     * Sets the flag indicating if the phone is being used.
+     *
+     * @param isUse Boolean flag indicating if the phone is being used.
+     */
+    fun setUsePhone(isUse: Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(usePhone = isUse)
+        }
+    }
+
+    /**
+     * Sets the phone number.
+     *
+     * @param number The phone number.
+     */
+    fun setPhone(number: String) {
+        _uiState.update { currentState ->
+            currentState.copy(phoneNumber = number)
+        }
+    }
+
+    /**
+     * Sets the language of the app.
+     *
+     * @param language The language of the app.
+     */
+    fun setLangage(langage : String) {
+        _uiState.update { currentState -> currentState.copy(langage = langage,
+            langageSwitch = true) }
+    }
+
+    /**
+     * Sets the target location.
+     *
+     * @param target The target location.
+     */
+    fun setTarget(target: Localisation) {
+        _uiState.update { currentState ->
+            currentState.copy(targetLocation = target)
+        }
+    }
+
+    /**
+     * Sets the name of a registered location.
+     *
+     * @param index The index of the registered location.
+     * @param name The name of the location.
+     * @param registeredLocalisation List of registered locations.
+     */
+    fun setLocalisationName(index: Int, name: String, registeredLocalisation: List<Localisation>) {
+        if (index in registeredLocalisation.indices) {
+            val updatedLocalisation = registeredLocalisation.toMutableList()
+            updatedLocalisation[index] = registeredLocalisation[index].copy(destinationName = name)
+            _uiState.update { currentState ->
+                currentState.copy(registeredLocation = updatedLocalisation)
+            }
+        }
+    }
+
+    /**
+     * Sets the address of a registered location.
+     *
+     * @param index The index of the registered location.
+     * @param address The address of the location.
+     * @param context The application context.
+     */
+    fun setLocalisationAddress(
+        index: Int,
+        address: String,
+        context: Context
+    ) {
+        if (index in _uiState.value.registeredLocation.indices) {
+            viewModelScope.launch {
+                val geo = getLocationFromAddress(context, address)
+                val updatedLocalisation = _uiState.value.registeredLocation.toMutableList()
+                if (geo != null) {
+                    updatedLocalisation[index] = updatedLocalisation[index].copy(
+                        destinationAddress = address,
+                        longitude = geo.longitude,
+                        latitude = geo.latitude,
+                        isValid = true
+                    )
+                } else {
+                    updatedLocalisation[index] = updatedLocalisation[index].copy(
+                        destinationAddress = address,
+                        isValid = false
+                    )
+                }
+                _uiState.update { currentState ->
+                    currentState.copy(registeredLocation = updatedLocalisation)
+                }
+                //_uiState.value = _uiState.value.copy(registeredLocation = updatedLocalisation)
+            }
+        }
+    }
+
+    /**
+     * Sets the remaining time for the current step.
+     *
+     * @param point The point in the trip.
+     * @param step Information about the step.
+     */
+    fun setRemainingTime(point: String, step: StepInfo) {
+        // Update the timeNeeded in the state
+        _uiState.update { currentState ->
+            currentState.copy(timeNeeded = point)
+        }
+
+        // Initialize remainingTimeInMinutes
+        var remainingTimeInMinutes = 0
+
+        Log.d("is callend", "is called")
+        Log.d("skipper", _uiState.value.skipper.toString())
+
+        // Log the point and call giveTime based on the point
+
+        when (point) {
+            "start", "end" -> {
+                Log.d("givetime $point", "is done")
+                val time = step.giveTime(point)
+                Log.d("givetime $point", time)
+
+                // Parse the time
+                val timeParsed = Instant.parse(time)
+                Log.d("givetime $point parsed", "$timeParsed")
+
+                // Get the current time
+                val startTime = Clock.System.now()
+                Log.d("givetime now", "$startTime")
+
+                // Calculate elapsed minutes
+                val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
+                remainingTimeInMinutes = max(0, elapsedMinutes.toInt() - _uiState.value.skipper)
+            }
+
+            else -> {
+                // Handle any other points if needed
+                Log.d("givetime", "Unknown point: $point")
+            }
+        }
+
+
+        // Update the remaining time in the state
+        _uiState.update { currentState ->
+            currentState.copy(remainingTime = remainingTimeInMinutes)
+        }
+        Log.d("remainingTime1", "Remaining time: $remainingTimeInMinutes")
+    }
+
+    /**
+     * Launches the trip. Important for notification
+     *
+     * @param haveATrip Boolean indicating if there is an active trip.
+     */
+    fun lauchTrip(haveATrip: Boolean) {
+        Log.d("boolean", "changed")
+        _uiState.update { currentState ->
+            currentState.copy(tripIsGoing = haveATrip)
+        }
+    }
+
+    /**
+     * Gets the current UI state.
+     */
+    // Getter
+    fun getUIstate(): UiState {
+        return _uiState.value
+    }
+
+    /**
+     * Checks if there is an active trip.
+     */
+    fun haveATrip(): Boolean {
+        return _uiState.value.tripIsGoing
+    }
+
+    /**
+     * Gets the language switch status.
+     */
+    fun getlangswitch() : String {
+        if (_uiState.value.langageSwitch) {
+            _uiState.update { currentState -> currentState.copy(
+                langageSwitch = false) }
+            return _uiState.value.langage
+        }
+        return ""
+    }
+
+    /**
+     * Gets the notification action.
+     */
+    fun getNotification(): ForegroundService.Actions {
+        val sending = _uiState.value.type
+        _uiState.update { currentState -> currentState.copy(type = ForegroundService.Actions.None) }
+        return sending
+    }
+
+
+    /**
+     * Cleans up the UI state.
+     */
     fun clean() {
         Log.d("CLEAN", "cleaning")
         timerJob?.cancel()
@@ -84,21 +331,39 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Increases the skipper count.
+     */
     fun UpSkip() {
         _uiState.update { currentState -> currentState.copy(skipper = _uiState.value.skipper +1 ) }
     }
 
+    /**
+     * Toggles the debugging mode.
+     */
     fun SwitchDebug() {
         _uiState.update {currentState -> currentState.copy(debugging = !_uiState.value.debugging)}
     }
 
+    /**
+     * Toggles the easy ride mode.
+     */
     fun SwitchTicket() {
         _uiState.update {currentState -> currentState.copy(easyRide = !_uiState.value.easyRide)}
     }
+
+    /**
+     * Sends a notification.
+     *
+     * @param type The type of notification.
+     */
     fun sendNotification(type : ForegroundService.Actions) {
         _uiState.update { currentState -> currentState.copy(type = type) }
     }
 
+    /**
+     * Checks if the user is close to a destination during a walk.
+     */
     fun isClose() {
         if (_uiState.value.steps[_uiState.value.currentStep] is walkInfo) {
             val d1 = _uiState.value.currentLocation.latitude
@@ -127,13 +392,10 @@ class HelpieViewModel : ViewModel() {
 
     private fun Double.toRadians() = this * PI / 180
 
-    fun getNotification(): ForegroundService.Actions {
-        val sending = _uiState.value.type
-        _uiState.update { currentState -> currentState.copy(type = ForegroundService.Actions.None) }
-        return sending
-    }
 
-
+    /**
+     * Checks if the UI needs to be cleaned.
+     */
     fun needToClose() {
         if (_uiState.value.needClean) {
             Log.d("cleaning", "cleaning go")
@@ -142,6 +404,9 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Sends a trip request and updates the UI accordingly.
+     */
     fun request() {
         Log.d("helpie", "ojpSdk")
         viewModelScope.launch {
@@ -200,6 +465,11 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Launches the next step in the trip.
+     *
+     * @return The name of the next screen.
+     */
     fun launchNext(): String {
         if (_uiState.value.currentStep < (_uiState.value.summary?.npSteps ?: 0)) {
             _uiState.update { currentState ->
@@ -220,13 +490,12 @@ class HelpieViewModel : ViewModel() {
         return HelpieScreen.StopTicket.name
     }
 
-    fun setFinish(finish : Boolean) {
-        _uiState.update { currentState ->
-            currentState.copy(isFinish = finish)
-        }
-    }
 
-
+    /**
+     * Launches Google Maps for navigation.
+     *
+     * @param context The application context.
+     */
     fun launchGoogleMaps(context: Context) {
 
         val dir = _uiState.value.steps[_uiState.value.currentStep] as walkInfo
@@ -245,82 +514,21 @@ class HelpieViewModel : ViewModel() {
         context.startActivity(mapIntent)
     }
 
-    fun setTicket(isTicket: Boolean) {
-        _uiState.update { currentState ->
-            currentState.copy(ticket = isTicket)
-        }
-    }
-
-    fun setWait(wait: Boolean) {
-        _uiState.update { currentState ->
-            currentState.copy(wait = wait)
-        }
-    }
-
-    fun setUsePhone(isUse: Boolean) {
-        _uiState.update { currentState ->
-            currentState.copy(usePhone = isUse)
-        }
-    }
-
-    fun setPhone(number: String) {
-        _uiState.update { currentState ->
-            currentState.copy(phoneNumber = number)
-        }
-    }
-
+    /**
+     * Opens a link in the default browser.
+     *
+     * @param context The application context.
+     * @param url The URL to open.
+     */
     fun openLink(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
     }
 
-    fun setTarget(target: Localisation) {
-        _uiState.update { currentState ->
-            currentState.copy(targetLocation = target)
-        }
-    }
 
-    fun setLocalisationName(index: Int, name: String, registeredLocalisation: List<Localisation>) {
-        if (index in registeredLocalisation.indices) {
-            val updatedLocalisation = registeredLocalisation.toMutableList()
-            updatedLocalisation[index] = registeredLocalisation[index].copy(destinationName = name)
-            _uiState.update { currentState ->
-                currentState.copy(registeredLocation = updatedLocalisation)
-            }
-        }
-    }
-
-    fun setLocalisationAddress(
-    index: Int,
-    address: String,
-    context: Context
-) {
-        if (index in _uiState.value.registeredLocation.indices) {
-            viewModelScope.launch {
-                val geo = getLocationFromAddress(context, address)
-                val updatedLocalisation = _uiState.value.registeredLocation.toMutableList()
-                if (geo != null) {
-                    updatedLocalisation[index] = updatedLocalisation[index].copy(
-                        destinationAddress = address,
-                        longitude = geo.longitude,
-                        latitude = geo.latitude,
-                        isValid = true
-                    )
-                } else {
-                    updatedLocalisation[index] = updatedLocalisation[index].copy(
-                        destinationAddress = address,
-                        isValid = false
-                    )
-                }
-                _uiState.update { currentState ->
-                    currentState.copy(registeredLocation = updatedLocalisation)
-                }
-                //_uiState.value = _uiState.value.copy(registeredLocation = updatedLocalisation)
-            }
-        }
-    }
-
-
+    /**
+     * Toggles the dialog visibility.
+     */
     fun switchDialog() {
         _uiState.update { currentState ->
             currentState.copy(showDialog = !currentState.showDialog)
@@ -340,6 +548,9 @@ class HelpieViewModel : ViewModel() {
     }
 
 
+    /**
+     * Starts updating the remaining time for the current step.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun startUpdatingRemainingTime() {
         timerJob?.cancel() // Cancel previous job if any
@@ -351,91 +562,29 @@ class HelpieViewModel : ViewModel() {
         }
     }
 
-    fun setRemainingTime(point: String, step: StepInfo) {
-        // Update the timeNeeded in the state
-        _uiState.update { currentState ->
-            currentState.copy(timeNeeded = point)
-        }
-
-        // Initialize remainingTimeInMinutes
-        var remainingTimeInMinutes = 0
-
-        Log.d("is callend", "is called")
-        Log.d("skipper", _uiState.value.skipper.toString())
-
-        // Log the point and call giveTime based on the point
-
-        when (point) {
-                "start", "end" -> {
-                    Log.d("givetime $point", "is done")
-                    val time = step.giveTime(point)
-                    Log.d("givetime $point", time)
-
-                    // Parse the time
-                    val timeParsed = Instant.parse(time)
-                    Log.d("givetime $point parsed", "$timeParsed")
-
-                    // Get the current time
-                    val startTime = Clock.System.now()
-                    Log.d("givetime now", "$startTime")
-
-                    // Calculate elapsed minutes
-                    val elapsedMinutes = (timeParsed.epochSeconds - startTime.epochSeconds) / 60
-                    remainingTimeInMinutes = max(0, elapsedMinutes.toInt() - _uiState.value.skipper)
-                }
-
-                else -> {
-                    // Handle any other points if needed
-                    Log.d("givetime", "Unknown point: $point")
-                }
-            }
-
-
-        // Update the remaining time in the state
-        _uiState.update { currentState ->
-            currentState.copy(remainingTime = remainingTimeInMinutes)
-        }
-        Log.d("remainingTime1", "Remaining time: $remainingTimeInMinutes")
-    }
-
     override fun onCleared() {
         super.onCleared()
         timerJob?.cancel() // Cancel the timer job when ViewModel is cleared
     }
 
-    fun haveATrip(): Boolean {
-        return _uiState.value.tripIsGoing
-    }
-
-    fun lauchTrip(haveATrip: Boolean) {
-        Log.d("boolean", "changed")
-        _uiState.update { currentState ->
-            currentState.copy(tripIsGoing = haveATrip)
-        }
-    }
-
-    fun getlangswitch() : String {
-        if (_uiState.value.langageSwitch) {
-            _uiState.update { currentState -> currentState.copy(
-                langageSwitch = false) }
-            return _uiState.value.langage
-        }
-        return ""
-    }
-
-    fun setLangage(langage : String) {
-        _uiState.update { currentState -> currentState.copy(langage = langage,
-            langageSwitch = true) }
-    }
-
-
+    /**
+     * Updates the current location.
+     *
+     * @param current The current location.
+     */
     fun updateCurrentLocation(current: LatLng) {
         _uiState.update { currentState ->
             currentState.copy(currentLocation = current)
         }
-        //Log.d("LOCATION", "Location has been updated")
     }
 
+    /**
+     * Asynchronously converts the provided address string into geographical coordinates (latitude and longitude).
+     *
+     * @param context The application context.
+     * @param addressStr The address string to convert into geographical coordinates.
+     * @return The [LatLng] object containing the geographical coordinates if the conversion is successful, or `null` otherwise.
+     */
     private suspend fun getLocationFromAddress(context: Context, addressStr: String): LatLng? {
         val geocoder = Geocoder(context)
         var latLng: LatLng? = null
@@ -456,9 +605,6 @@ class HelpieViewModel : ViewModel() {
 
         return latLng
     }
-
-
-
 }
 
 

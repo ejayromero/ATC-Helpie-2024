@@ -27,6 +27,14 @@ import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.ui.theme.TemplateButton
 
+/**
+ * Composable function for displaying help information.
+ *
+ * @param usePhone Flag indicating whether to use the phone number provided directly or the outline number.
+ * @param phoneNumber The phone number to be dialed.
+ * @param outlineNumber The outline number to be dialed if usePhone is false.
+ * @param modifier The modifier to be applied to the composable.
+ */
 @Composable
 fun HelpScreen(
     usePhone: Boolean,
@@ -109,7 +117,13 @@ fun HelpScreen(
 
 }
 
-
+/**
+ * A preview composable function for the HelpScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the screen with mock data.
+ *
+ * @see HelpScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun HelpPreview() {

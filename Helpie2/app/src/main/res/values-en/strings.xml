@@ -50,7 +50,7 @@
     <string name="min"> minutes</string>
     <string name="montre_le_ticket">Show the ticket</string>
     <string name="activer_le_billet">Activate the ticket</string>
-    <string name="arr_ter_le_ticker">Stop the ticker</string>
+    <string name="arr_ter_le_ticker">Stop the ticket</string>
     <string name="prendre_le_ticket">Take the ticket</string>
     <string name="arr_ter_le_ticket">Stop the ticket</string>
     <string name="fais_glisser_de_gauche_droite">Swipe from left to right</string>

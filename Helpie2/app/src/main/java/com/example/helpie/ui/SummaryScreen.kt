@@ -37,7 +37,15 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-
+/**
+ * A composable function representing the SummaryScreen.
+ * This screen displays a summary of the trip with the details of each step.
+ *
+ * @param modifier The modifier for the SummaryScreen layout.
+ * @param summary The summary of the trip.
+ * @param steps The list of steps in the trip.
+ * @param onNext Callback function to navigate to the next screen.
+ */
 @Composable
 fun SummaryScreen(
     modifier: Modifier = Modifier,
@@ -168,6 +176,13 @@ fun SummaryScreen(
     }
 }
 
+/**
+ * A preview composable function for the SummaryScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a preview of the SummaryScreen wrapped inside the AppTheme.
+ *
+ * @see SummaryScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun SummaryPreview() {

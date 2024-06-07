@@ -31,22 +31,42 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 
 
+
+/**
+ * Main activity of the Helpie application
+ *
+ * Control permission, foreground services and langage. Launch and create the application.
+ */
 class MainActivity : ComponentActivity() {
+
+    /**
+     * Permission code
+     */
     companion object {
         private const val PERMISSION_REQUEST_CODE = 101
 
     }
 
+    /**
+     * Saving file
+     */
     private val sharedPrefs by lazy {
         getSharedPreferences("ui_state", Context.MODE_PRIVATE)
     }
 
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var currentLocation: Location
-    private lateinit var viewModel: HelpieViewModel
+    private lateinit var currentLocation: Location //access to location
+    private lateinit var viewModel: HelpieViewModel //viewmodel copy
 
     private val updateIntervalMillis: Long = 500 //Update every 0.5 sec
     private val handler = Handler(Looper.getMainLooper())
+
+    /**
+     * Run
+     *
+     * handle update of the system
+     */
     private val updateRunnable = object: Runnable{
         @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
@@ -66,6 +86,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Updates the current location of the device.
+     * Requests location permissions if not already granted.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -91,6 +115,10 @@ class MainActivity : ComponentActivity() {
 
         }
     }
+
+    /**
+     * Called when the activity is starting. Initializes ViewModel, requests permissions, and starts the location update handler.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +143,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Requests necessary permissions from the user.
+     */
     private fun requestPermissionsIfNecessary() {
         val permissionsToRequest = mutableListOf<String>()
 
@@ -159,6 +190,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Called when the activity is becoming visible to the user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
         super.onStart()
@@ -166,6 +200,9 @@ class MainActivity : ComponentActivity() {
         requestPermissionsIfNecessary()
     }
 
+    /**
+     * Called when the activity is no longer visible to the user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onPause() {
         super.onPause()
@@ -178,6 +215,9 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    /**
+     * Called when the activity is no longer visible to the user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStop() {
         super.onStop()
@@ -185,7 +225,9 @@ class MainActivity : ComponentActivity() {
         saveUiState()
     }
 
-
+    /**
+     * Called when the activity will start interacting with the user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
@@ -193,6 +235,9 @@ class MainActivity : ComponentActivity() {
         Log.d("MainActivity","Foreground service stopped")
     }
 
+    /**
+     * Starts the foreground service. Overlay and persistant notification
+     */
     private fun startForegroundService() {
         requestPermissionsIfNecessary()
         val startIntent = Intent(this, ForegroundService::class.java)
@@ -201,6 +246,9 @@ class MainActivity : ComponentActivity() {
         startService(startIntent)
     }
 
+    /**
+     * Sends a notification action to the foreground service. Short notification.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun punchForegroundService(notif: ForegroundService.Actions) {
         val punchIntent = Intent(this, ForegroundService::class.java)
@@ -209,6 +257,9 @@ class MainActivity : ComponentActivity() {
         startService(punchIntent)
     }
 
+    /**
+     * Runnable to stop the foreground service. (for short notification)
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private val stopForegroundRunnable = Runnable {
         if (isServiceRunning(ForegroundService::class.java) ) {
@@ -218,6 +269,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Stops the foreground service.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun stopForegroundService() {
         if (isServiceRunning(ForegroundService::class.java)) {
@@ -229,6 +283,12 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    /**
+     * Checks if a specific service is running.
+     *
+     * @param serviceClass The service class to check.
+     * @return `true` if the service is running, `false` otherwise.
+     */
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -239,6 +299,11 @@ class MainActivity : ComponentActivity() {
         return false
     }
 
+    /**
+     * Gets the ID of the currently displayed notification.
+     *
+     * @return The notification ID if found, `null` otherwise.
+     */
     private fun getDisplayedNotificationId(): Int? {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val activeNotifications = notificationManager.activeNotifications
@@ -251,10 +316,18 @@ class MainActivity : ComponentActivity() {
         return null
     }
 
+    /**
+     * Checks if the app has the permission to draw overlays.
+     *
+     * @return `true` if the app has the permission, `false` otherwise.
+     */
     private fun hasWindowPermission(): Boolean {
         return Settings.canDrawOverlays(this)
     }
 
+    /**
+     * Saves the UI state to shared preferences.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveUiState() {
         val uiState = viewModel.getUIstate()
@@ -276,6 +349,9 @@ class MainActivity : ComponentActivity() {
         Log.d("uistate", "uistate saved")
     }
 
+    /**
+     * Restores the UI state from shared preferences.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun restoreUiState() {
 
@@ -331,6 +407,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Switches the app language and recreates the activity to apply the new locale.
+     *
+     * @param langage The new language to switch to.
+     */
     private fun switchLangage(langage : String) {
         Log.d("langage", "switch langage to $langage ")
         LocaleHelper.setLocale(this, langage)

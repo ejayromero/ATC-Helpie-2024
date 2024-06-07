@@ -29,6 +29,14 @@ import com.example.helpie.ui.theme.TemplateButton
 import com.example.helpie.walkInfo
 
 
+/**
+ * A composable function representing the WalkScreen.
+ * This screen displays information and options for walking to the next step.
+ *
+ * @param modifier The modifier to be applied to the layout.
+ * @param stepInfo The information about the current walking step.
+ * @param lauchMaps The callback function to launch maps when the "Navigate" button is clicked.
+ */
 @Composable
 fun WalkScreen(
     modifier: Modifier = Modifier,
@@ -47,10 +55,14 @@ fun WalkScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            // Text displaying the instruction to walk to the next step
+
             CustomTextView(
                 text = stringResource(R.string.marche_jusqu_la_prochaine_tape),
                 color = MaterialTheme.colorScheme.onSurface
             )
+            // Box containing the walking icon and destination information
+
             Box(
                 modifier = Modifier
                     .width(250.dp)
@@ -102,6 +114,13 @@ fun WalkScreen(
 }
 
 
+/**
+ * A preview composable function for the WalkScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a preview of the WalkScreen wrapped inside the AppTheme.
+ *
+ * @see WalkScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun WalkScreenPreview() {

@@ -30,6 +30,13 @@ import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 import com.example.helpie.walkInfo
 
+/**
+ * Composable function for displaying the screen when the user reaches a stop.
+ * It shows information about the next step of the journey, including the mode of transport and details.
+ *
+ * @param stepInfo The information about the current step of the journey.
+ * @param nextStep The information about the next step of the journey.
+ */
 @Composable
 fun ReachStopScreen(
     stepInfo: walkInfo,
@@ -106,6 +113,14 @@ fun ReachStopScreen(
         )
     }
 }
+
+/**
+ * A preview composable function for the ReachStopScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the screen when the user reaches a stop, showing the mode of transport and details of the next step.
+ *
+ * @see ReachStopScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun ReachStopScreenPreview() {

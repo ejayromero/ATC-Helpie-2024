@@ -28,6 +28,14 @@ import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.TemplateButton
 
+/**
+ * Composable function for displaying a popup screen.
+ * This popup screen asks the user whether they want to stop the current journey or find a new path.
+ *
+ * @param onDismiss Callback function to be called when the popup is dismissed.
+ * @param onStop Callback function to be called when the user chooses to stop the journey.
+ * @param onRestart Callback function to be called when the user chooses to find a new path.
+ */
 @Composable
 fun PopUpScreen(
     onDismiss: () -> Unit,
@@ -120,6 +128,13 @@ fun PopUpScreen(
     }
 }
 
+/**
+ * A preview composable function for the PopUpScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the popup screen with mock data.
+ *
+ * @see PopUpScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun PopUpScreenPreview() {

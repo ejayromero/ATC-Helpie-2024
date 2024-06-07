@@ -39,6 +39,25 @@ import com.example.helpie.R
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 
+/**
+ * A composable function representing the SettingsScreen.
+ * This screen displays various settings options such as language selection, ticket settings, contact options, and registered destinations.
+ *
+ * @param registeredLocation List of registered locations.
+ * @param setLocalisationName Callback function to set the name of a registered location.
+ * @param setLocalisationAddress Callback function to set the address of a registered location.
+ * @param usePhone Flag indicating whether to use phone contact option.
+ * @param phoneNumber The phone number for contact.
+ * @param outlineNumber The outline number for contact.
+ * @param phone Callback function to toggle phone contact option.
+ * @param setPhone Callback function to set the phone number.
+ * @param debugging Flag indicating whether debugging is enabled.
+ * @param switchDebug Callback function to toggle debugging mode.
+ * @param easyRide Flag indicating whether to enable easy ride mode.
+ * @param switchTicket Callback function to toggle ticket settings.
+ * @param setLangage Callback function to set the language.
+ * @param currentLangage The currently selected language.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
@@ -75,6 +94,8 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxSize()
         ) {
+            //Debugging
+
             item {
                 CustomTextView(
                     text = stringResource(id = R.string.Debugging),
@@ -104,6 +125,8 @@ fun SettingsScreen(
                         .padding(20.dp)
                         .fillMaxWidth()
                 ) }
+
+            //Langage
 
             item {
                 CustomTextView(
@@ -149,6 +172,9 @@ fun SettingsScreen(
                         .fillMaxWidth()
                 ) }
 
+            //Ticket
+
+
             item {
                 CustomTextView(
                     text = stringResource(id = R.string.ticket),
@@ -191,6 +217,10 @@ fun SettingsScreen(
                         .padding(20.dp)
                         .fillMaxWidth()
                 ) }
+
+            //Contacts
+
+
             item {
                 CustomTextView(
                     text = stringResource(id = R.string.contact),
@@ -271,6 +301,10 @@ fun SettingsScreen(
                     .padding(20.dp)
                     .fillMaxWidth()
             ) }
+
+            //Destinations
+
+
             item {
                 CustomTextView(
                     text = stringResource(R.string.destinations_enregistr_es),
@@ -286,34 +320,6 @@ fun SettingsScreen(
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
-                /*TEST LENA
-                item {TextField(
-                    // on below line we are specifying value
-                    // for our  text field.
-                    value = phoneNumber,
-
-                    // on below line we are adding on value
-                    // change for text field.
-                    onValueChange = { setPhone(it) },
-
-                    // on below line we are adding place holder as text
-                    placeholder = { Text(text = stringResource(R.string.enter_your_phone_number)) },
-
-                    // on below line we are adding modifier to it
-                    // and adding padding to it and filling max width
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-
-                    // on below line we are adding text style
-                    // specifying color and font size to it.
-                    textStyle = TextStyle(color = Color.Black, fontSize = 15.sp),
-
-                    // on below line we are adding single line to it.
-                    singleLine = true,
-                )} */
-
-
                 item {
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -350,13 +356,20 @@ fun SettingsScreen(
                         )
                     }
                 }
-            } // Bu
+            }
 
             }
         }
     }
 
 
+/**
+ * A preview composable function for the SettingsScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the settings screen with various settings options such as registered destinations, language selection, contact options, and debugging settings.
+ *
+ * @see SettingsScreen
+ */
 @Preview(showBackground = true)
 @Composable
 

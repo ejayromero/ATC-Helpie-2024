@@ -10,7 +10,37 @@ import com.example.helpie.tripPlanificator.OjpSdk
 import com.example.helpie.tripPlanificator.data.dto.response.TripDto
 import com.google.android.gms.maps.model.LatLng
 
-
+/**
+ * Data class representing the state of the UI.
+ *
+ * @property phoneNumber The phone number of the caregiver for help interface.
+ * @property outlineNumber The CFF outline number (or other authority) to call.
+ * @property usePhone Boolean indicating if the personal phone should be used.
+ * @property langage The current language setting.
+ * @property langageSwitch Boolean indicating if a change in language is asked.
+ * @property skipper Skipper value for debugging. It is like time travelling, this value is added to the current time.
+ * @property debugging Boolean indicating if debugging is enabled.
+ * @property ticket Boolean indicating if a ticket is bought.
+ * @property urlTicket The URL for the ticket page (for example, to the CFF page).
+ * @property takeTicket The URL for taking a ticket (for example, to easyride).
+ * @property easyRide Boolean indicating the ticket method (easyride, if false reminder).
+ * @property isFinish Boolean indicating if the travel is finished (to handle last notification).
+ * @property needClean Boolean indicating if cleaning is needed (same, will wait until return to the app to avoid crash and allow persistant notification).
+ * @property type The type of notification to manage (travel, push ect..).
+ * @property planner The trip planner instance.
+ * @property trip The current trip data transfer object. (request response)
+ * @property summary The summary of the trip.
+ * @property tripIsGoing Boolean indicating if the trip is ongoing.
+ * @property steps List of steps in the trip.
+ * @property wait Boolean indicating if waiting is required.
+ * @property currentStep The index of the current step.
+ * @property remainingTime The remaining time for the step.
+ * @property timeNeeded The time needed for the step.
+ * @property showDialog Boolean indicating if the page to add a new destination is showed.
+ * @property currentLocation The current location.
+ * @property registeredLocation List of registered locations.
+ * @property targetLocation The target location.
+ */
 data class UiState(
 
     //Help interface and number to call
@@ -113,6 +143,15 @@ data class UiState(
     val targetLocation: Localisation = Localisation(isValid = true),
 )
 
+/**
+ * Data class representing a location.
+ *
+ * @property destinationName The name of the destination.
+ * @property destinationAddress The address of the destination.
+ * @property longitude The longitude of the location.
+ * @property latitude The latitude of the location.
+ * @property isValid Boolean indicating if the location is valid. (according to google maps API)
+ */
 data class Localisation(
     val destinationName: String? = null,
     val destinationAddress: String? = null,
@@ -121,6 +160,14 @@ data class Localisation(
     val isValid: Boolean = false
 )
 
+/**
+ * Data class representing a trip summary.
+ *
+ * @property duration The duration of the trip.
+ * @property startTime The start time of the trip.
+ * @property endTime The end time of the trip.
+ * @property npSteps The number of steps in the trip.
+ */
 data class TripSummary(
     val duration: String? = null,
     val startTime: String = "",
@@ -128,51 +175,45 @@ data class TripSummary(
     val npSteps: Int = 0
 )
 
+/**
+ * Open class representing a step in a trip.
+ *
+ * @property mode The mode of transportation.
+ */
 open class StepInfo(
     open val mode: String? = null,
 ) {
+
+    /**
+     * Function to return the start or end time based on the point parameter.
+     *
+     * @param point The point in time ("start" or "end").
+     * @return The corresponding time as a string.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun giveTime(point: String): String {
         return when (this) {
             is walkInfo -> {
                 when (point) {
-                    "start" -> {
-                                           this.startTime!!
-//                        "2024-05-22T00:46:00Z"
-                    }
-
-                    "end" -> {
-                                            this.endTime!!
-//                        "2024-05-22T00:49:00Z"
-                    }
-
-                    else -> {
-                        "0start"
-                    }
+                    "start" -> this.startTime!!
+                    "end" -> this.endTime!!
+                    else -> "0start"
                 }
             }
             is transportInfo -> {
                 when (point) {
-                    "start" -> {
-                               this.startTime!!
-//                        "2024-05-22T00:46:00Z"
-                    }
-                    "end" -> {
-                                this.endTime!!
-//                        "2024-05-22T00:49:00Z"
-                    }
-                    else -> {
-                        "0end"
-                    }
+                    "start" -> this.startTime!!
+                    "end" -> this.endTime!!
+                    else -> "0end"
                 }
             }
-            else -> {
-                "stepIssue"  // Default duration (fallback value)
-            }
+            else -> "stepIssue"
         }
     }
 
-    // Helper function to format Duration to ISO 8601 string
+    /**
+     * Function to log the values of the step info.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun logValues() {
         Log.d("trip", "Mode: $mode")
@@ -205,6 +246,21 @@ open class StepInfo(
     }
 }
 
+/**
+ * Data class representing information for a transport step. Subclass of Stepinfo.
+ *
+ * @property mode The mode of transportation.
+ * @property startName The name of the start point.
+ * @property startTime The start time of the transport step.
+ * @property startTimeEstimated The estimated start time of the transport step. (according to the data)
+ * @property endName The name of the end point.
+ * @property endTime The end time of the transport step.
+ * @property endTimeEstimated The estimated end time of the transport step. (according to the data)
+ * @property line The line of the transport. (if bus for ex)
+ * @property startQuay The start quay of the transport. (if train for ex)
+ * @property endQuay The end quay of the transport. (if train for ex)
+ * @property way The way of the transport.
+ */
 data class transportInfo(
     override val mode: String? = null,
 
@@ -225,6 +281,22 @@ data class transportInfo(
     ): StepInfo(mode
 )
 
+/**
+ * Data class representing information for a walk step. Subclass of Stepinfo.
+ *
+ * @property mode The mode of transportation.
+ * @property startName Name of the start point.
+ * @property startLongitude The start longitude.
+ * @property startLatitude The start latitude.
+ * @property endName Name of the end point.
+ * @property endLongitude The end longitude.
+ * @property endLatitude The end latitude.
+ * @property startTime The start time of the walk.
+ * @property endTime The end time of the walk.
+ * @property duration The duration of the walk.
+ * @property length The length of the walk in meters.
+ * @property buffer The buffer time for the walk. (how many time do we have ? how many time does it take ?)
+ */
 data class walkInfo(
     override val mode: String? = null,
 

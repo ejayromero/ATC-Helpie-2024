@@ -21,6 +21,12 @@ import com.example.helpie.transportInfo
 import com.example.helpie.ui.theme.AppTheme
 import com.example.helpie.ui.theme.CustomTextView
 
+/**
+ * Composable function for displaying information during a journey in a particular mode of transport.
+ *
+ * @param stepInfo Information about the current step of the journey, including mode of transport, line, and destination.
+ * @param time Estimated time remaining until the journey ends, in minutes.
+ */
 @Composable
 fun JourneyInTransportScreen(
     stepInfo: transportInfo,
@@ -89,6 +95,14 @@ fun JourneyInTransportScreen(
         )
     }
 }
+
+/**
+ * A preview composable function for the JourneyInTransportScreen.
+ * This function is annotated with @Preview and @Composable, allowing it to be previewed in Android Studio's Layout Editor.
+ * It displays a sample view of the screen with mock data.
+ *
+ * @see JourneyInTransportScreen
+ */
 @Preview(showBackground = true)
 @Composable
 fun JourneyInTransportScreenPreview() {
