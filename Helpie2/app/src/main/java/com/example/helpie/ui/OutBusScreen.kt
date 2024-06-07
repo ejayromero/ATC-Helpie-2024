@@ -32,12 +32,11 @@ import com.example.helpie.ui.theme.CustomTextView
 
 @Composable
 fun OutBusScreen(
-    modifier: Modifier = Modifier,
     stepInfo: transportInfo,
 ) {
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -48,7 +47,7 @@ fun OutBusScreen(
         )
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .width(250.dp)
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
@@ -73,12 +72,12 @@ fun OutBusScreen(
                     painter = painterResource(id = iconResource),
                     contentDescription = contentDescription,
                     alignment = Alignment.Center,
-                    modifier = modifier
+                    modifier = Modifier
                         .size(60.dp)
                         .fillMaxSize()
                 )
 
-                Spacer(modifier = modifier.width(28.dp))
+                Spacer(modifier = Modifier.width(28.dp))
                 Column() {
                     CustomTextView(
                         text = stepInfo.line.toString(),

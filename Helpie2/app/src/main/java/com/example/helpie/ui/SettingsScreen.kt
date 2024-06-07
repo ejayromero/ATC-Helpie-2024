@@ -42,7 +42,6 @@ import com.example.helpie.ui.theme.CustomTextView
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    modifier: Modifier = Modifier,
     registeredLocation: List<Localisation>,
     setLocalisationName: (Int, String, List<Localisation>) -> Unit = { _, _, _ -> },
     setLocalisationAddress: (Int, String) -> Unit = { _, _ -> },
@@ -69,7 +68,7 @@ fun SettingsScreen(
     )
 
     Box(
-        modifier = modifier
+        modifier = Modifier
     ) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,

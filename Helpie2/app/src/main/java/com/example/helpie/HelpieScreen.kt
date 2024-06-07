@@ -349,9 +349,7 @@ fun HelpieApp(
                         easyRide = uiState.easyRide,
                         switchTicket = {viewModel.SwitchTicket()},
                         setLangage = {viewModel.setLangage(it)},
-                        currentLangage = uiState.langage,
-                        modifier = Modifier
-                            .fillMaxSize()
+                        currentLangage = uiState.langage
                     )
                 }
 
@@ -449,8 +447,6 @@ fun HelpieApp(
 
                 composable(route = HelpieScreen.PopUp.name) {
                         PopUpScreen(
-                            modifier = Modifier
-                                .fillMaxSize(),
                             onStop = { if (uiState.ticket and uiState.easyRide) {
                                 navController.navigate(HelpieScreen.StopTicket.name)
                             } else {
@@ -517,7 +513,6 @@ fun HelpieApp(
                     if (uiState.steps[uiState.currentStep] is walkInfo) {
                         ReachStopScreen(
                             stepInfo = uiState.steps[uiState.currentStep] as walkInfo, //walkInfo to be changed in the future
-                            modifier = Modifier.fillMaxSize(),
                             nextStep = uiState.steps[uiState.currentStep + 1] as transportInfo
                         )
                     }
@@ -569,7 +564,6 @@ fun HelpieApp(
                     }
                     JourneyInTransportScreen(
                         stepInfo = uiState.steps[uiState.currentStep] as transportInfo,
-                        modifier = Modifier.fillMaxSize(),
                         time = uiState.remainingTime
                     )
                 }
@@ -581,8 +575,7 @@ fun HelpieApp(
                             uiState.steps[uiState.currentStep] as transportInfo
                         } else {
                             uiState.steps[uiState.currentStep-1] as transportInfo
-                        },
-                        modifier = Modifier.fillMaxSize()
+                        }
                     )
                 }
 

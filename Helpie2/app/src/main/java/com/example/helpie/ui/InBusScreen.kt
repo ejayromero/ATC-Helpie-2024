@@ -37,7 +37,7 @@ fun InBusScreen(
 ) {
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -48,7 +48,7 @@ fun InBusScreen(
         )
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .width(250.dp)
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
@@ -101,6 +101,7 @@ fun InBusScreen(
             color = Color.Black,
             padding = false
         )
+
         CustomTextView(
             text = stringResource(id = R.string.diretion) + stepInfo.way.toString(),
             color = MaterialTheme.colorScheme.onSurface,

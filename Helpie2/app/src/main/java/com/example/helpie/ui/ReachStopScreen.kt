@@ -32,13 +32,12 @@ import com.example.helpie.walkInfo
 
 @Composable
 fun ReachStopScreen(
-    modifier: Modifier = Modifier,
     stepInfo: walkInfo,
     nextStep: transportInfo
 ) {
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

@@ -23,20 +23,19 @@ import com.example.helpie.ui.theme.CustomTextView
 
 @Composable
 fun JourneyInTransportScreen(
-    modifier: Modifier = Modifier,
     stepInfo: transportInfo,
     time: Int
 ) {
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .width(250.dp)
                 .height(100.dp)
                 .background(color = Color.Black, shape = RoundedCornerShape(16.dp))
@@ -84,8 +83,8 @@ fun JourneyInTransportScreen(
             }
         }
         CustomTextView(
-            text = stringResource(id = R.string.le)+ stepInfo.mode.toString() + stringResource(R.string.arrive_l_arr_t) + stepInfo.endName + stringResource(
-                id = R.string.dans) + time + stringResource(id = R.string.min),
+            text = stringResource(id = R.string.le)+ " "+stepInfo.mode.toString()+ " " + stringResource(R.string.arrive_l_arr_t)+ " " + stepInfo.endName+ " " + stringResource(
+                id = R.string.dans)+ " " + time+ " " + stringResource(id = R.string.min),
             color = MaterialTheme.colorScheme.onSurface
         )
     }

@@ -1,6 +1,7 @@
 package com.example.helpie
 
 import android.os.Build
+import android.provider.Settings.Global.getString
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.res.stringResource

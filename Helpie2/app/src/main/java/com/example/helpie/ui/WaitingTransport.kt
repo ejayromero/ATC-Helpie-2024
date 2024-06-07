@@ -93,7 +93,7 @@ fun WaitingTransportScreen(
         }
 
         CustomTextView(
-            text = stringResource(id = R.string.le) + stepInfo.mode +stringResource(id = R.string.arrive)  + time+ stringResource(id = R.string.min) ,
+            text = stringResource(id = R.string.le) + " " + stepInfo.mode + " " +stringResource(id = R.string.arrive)  + " " + time + " "+ stringResource(id = R.string.min) ,
             color = MaterialTheme.colorScheme.onSurface,
         )
     }
