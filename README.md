@@ -143,9 +143,8 @@ For usage instructions, please refer to the user guide provided in this reposito
 For developers, the code is structured like  the code works as follows:
 ![Repository Graphe](./image/RepositoryGraphe.jpg)
 
-
 ## Documentation
-The code is documented in Kdoc and cann be generated with Dokka. The .html is available in the .zip and the documentation is also available in markdown on documentation/index.md
+The code is documented in Kdoc and cann be generated with Dokka. The .html is available in the .zip and the documentation is also available in markdown in the [index](./documentation/index.md).
 
 ## Contact Information
 Your contact information or the contact information of your team.
