@@ -143,11 +143,50 @@ For usage instructions, please refer to the user guide provided in this reposito
 For developers, the code is structured like  the code works as follows:
 ![Repository Graphe](./image/RepositoryGraphe.jpg)
 
+Helpie had to communicate with several databases to be operational. 
+First, the [SBB API](https://opentransportdata.swiss/fr/cookbook/open-journey-planner-ojp/) was needed to access the trip request service and access not only schedules but also precise locations and check-point (steps) for more complex trips. This API needs to receive an .XML file and sends back another .XML. We therefore had to implement a serialisation/deserialisation method between .XML and Kotlin, to send and interpret requests accordingly.
+
+Secondly, the [Google Maps API](https://developers.google.com/maps/documentation/android-sdk) was necessary to access accurate current location of the user as well as for internal functionalities such as converting addresses into latitude and longitude to be able to make the trip request. This API is available in Kotlin.
+
+However, several functionalities of these two companies were not available as API and could not directly be implemented in the app: the live turn-by-turn navigation with audio guidance for Google Maps and the buying of tickets for SBB. Therefore, it was chosen to launch these apps on the correct window and to develop a notification system that would make navigation through the different application possible and fluid.
+
+Considering these design choices, we implemented the following solutions. Most of the files we will discuss can be found in this directory: _Helpie2/app/src/main/java/com/example/helpie_.
+
+1. **Global Theme**: The foundational theme framework is mostly done in _HelpieViewModel_, _HelpieScreen.kt_ and _UiState.kt_. These files manage the ViewModel class, the foundational screen framework and navigation, and ViewModel variables, respectively. Each functionality relies mainly on these core UI files (see fig. \ref{fig:repo_graph}). Furthermore, the app's core structure is maintained in _MainActivity.kt_. All UI (User Interface) elements are implemented using Kotlin Jetpack Compose objects such as buttons, boxes, texts, text fields, and others.
+
+2. **Start and Destination Screen**: We can locate the start screen at _ui/StartScreen.kt_, which adheres to the global theme and features a prominent start button. Clicking on it triggers navigation to the destination page. Here, the UI design is implemented in _ui/DestinationScreen.kt_, while destination settings are managed in _ui/SettingsScreen.kt_, providing users with text fields to input new registered destinations. To ensure long-term usability, we store the UI state of destinations as JSON files.
+
+3. **Journey Summary**: When a destination is entered, a request is sent to the SBB API [OJP trip request](https://opentransportdata.swiss/de/cookbook/ojptriprequest/). The resulting trip is stored and used for the summary. This is done in the _tripPlanificator_ folder, utilizing the _tripPlanificator/OjpSdk_ class and the _tripPlanificator/tripHandling.kt_ file. Then, in _ui/SummaryScreen.kt_, we display the necessary information for a comprehensive summary and save trip information as step information class.
+
+4. **Take a ticket**: To handle the two cases for the ticket, we use a boolean that can be modified in _ui/SettingsScreen.kt_ via checkboxes. All UI elements are managed in _ui/TakeTicketScreen.kt_. In the case of _EasyRide_, we send a URL link to EasyRide, which transfers the corresponding _CFF_ app feature. The file _ui/TicketScreen.kt_ takes care of the page when a ticket is chosen and follows the same logic for taking the ticket. This screen is used at the start to take the ticket and at the end to deactivate EasyRide if needed.
+
+5. **Step by step instruction**: This features having many different pages to handle each travel steps, it required the following UI files:
+    - To handle stop verification:
+        - _ui/InBusScreen.kt_
+        - _ui/OutBusScreen.kt_
+        - _ui/ReachStopScreen.kt_
+    - Waiting screen before and while a trip:
+        - _ui/JourneyInTransportScreen.kt_
+        - _ui/WaitingTransport.kt_
+        - _ui/WalkScreen.kt_
+
+    Each of these files uses information from the SBB API gathered previously in Journey Summary.
+
+6. **Appropriate notifications and warning**: Both the window display and notification functionalities are designed within the _ForegroundService_ class and are implemented inside _MainActivity.kt_, along with permission requests. We use the WindowManager and ForegroundService package for these purposes. The pop-up window, when a trip is interrupted midway, is handled in _ui/PopUpStop.kt_.
+
+7. **Help button**: The help button is always shown by putting it in the global framework in _HelpieScreen.kt_ and its screen UI is handled in _ui/HelpScreen.kt_ as well as the change of app to call a number.
+
+8. **Two interfaces**: We implemented a Settings screen using a button on the Start page. This screen is designed in _ui/SettingsScreen.kt_ as mentioned earlier.
+
+9. **Progress bar**: The progress bar is implemented in _HelpieScreen.kt_ and consists of a Kotlin Jetpack compose drawable which adapts to changes in the UI state _current_step_ using the _compose.runtime_ function _LaunchedEffect_.
+   
+For further insight, you can consult the documentation.
+
 ## Documentation
 The code is documented in Kdoc and cann be generated with Dokka. The .html is available in the .zip and the documentation is also available in markdown in the [index](./documentation/index.md).
 
 ## Contact Information
-Your contact information or the contact information of your team.
+Contact information for our team will be available soon.
 
 ## Members:
 * Claire Payoux
