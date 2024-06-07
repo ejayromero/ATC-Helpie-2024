@@ -1,5 +1,6 @@
 package com.example.helpie.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,11 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -109,7 +110,8 @@ fun SettingsScreen(
                 ) {
                     Checkbox(
                         checked = debugging,
-                        onCheckedChange = { switchDebug() }
+                        onCheckedChange = { Log.d("the langage", currentLangage)
+                            switchDebug() }
                     )
                     CustomTextView(
                         text = stringResource(id = R.string.skip),
@@ -136,9 +138,10 @@ fun SettingsScreen(
                 )
             }
             item {
-                Box(modifier = Modifier.padding(20.dp)
+                Box(modifier = Modifier
+                    .padding(20.dp)
                     .fillMaxWidth()) {
-                    languagePairs.find { it.second == currentLangage }?.let {
+                    languagePairs.find { it.second == currentLangage}?.let {
                         Text(
                             text = it.first,
                             modifier = Modifier
@@ -151,17 +154,24 @@ fun SettingsScreen(
 
                 DropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier
+                        .background(Color.Transparent)
+                        .padding(8.dp)
                 ) {
                     languagePairs.forEach  { (language, locale) ->
-                        DropdownMenuItem(onClick = {
+                        DropdownMenuItem(
+                            text = {Text(text = language,color = Color.Black )},
+                            onClick = {
                             expanded = false
                             setLangage(locale)
-                        }) {
-                            Text(text = language)
-                        }
+                        },
+                        modifier = Modifier
+                            .background(Color.White))
                     }
-                }}
+                }
+                }
+
             }
             item {
                 Divider(

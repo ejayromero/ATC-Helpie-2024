@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -22,14 +23,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.helpie.foregroundServices.ForegroundService
 import com.example.helpie.foregroundServices.ForegroundService.Companion.NOTIFICATION_ID_PUNCH
 import com.example.helpie.foregroundServices.ForegroundService.Companion.NOTIFICATION_ID_TRAVEL
-import com.example.helpie.langage.LocaleHelper
 import com.example.helpie.ui.HelpieViewModel
 import com.example.helpie.ui.theme.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
-
+import java.util.Locale
 
 
 /**
@@ -79,6 +79,7 @@ class MainActivity : ComponentActivity() {
             }
             val langswitch = viewModel.getlangswitch()
             if (langswitch != "") {
+                Log.d("langage", "switch")
                 switchLangage(langswitch)
             }
 
@@ -133,6 +134,7 @@ class MainActivity : ComponentActivity() {
 
         val langswitch = viewModel.getlangswitch()
         if (langswitch != "") {
+
             switchLangage(langswitch)
         }
 
@@ -413,9 +415,15 @@ class MainActivity : ComponentActivity() {
      * @param langage The new language to switch to.
      */
     private fun switchLangage(langage : String) {
-        Log.d("langage", "switch langage to $langage ")
-        LocaleHelper.setLocale(this, langage)
-        recreate()  // Recreate the activity to apply the new locale
+        val locale = Locale(langage)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.locale = locale
+        baseContext.resources.updateConfiguration(
+            config,
+            baseContext.resources.displayMetrics
+        )
+
     }
 
 
