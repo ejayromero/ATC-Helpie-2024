@@ -3,7 +3,18 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
     id("kotlin-kapt")
+    id("org.jetbrains.dokka") version "1.9.20"
 }
+
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+    dokkaSourceSets {
+        named("main") {
+            outputDirectory.set(buildDir.resolve("dokka"))
+            // You can set other properties here as needed
+        }
+    }
+}
+
 
 android {
     namespace = "com.example.helpie"

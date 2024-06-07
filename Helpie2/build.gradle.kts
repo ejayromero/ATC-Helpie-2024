@@ -2,11 +2,25 @@
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+    alias(libs.plugins.dokka) apply false
 }
 
 buildscript {
     dependencies {
         // ...
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:1.3.0")
+    }
+
+}
+
+subprojects {
+    apply(plugin = "org.jetbrains.dokka")
+
+    tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+        dokkaSourceSets {
+            named("main") {
+                outputDirectory.set(buildDir.resolve("dokka"))
+            }
+        }
     }
 }

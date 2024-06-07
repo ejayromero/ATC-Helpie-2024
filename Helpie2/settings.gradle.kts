@@ -25,3 +25,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Helpie"
 include(":app")
+
