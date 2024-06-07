@@ -1,0 +1,15 @@
+cff-version: 1.0.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Therras"
+  given-names: "Jade"
+- family-names: "De Sepibus"
+  given-names: "Lena Florence"
+- family-names: "Payoux"
+  given-names: "Claire"
+- family-names: "Romero"
+  given-names: "Eliser Josan"
+title: "ATC-Helpie-2024"
+version: 1.0.0
+date-released: 2024-06-07
+url: "https://github.com/ejayromero/ATC-Helpie-2024"
