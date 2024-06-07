@@ -9,8 +9,7 @@ Git repository of the App Helpie for ATC project 2024
 3. [Structure](#structure)
 3. [Installation](#installation)
 4. [Usage](#usage)
-5. [Contribution](#contribution)
-6. [License](#license)
+5. [Members](#members)
 
 ## Introduction
 Travelling and mobility are essential in our society. Without them, we would not be able to dis-
