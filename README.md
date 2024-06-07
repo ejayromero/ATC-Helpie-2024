@@ -139,8 +139,8 @@ You can download this app by cloning this repository and opening it in Android S
 
 ## Usage
 For usage instructions, please refer to the user guide provided in this repository.
-
-For developers, the code works as follows:
+![Repository Graphe](./image/RepositoryGraphe.pdf)
+For developers, the code is structured like  the code works as follows:
 
 ## Contact Information
 Your contact information or the contact information of your team.
