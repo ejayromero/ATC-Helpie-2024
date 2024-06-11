@@ -15,7 +15,6 @@ import com.example.helpie.Localisation
 import com.example.helpie.StepInfo
 import com.example.helpie.UiState
 import com.example.helpie.foregroundServices.ForegroundService
-import com.example.helpie.langage.LocaleHelper
 import com.example.helpie.tripPlanificator.data.dto.response.PlaceInfoDto
 import com.example.helpie.tripPlanificator.extractLoca
 import com.example.helpie.tripPlanificator.extractTrip
