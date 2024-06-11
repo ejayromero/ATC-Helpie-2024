@@ -138,7 +138,7 @@ ATC-Helpie-2024/Helpie2/app/src/main/java/com/example/helpie
 You can download this app by cloning this repository and opening it in Android Studio. Then build the gradle and run the app on an emulator or a physical device. 
 
 ## Usage
-For usage instructions, please refer to the user guide provided in this repository.
+For usage instructions, please refer to the [user guide](<./HELPIE - Mode d'emploi - User guide.pdf>) provided in this repository which is in both french and english.
 
 For developers, the code is structured like  the code works as follows:
 ![Repository Graphe](./image/RepositoryGraphe.jpg)
